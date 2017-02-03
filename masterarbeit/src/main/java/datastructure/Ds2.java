@@ -21,15 +21,15 @@ public class Ds2 implements Datastructure {
     public Set<Profile> get(String ThirdPartyID, String value) {
         if (this.schema.getThirdPartyIDs().contains(ThirdPartyID) == false) {
             return null;
-        }
-        else if (thirdPartiIDs.get(ThirdPartyID).get(value) != null) {
+        } else if (thirdPartiIDs.get(ThirdPartyID).get(value) != null) {
             Set<Profile> lProfiles = new HashSet<>();
             this.thirdPartiIDs.get(ThirdPartyID).get(value).forEach(uuid -> {
                 lProfiles.add(profiles.get(uuid));
             });
             return lProfiles;
+        } else {
+            return new HashSet<>();
         }
-        else return new HashSet<>();
     }
 
     public UUID insert(Profile p) {
@@ -47,8 +47,7 @@ public class Ds2 implements Datastructure {
             profiles.get(uuid).profileData.putAll(profileData);
             addProfileToThirtPartyIDs(profiles.get(uuid));
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -72,7 +71,7 @@ public class Ds2 implements Datastructure {
                     profile.update(this.schema)
             );
             setSchema(this.schema);
-            profiles.forEach((u,p) -> {
+            profiles.forEach((u, p) -> {
                 addProfileToThirtPartyIDs(p);
             });
             return true;
@@ -95,9 +94,8 @@ public class Ds2 implements Datastructure {
                 if (sList == null) {
                     Set<UUID> s = new HashSet<>();
                     s.add(p.uuid);
-                    kList.put(v,s);
-                }
-                else {
+                    kList.put(v, s);
+                } else {
                     kList.get(v).add(p.uuid);
                 }
             }

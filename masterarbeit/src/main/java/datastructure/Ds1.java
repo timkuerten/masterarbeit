@@ -43,8 +43,7 @@ public class Ds1 implements Datastructure {
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -61,7 +60,6 @@ public class Ds1 implements Datastructure {
         if (this.schema.update(schema, thirdPartyIDs)) {
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
-
             );
             return true;
         } else {

@@ -31,7 +31,7 @@ public class Profile {
     /**
      * constructor to create profile with uuid and other data
      *
-     * @param uuid universually unique identifier
+     * @param uuid        universually unique identifier
      * @param profileData contain other data of profile
      */
     public Profile(UUID uuid, Map<String, String> profileData) {

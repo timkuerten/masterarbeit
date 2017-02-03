@@ -1,6 +1,5 @@
 package datastructure;
 
-
 import java.util.*;
 
 import org.junit.Before;
@@ -10,8 +9,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.junit.Assert.*;
 
 public class DatastructureTest {
 
@@ -32,7 +29,7 @@ public class DatastructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new Ds1();
+        ds = new Ds2();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them

@@ -16,7 +16,8 @@ public class Generator {
 
     public void createNames() {
         name.clear();
-        name.addAll(Arrays.asList("Alice", "Ben", "Constantin", "Doris", "Elton", "Felix", "Gisela", "Hans", "Isabelle", "Jan"));
+        name.addAll(Arrays.asList("Alice", "Ben", "Constantin", "Doris", "Elton", "Felix", "Gisela", "Hans", "Isabelle",
+                "Jan"));
     }
 
     public Profile createProfile() {

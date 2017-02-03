@@ -7,13 +7,11 @@ public class Schema {
     private Set<String> schema = new HashSet<>();
     private Set<String> thirdPartyIDs = new HashSet<>();
 
-
     public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws Exception {
         if (schema.containsAll(thirdPartyIDs)) {
             this.schema = schema;
             this.thirdPartyIDs = thirdPartyIDs;
-        }
-        else {
+        } else {
             throw new Exception("thirdPartyIDs " + thirdPartyIDs + " are not in schema " + schema);
         }
     }
