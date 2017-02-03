@@ -32,7 +32,7 @@ public class DatastructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new Ds2();
+        ds = new Ds1();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them
@@ -98,8 +98,9 @@ public class DatastructureTest {
 
     @Test
     public void updateProfile() {
-        p1.profileData.put("Name", "Tom");
-        ds.update(p1);
+        HashMap<String, String> profileData = new HashMap<>();
+        profileData.put("Name", "Tom");
+        ds.update(p1.uuid, profileData);
         assertThat(ds.get(uuid1).profileData.get("Name"), is("Tom"));
     }
 
@@ -134,6 +135,16 @@ public class DatastructureTest {
 
     @Test
     public void changeSchemaAndUseOldThirdPartyID() {
+        Set<String> schema = new HashSet<>();
+        schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
+        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("Name");
+        ds.changeSchema(schema, thirdPartyIDs);
+        assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
+    }
+
+    @Test
+    public void updateProfileAndChangeSchema() {
         Set<String> schema = new HashSet<>();
         schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
         Set<String> thirdPartyIDs = new HashSet<>();

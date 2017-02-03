@@ -1,5 +1,7 @@
 package datastructure;
 
+import javafx.util.Pair;
+
 import java.util.*;
 
 public class Ds1 implements Datastructure {
@@ -37,8 +39,14 @@ public class Ds1 implements Datastructure {
         }
     }
 
-    public void update(Profile p) {
-
+    public boolean update(UUID uuid, HashMap<String, String> profileData) {
+        if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
+            profiles.get(uuid).profileData.putAll(profileData);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public Schema getSchema() {

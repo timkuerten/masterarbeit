@@ -14,7 +14,7 @@ public class Schema {
             this.thirdPartyIDs = thirdPartyIDs;
         }
         else {
-            throw new Exception("thirdPartyIDs are not in schema");
+            throw new Exception("thirdPartyIDs " + thirdPartyIDs + " are not in schema " + schema);
         }
     }
 
