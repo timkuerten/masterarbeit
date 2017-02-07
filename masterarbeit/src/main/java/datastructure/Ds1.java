@@ -31,12 +31,18 @@ public class Ds1 implements Datastructure {
     }
 
     public UUID insert(Profile p) {
-        if (schema.checkProfile(p)) {
+        if (p.correspondToSchema(schema.getSchema())) {
             profiles.put(p.uuid, p);
             return p.uuid;
         } else {
             return null;
         }
+    }
+
+    public UUID insert(Map<String, String> profileData){
+        Profile p = new Profile(UUID.randomUUID());
+        p.profileData = profileData;
+        return insert(p);
     }
 
     public boolean update(UUID uuid, HashMap<String, String> profileData) {

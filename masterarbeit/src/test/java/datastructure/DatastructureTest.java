@@ -13,12 +13,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class DatastructureTest {
 
     Datastructure ds;
-    Profile p1;
-    Profile p2;
-    Profile p3;
-    UUID uuid1;
-    UUID uuid2;
-    UUID uuid3;
+    Profile p1, p2, p3;
+    UUID uuid1, uuid2, uuid3;
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +25,7 @@ public class DatastructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new Ds2();
+        ds = new Ds1();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them

@@ -22,12 +22,6 @@ public class Profile {
         this.profileData = new HashMap<>();
     }
 
-    public void update(Schema schema) {
-        this.profileData.entrySet()
-                .stream()
-                .filter(map -> schema.getSchema().contains(map.getKey()));
-    }
-
     /**
      * constructor to create profile with uuid and other data
      *
@@ -37,6 +31,16 @@ public class Profile {
     public Profile(UUID uuid, Map<String, String> profileData) {
         this.uuid = uuid;
         this.profileData = profileData;
+    }
+
+    public void update(Schema schema) {
+        this.profileData.entrySet()
+                .stream()
+                .filter(map -> schema.getSchema().contains(map.getKey()));
+    }
+
+    public boolean correspondToSchema(Set<String> schema) {
+        return (schema.containsAll(profileData.keySet()));
     }
 
     /**

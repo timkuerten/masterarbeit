@@ -3,6 +3,7 @@ package datastructure;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,6 +17,8 @@ public interface Datastructure {
     Set<Profile> get(String ThirdPartyID, String value);
 
     UUID insert(Profile p);
+
+    UUID insert(Map<String, String> profileData);
 
     boolean update(UUID uuid, HashMap<String, String> profileData);
 

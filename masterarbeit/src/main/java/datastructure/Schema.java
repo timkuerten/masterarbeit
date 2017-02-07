@@ -16,10 +16,6 @@ public class Schema {
         }
     }
 
-    public boolean checkProfile(Profile p) {
-        return (this.schema.containsAll(p.profileData.keySet()));
-    }
-
     public Set<String> getSchema() {
         return Collections.unmodifiableSet(this.schema);
     }
