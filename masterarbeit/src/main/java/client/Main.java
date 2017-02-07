@@ -1,7 +1,7 @@
 package client;
 
 import datastructure.Datastructure;
-import datastructure.Ds2;
+import datastructure.DSHashMap;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,15 +18,15 @@ public class Main {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        Datastructure ds = new Ds2();
+        Datastructure ds = new DSHashMap();
         try {
             ds.init(schema, thirdPartyIDs);
         } catch (Exception e) {
             System.out.print("Fehler beim Erstellen der Datenstruktur");
         }
 
-        Generator generator = new Generator();
-        generator.createProfiles(100);
+        //Generator generator = new Generator(ds);
+        //generator.createProfiles(100);
     }
 
 }

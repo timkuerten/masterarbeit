@@ -5,12 +5,15 @@ import java.util.*;
 public class Profile {
 
     final UUID uuid;
+    Map<String, String> profileData;
 
+    /**
+     *
+     * @return current profile data
+     */
     public Map<String, String> getProfileData() {
         return Collections.unmodifiableMap(profileData);
     }
-
-    Map<String, String> profileData;
 
     /**
      * constructor to create profile with uuid
@@ -25,14 +28,20 @@ public class Profile {
     /**
      * constructor to create profile with uuid and other data
      *
-     * @param uuid        universually unique identifier
+     * @param uuid universually unique identifier
      * @param profileData contain other data of profile
      */
     public Profile(UUID uuid, Map<String, String> profileData) {
+
         this.uuid = uuid;
         this.profileData = profileData;
+
     }
 
+    /**
+     *
+     * @param schema
+     */
     public void update(Schema schema) {
         this.profileData.entrySet()
                 .stream()

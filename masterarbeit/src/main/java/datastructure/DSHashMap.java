@@ -4,7 +4,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class Ds2 implements Datastructure {
+public class DSHashMap implements Datastructure {
 
     Schema schema;
     Map<UUID, Profile> profiles = new HashMap<>();

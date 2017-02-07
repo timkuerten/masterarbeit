@@ -25,7 +25,7 @@ public class DatastructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new Ds1();
+        ds = new DSUnsorted(); //DSHashMap();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them
