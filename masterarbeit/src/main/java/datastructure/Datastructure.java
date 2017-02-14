@@ -16,8 +16,6 @@ public interface Datastructure {
 
     Set<Profile> get(String ThirdPartyID, String value);
 
-    UUID insert(Profile p);
-
     UUID insert(Map<String, String> profileData);
 
     boolean update(UUID uuid, HashMap<String, String> profileData);

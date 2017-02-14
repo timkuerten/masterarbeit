@@ -15,10 +15,7 @@ public class Schema {
      * @throws Exception third-party-IDs must be contained in schema
      */
     public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws Exception {
-        if (schema.containsAll(thirdPartyIDs)) {
-            this.schema = schema;
-            this.thirdPartyIDs = thirdPartyIDs;
-        } else {
+        if (update(schema, thirdPartyIDs) == false) {
             throw new Exception("thirdPartyIDs " + thirdPartyIDs + " are not in schema " + schema);
         }
     }
@@ -48,8 +45,10 @@ public class Schema {
      */
     public boolean update(Set<String> schema, Set<String> thirdPartyIDs) {
         if (schema.containsAll(thirdPartyIDs)) {
-            this.schema = schema;
-            this.thirdPartyIDs = thirdPartyIDs;
+            this.schema.clear();
+            this.thirdPartyIDs.clear();
+            this.schema.addAll(schema);
+            this.thirdPartyIDs.addAll(thirdPartyIDs);
             return true;
         } else {
             return false;

@@ -9,6 +9,14 @@ public class Profile {
 
     /**
      *
+     * @return uuid
+     */
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    /**
+     *
      * @return current profile data
      */
     public Map<String, String> getProfileData() {
@@ -42,7 +50,7 @@ public class Profile {
      *
      * @param schema
      */
-    public void update(Schema schema) {
+    protected void update(Schema schema) {
         this.profileData.entrySet()
                 .stream()
                 .filter(map -> schema.getSchema().contains(map.getKey()));

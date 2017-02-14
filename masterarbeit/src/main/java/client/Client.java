@@ -26,10 +26,6 @@ public class Client {
         return ds.get(ThirdPartyID, value);
     }
 
-    public UUID insert(Profile p) {
-        return ds.insert(p);
-    }
-
     public UUID insert(Map<String, String> profileData) {
         return ds.insert(profileData);
     }

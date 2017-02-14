@@ -30,19 +30,15 @@ public class DSUnsorted implements Datastructure {
         return lProfiles;
     }
 
-    public UUID insert(Profile p) {
+    public UUID insert(Map<String, String> profileData) {
+        Profile p = new Profile(UUID.randomUUID());
+        p.profileData.putAll(profileData);
         if (p.correspondToSchema(schema.getSchema())) {
             profiles.put(p.uuid, p);
             return p.uuid;
         } else {
             return null;
         }
-    }
-
-    public UUID insert(Map<String, String> profileData){
-        Profile p = new Profile(UUID.randomUUID());
-        p.profileData = profileData;
-        return insert(p);
     }
 
     public boolean update(UUID uuid, HashMap<String, String> profileData) {
