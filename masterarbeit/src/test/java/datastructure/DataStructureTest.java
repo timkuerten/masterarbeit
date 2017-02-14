@@ -1,7 +1,6 @@
 package datastructure;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +8,9 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class DatastructureTest {
+public class DataStructureTest {
 
-    Datastructure ds;
+    DataStructure ds;
     UUID uuid1, uuid2, uuid3;
 
     @Before

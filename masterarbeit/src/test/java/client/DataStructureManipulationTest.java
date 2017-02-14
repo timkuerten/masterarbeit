@@ -13,9 +13,9 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
-public class DatastructureManipulationTest {
+public class DataStructureManipulationTest {
 
-    Datastructure ds;
+    DataStructure ds;
     Profile p;
     Set<String> schema;
     Set<String> thirdPartyIDs;
@@ -69,7 +69,7 @@ public class DatastructureManipulationTest {
         HashSet<String> newThirdPartyIDs = new HashSet<>();
         newThirdPartyIDs.add("a");
         //ds
-        Datastructure newDs = new DSUnsorted();
+        DataStructure newDs = new DSUnsorted();
         try {
             newDs.init(newSchema, newThirdPartyIDs);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class DatastructureManipulationTest {
         HashSet<String> newThirdPartyIDs = new HashSet<>();
         newThirdPartyIDs.add("a");
         //ds
-        Datastructure newDs = new DSHashMap();
+        DataStructure newDs = new DSHashMap();
         try {
             newDs.init(newSchema, newThirdPartyIDs);
         } catch (Exception e) {

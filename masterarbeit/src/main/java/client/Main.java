@@ -1,6 +1,6 @@
 package client;
 
-import datastructure.Datastructure;
+import datastructure.DataStructure;
 import datastructure.DSHashMap;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public class Main {
         thirdPartyIDs.add("Alter");
 
         //create ds
-        Datastructure ds = new DSHashMap();
+        DataStructure ds = new DSHashMap();
         try {
             ds.init(schema, thirdPartyIDs);
         } catch (Exception e) {

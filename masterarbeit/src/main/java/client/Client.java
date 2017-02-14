@@ -1,7 +1,7 @@
 package client;
 
 import datastructure.DSUnsorted;
-import datastructure.Datastructure;
+import datastructure.DataStructure;
 import datastructure.Profile;
 import datastructure.Schema;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class Client {
 
-    private Datastructure ds;
+    private DataStructure ds;
 
     public Client() {
         ds = new DSUnsorted();

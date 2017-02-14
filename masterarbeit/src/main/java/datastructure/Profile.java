@@ -8,23 +8,7 @@ public class Profile {
     Map<String, String> profileData;
 
     /**
-     *
-     * @return uuid
-     */
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    /**
-     *
-     * @return current profile data
-     */
-    public Map<String, String> getProfileData() {
-        return Collections.unmodifiableMap(profileData);
-    }
-
-    /**
-     * constructor to create profile with uuid
+     * Constructor to create profile with uuid.
      *
      * @param uuid universually unique identifier
      */
@@ -34,20 +18,35 @@ public class Profile {
     }
 
     /**
-     * constructor to create profile with uuid and other data
+     * Constructor to create profile with uuid and other data
      *
-     * @param uuid universually unique identifier
+     * @param uuid        universually unique identifier
      * @param profileData contain other data of profile
      */
     public Profile(UUID uuid, Map<String, String> profileData) {
-
         this.uuid = uuid;
         this.profileData = profileData;
-
     }
 
     /**
+     * Returns the uuid.
      *
+     * @return uuid
+     */
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    /**
+     * Returns a unmodifiableSet which contain current profileData.
+     *
+     * @return current unmodifiable profileData
+     */
+    public Map<String, String> getProfileData() {
+        return Collections.unmodifiableMap(profileData);
+    }
+
+    /**
      * @param schema
      */
     protected void update(Schema schema) {

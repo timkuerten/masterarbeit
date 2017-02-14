@@ -1,8 +1,6 @@
 package client;
 
-import datastructure.Datastructure;
 import datastructure.Profile;
-import datastructure.Schema;
 
 import java.util.*;
 
