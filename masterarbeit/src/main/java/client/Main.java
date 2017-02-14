@@ -13,9 +13,9 @@ public class Main {
 
         //create schema
         Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
+        schema.addAll(Arrays.asList("Vorname", "Nachname", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
         Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Stadt");
+        thirdPartyIDs.add("Alter");
 
         //create ds
         Datastructure ds = new DSHashMap();
