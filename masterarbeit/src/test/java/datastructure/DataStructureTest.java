@@ -22,7 +22,7 @@ public class DataStructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new DSUnsorted(); //DSHashMap();
+        ds = new DSHashMap(); //DSHashMap();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them

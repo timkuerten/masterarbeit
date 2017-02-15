@@ -3,7 +3,7 @@ package datastructure;
 import java.util.*;
 
 /**
- * Class to save and manage profiles.
+ * Class to save and manage profiles in a HashMap. Every profile (value) is mapped to a uuid (key).
  */
 public class DSUnsorted implements DataStructure {
 
@@ -103,6 +103,7 @@ public class DSUnsorted implements DataStructure {
      */
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         if (this.schema.update(schema, thirdPartyIDs)) {
+            //update profileData of every profile that they correlate to new schema
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
             );

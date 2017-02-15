@@ -15,7 +15,7 @@ public class Schema {
      * @throws Exception third-party-IDs must be contained in schema
      */
     public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws Exception {
-        if (update(schema, thirdPartyIDs) == false) {
+        if (update(schema, thirdPartyIDs) == false) { //if it is true, schema and thirdPartyIDs get updated
             throw new Exception("thirdPartyIDs " + thirdPartyIDs + " are not in schema " + schema);
         }
     }
@@ -26,6 +26,7 @@ public class Schema {
      * @return current unmodifiable schema
      */
     public Set<String> getSchema() {
+        //use unmodifiableSet to prevent manipulation
         return Collections.unmodifiableSet(this.schema);
     }
 
@@ -35,6 +36,7 @@ public class Schema {
      * @return current unmodifiable third-party-IDs
      */
     public Set<String> getThirdPartyIDs() {
+        //use unmodifiableSet to prevent manipulation
         return Collections.unmodifiableSet(this.thirdPartyIDs);
     }
 
@@ -47,12 +49,15 @@ public class Schema {
      */
     protected boolean update(Set<String> schema, Set<String> thirdPartyIDs) {
         if (schema.containsAll(thirdPartyIDs)) {
+            //delete old schema and thirdPartyIDs and set new one
             this.schema.clear();
             this.thirdPartyIDs.clear();
+            //use addAll to prevent manipulation
             this.schema.addAll(schema);
             this.thirdPartyIDs.addAll(thirdPartyIDs);
             return true;
         } else {
+            //if schema don't contain thirdPartyIDs don't change it
             return false;
         }
     }

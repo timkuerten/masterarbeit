@@ -43,11 +43,14 @@ public class Profile {
      * @return current unmodifiable profileData
      */
     public Map<String, String> getProfileData() {
+        //use unmodifiableSet to prevent manipulation
         return Collections.unmodifiableMap(profileData);
     }
 
     /**
-     * @param schema
+     * Deletes entries of profileData which don't correlate to schema.
+     *
+     * @param schema new schema of profileData
      */
     protected void update(Schema schema) {
         this.profileData.entrySet()
