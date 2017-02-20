@@ -1,6 +1,6 @@
 package datastructure;
 
-import exception.schemaException;
+import exception.SchemaException;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public class DSHashMap implements DataStructure {
     Map<UUID, Profile> profiles = new HashMap<>();
     Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
 
-    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         init(schema, thirdPartyIDs);
     }
 
@@ -28,7 +28,7 @@ public class DSHashMap implements DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws Exception throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 

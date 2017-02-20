@@ -69,7 +69,7 @@ public class Profile {
      */
     @Override
     public String toString() {
-        return "<Profile " + this.uuid + ", profileData: " + profileData + ">";
+        return "<Profile " + uuid + ", profileData: " + profileData + ">";
     }
 
     /**

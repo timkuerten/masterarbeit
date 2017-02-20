@@ -1,5 +1,6 @@
 package datastructure;
 
+import exception.SchemaException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class DataStructureManipulationTest {
     Map<String, String> profileData;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws SchemaException {
         //schema
         schema = new HashSet<>();
         schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));

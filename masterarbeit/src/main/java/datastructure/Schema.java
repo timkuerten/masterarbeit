@@ -1,6 +1,6 @@
 package datastructure;
 
-import exception.schemaException;
+import exception.SchemaException;
 
 import java.util.*;
 
@@ -16,9 +16,9 @@ public class Schema {
      * @param thirdPartyIDs third-party-IDs in schema
      * @throws Exception third-party-IDs must be contained in schema
      */
-    public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+    public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         if (update(schema, thirdPartyIDs) == false) { //if it is true, schema and thirdPartyIDs get updated
-            throw new schemaException(schema, thirdPartyIDs);
+            throw new SchemaException(schema, thirdPartyIDs);
         }
     }
 

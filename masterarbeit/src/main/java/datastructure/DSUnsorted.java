@@ -1,6 +1,6 @@
 package datastructure;
 
-import exception.schemaException;
+import exception.SchemaException;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ public class DSUnsorted implements DataStructure {
     Schema schema;
     Map<UUID, Profile> profiles = new HashMap<>();
 
-    public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+    public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         init(schema, thirdPartyIDs);
     }
 
@@ -24,7 +24,7 @@ public class DSUnsorted implements DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws Exception throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
