@@ -26,7 +26,7 @@ public class GeneratorTest {
         File file = new File(classLoader.getResource("database.yaml").getFile());
         try {
             Database database = mapper.readValue(file, Database.class);
-            generator = new Generator(database);
+            generator = new Generator(database, Long.MAX_VALUE);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,46 +39,11 @@ public class GeneratorTest {
     }
 
     @Test
-    public void createAndPrintProfile() {
-        //<Profile d1fc27e0-418c-4826-8bc4-046e7089c6bb, profileData: {Alter=17, Stadt=31073 Delligsen, Geschlecht=männlich, Straße=Rothofleite, Hausnummer=955, Name=Runfried Mühlberger}>
+    public void createOneProfile2() {
+        //<Profile d1fc27e0-418c-4826-8bc4-046e7089c6bb, profileData: {Alter=50, Stadt=31073 Delligsen, Geschlecht=männlich, Straße=Rothofleite, Hausnummer=955, Name=Runfried Mühlberger}>
         //System.out.println(generator.generateNewProfile());
         assertThat(generator.generateNewProfile().getProfileData().toString(),
-                is("{Alter=17, Stadt=31073 Delligsen, Geschlecht=männlich, Straße=Rothofleite, Hausnummer=955, Name=Runfried Mühlberger}"));
-    }
-
-    @Test
-    public void createThousandProfiles() {
-        Set<Profile> profiles = new HashSet<>();
-        for (int i = 0; i < 1000; i++) {
-            profiles.add(generator.generateNewProfile());
-        }
-        assertThat(profiles.size(), is(1000));
-    }
-
-    @Test
-    public void createThousandProfilesWithOneMethod() {
-        assertThat(generator.generateNewProfiles(1000).size(), is(1000));
-    }
-
-    @Test
-    public void createMillionsProfilesWithOneMethod() {
-        Runtime rt = Runtime.getRuntime();
-        System.out.println(rt.totalMemory() - rt.freeMemory());
-        assertThat(generator.generateNewProfiles(1000000).size(), is(1000000));
-        System.out.println(rt.totalMemory() - rt.freeMemory());
-    }
-
-    @Ignore
-    @Test
-    public void createMaximumProfiles() {
-        Set<Profile> profiles = new HashSet<>();
-        Runtime rt = Runtime.getRuntime();
-        System.out.println("freeMemory: " + rt.freeMemory());
-        while (rt.maxMemory() > rt.freeMemory() + 1000000000) {
-            profiles.add(generator.generateNewProfile());
-        }
-        //System.out.println(rt.totalMemory() - rt.freeMemory());
-        System.out.println(profiles.size());
+                is("{Alter=50, Stadt=31073 Delligsen, Geschlecht=männlich, Straße=Rothofleite, Hausnummer=955, Name=Runfried Mühlberger}"));
     }
 
     @Test
@@ -96,9 +61,5 @@ public class GeneratorTest {
         System.out.println("Total memory (bytes):    " +
                 Runtime.getRuntime().totalMemory());
     }
-
-    //
-
-
 
 }

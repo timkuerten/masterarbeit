@@ -17,10 +17,10 @@ public class Main {
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Alter");
 
-        //create ds
-        DataStructure ds = new DSHashMap();
         try {
-            ds.init(schema, thirdPartyIDs);
+            //create ds
+            DataStructure ds = new DSHashMap(schema, thirdPartyIDs);
+            //ds.init(schema, thirdPartyIDs);
         } catch (Exception e) {
             System.out.print("Fehler beim Erstellen der Datenstruktur");
         }

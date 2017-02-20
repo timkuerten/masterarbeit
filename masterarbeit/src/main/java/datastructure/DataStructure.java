@@ -18,7 +18,7 @@ public interface DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws Exception throws exception if third-party-IDs are not contained in schema
      */
-    void init(Set<String> schema, Set<String> thirdPartyIDs) throws Exception;
+    void init(Set<String> schema, Set<String> thirdPartyIDs) throws RuntimeException;
 
     //get, insert, update
 
@@ -66,7 +66,7 @@ public interface DataStructure {
     Schema getSchema();
 
     /**
-     * Change current schema and third-party-IDs to given schema nd third-party-IDs if third-party-IDs contained in schema and returns true. Otherwise returns false.
+     * Change current schema and third-party-IDs to given schema and third-party-IDs if third-party-IDs contained in schema and returns true. Otherwise returns false.
      *
      * @param schema        new schema
      * @param thirdPartyIDs new third-party-IDs

@@ -1,5 +1,7 @@
 package datastructure;
 
+import exception.schemaException;
+
 import java.util.*;
 
 /**
@@ -10,6 +12,10 @@ public class DSUnsorted implements DataStructure {
     Schema schema;
     Map<UUID, Profile> profiles = new HashMap<>();
 
+    public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+        init(schema, thirdPartyIDs);
+    }
+
     /**
      * Should be used after construction. Give a schema and third-party-IDs to data structure.
      * It throws an exception if third-party-IDs are not contained in schema.
@@ -18,7 +24,7 @@ public class DSUnsorted implements DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws Exception throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws Exception {
+    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
@@ -43,13 +49,13 @@ public class DSUnsorted implements DataStructure {
         if (this.schema.getThirdPartyIDs().contains(ThirdPartyID) == false) {
             return null;
         }
-        Set<Profile> lProfiles = new HashSet<>();
+        Set<Profile> retrunProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             if (v.profileData.get(ThirdPartyID) == value) {
-                lProfiles.add(v);
+                retrunProfiles.add(v);
             }
         });
-        return lProfiles;
+        return retrunProfiles;
     }
 
     /**
@@ -59,11 +65,10 @@ public class DSUnsorted implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
-        Profile p = new Profile(UUID.randomUUID());
-        p.profileData.putAll(profileData);
-        if (p.correspondToSchema(schema.getSchema())) {
-            profiles.put(p.uuid, p);
-            return p.uuid;
+        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+        if (newProfile.correspondToSchema(schema.getSchema())) {
+            profiles.put(newProfile.uuid, newProfile);
+            return newProfile.uuid;
         } else {
             return null;
         }

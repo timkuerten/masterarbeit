@@ -2,19 +2,22 @@ package datastructure;
 
 import java.util.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@RunWith(Parameterized.class)
 public class DataStructureTest {
 
-    DataStructure ds;
-    UUID uuid1, uuid2, uuid3;
+    static DataStructure ds;
+    static UUID uuid1, uuid2, uuid3;
 
-    @Before
-    public void setUp() throws Exception {
+    public DataStructureTest(DataStructure ds) {
+        System.out.println("constructor");
+        this.ds = ds;
         //create schema
         Set<String> schema = new HashSet<>();
         schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
@@ -22,7 +25,7 @@ public class DataStructureTest {
         thirdPartyIDs.add("Stadt");
 
         //create ds
-        ds = new DSHashMap(); //DSHashMap();
+        //ds = new DSUnsorted(); //DSHashMap();
         ds.init(schema, thirdPartyIDs);
 
         //create profiles and add them
@@ -41,21 +44,40 @@ public class DataStructureTest {
         profileData3.put("Adresse", "Finkenweg 30");
         profileData3.put("Stadt", "Hamburg");
         uuid3 = ds.insert(profileData3);
+        printNumberOfMSProfiles();
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> instancesToTest() {
+        System.out.println("parameters");
+
+        //create schema
+        Set<String> schema = new HashSet<>();
+        schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
+        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("Stadt");
+
+        return Arrays.asList(
+                new Object[]{new DSUnsorted(schema, thirdPartyIDs)},
+                new Object[]{new DSHashMap(schema, thirdPartyIDs)}
+        );
     }
 
     @Test
     public void getProfileByID() {
+        //System.out.println("Test");
         assertThat(ds.get(uuid1).getProfileData().get("Name"), is("Tim"));
     }
 
     @Test
     public void getProfileByThirdPartyID() {
-        Set<UUID> lUuid = new HashSet<>();
-        lUuid.add(uuid1);
-        lUuid.add(uuid2);
-        Set<UUID> lUuid2 = new HashSet<>();
-        ds.get("Stadt", "MS").forEach(x -> lUuid2.add(x.getUuid()));
-        assertThat(lUuid2.equals(lUuid), is(true));
+        Set<UUID> uuids1 = new HashSet<>();
+        uuids1.add(uuid1);
+        uuids1.add(uuid2);
+        Set<UUID> uuids2 = new HashSet<>();
+        ds.get("Stadt", "MS").forEach(x -> uuids2.add(x.getUuid()));
+        System.out.println("#uuids2: " + uuids2.size());
+        assertThat(uuids2.equals(uuids1), is(true));
     }
 
     @Test
@@ -141,6 +163,12 @@ public class DataStructureTest {
         thirdPartyIDs.add("Name");
         ds.changeSchema(schema, thirdPartyIDs);
         assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
+    }
+
+    public void printNumberOfMSProfiles() {
+        Set<UUID> uuids2 = new HashSet<>();
+        ds.get("Stadt", "MS").forEach(x -> uuids2.add(x.getUuid()));
+        System.out.println("#uuids2: " + uuids2.size());
     }
 
 }

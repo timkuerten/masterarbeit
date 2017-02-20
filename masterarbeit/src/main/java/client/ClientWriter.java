@@ -1,29 +1,18 @@
 package client;
 
-import datastructure.DSUnsorted;
 import datastructure.DataStructure;
-import datastructure.Profile;
-import datastructure.Schema;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class Client {
+public class ClientWriter {
 
     private DataStructure ds;
 
-    public Client() {
-        ds = new DSUnsorted();
-    }
-
-    public Profile get(UUID uuid) {
-        return ds.get(uuid);
-    }
-
-    public Set<Profile> get(String ThirdPartyID, String value) {
-        return ds.get(ThirdPartyID, value);
+    public ClientWriter(DataStructure ds) {
+        this.ds = ds;
     }
 
     public UUID insert(Map<String, String> profileData) {
@@ -35,10 +24,6 @@ public class Client {
     }
 
     //schema
-    public Schema getSchema() {
-        return ds.getSchema();
-    }
-
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         return ds.changeSchema(schema, thirdPartyIDs);
     }

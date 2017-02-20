@@ -1,6 +1,5 @@
-package client;
+package datastructure;
 
-import datastructure.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,8 +28,7 @@ public class DataStructureManipulationTest {
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Stadt");
         //ds
-        ds = new DSUnsorted();
-        ds.init(schema, thirdPartyIDs);
+        ds = new DSHashMap(schema, thirdPartyIDs);
         //one profile
         profileData = new HashMap<>();
         profileData.put("Name", "Tim");
@@ -62,19 +60,14 @@ public class DataStructureManipulationTest {
     }
 
     @Test
-    public void initDsUnsorted() {
+    public void createDsUnsorted() {
         //schema
         HashSet<String> newSchema = new HashSet<>();
         newSchema.addAll(Arrays.asList("a", "b"));
         HashSet<String> newThirdPartyIDs = new HashSet<>();
         newThirdPartyIDs.add("a");
         //ds
-        DataStructure newDs = new DSUnsorted();
-        try {
-            newDs.init(newSchema, newThirdPartyIDs);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DataStructure newDs = new DSUnsorted(newSchema, newThirdPartyIDs);
         //add items to local schema and third-party-ID
         newSchema.add("c");
         newThirdPartyIDs.add("b");
@@ -83,19 +76,14 @@ public class DataStructureManipulationTest {
     }
 
     @Test
-    public void initDsHashMap() {
+    public void createDsHashMap() {
         //schema
         HashSet<String> newSchema = new HashSet<>();
         newSchema.addAll(Arrays.asList("a", "b"));
         HashSet<String> newThirdPartyIDs = new HashSet<>();
         newThirdPartyIDs.add("a");
         //ds
-        DataStructure newDs = new DSHashMap();
-        try {
-            newDs.init(newSchema, newThirdPartyIDs);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DataStructure newDs = new DSHashMap(newSchema, newThirdPartyIDs);
         //add items to local schema and third-party-ID
         newSchema.add("c");
         newThirdPartyIDs.add("b");

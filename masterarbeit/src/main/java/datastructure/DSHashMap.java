@@ -1,5 +1,7 @@
 package datastructure;
 
+import exception.schemaException;
+
 import java.util.*;
 
 /**
@@ -12,7 +14,11 @@ public class DSHashMap implements DataStructure {
 
     Schema schema;
     Map<UUID, Profile> profiles = new HashMap<>();
-    Map<String, Map<String, Set<UUID>>> thirdPartyIDs = new HashMap<>();
+    Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
+
+    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
+        init(schema, thirdPartyIDs);
+    }
 
     /**
      * Should be used after construction. Give a schema and third-party-IDs to data structure.
@@ -22,7 +28,7 @@ public class DSHashMap implements DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws Exception throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws Exception {
+    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws schemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
@@ -47,11 +53,12 @@ public class DSHashMap implements DataStructure {
         if (this.schema.getThirdPartyIDs().contains(ThirdPartyID) == false) {
             return null;
         } else if ((thirdPartyIDs.get(ThirdPartyID) != null) && thirdPartyIDs.get(ThirdPartyID).get(value) != null) {
-            Set<Profile> lProfiles = new HashSet<>();
-            this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(uuid -> {
-                lProfiles.add(profiles.get(uuid));
+            Set<Profile> returnProfiles = new HashSet<>();
+            //search for profiles
+            this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(profile -> {
+                returnProfiles.add(profile);
             });
-            return lProfiles;
+            return returnProfiles;
         } else {
             return new HashSet<>();
         }
@@ -64,12 +71,11 @@ public class DSHashMap implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
-        Profile p = new Profile(UUID.randomUUID());
-        p.profileData.putAll(profileData);
-        if (p.correspondToSchema(schema.getSchema())) {
-            this.profiles.put(p.uuid, p);
-            addProfileToThirtPartyIDs(p);
-            return p.uuid;
+        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+        if (newProfile.correspondToSchema(schema.getSchema())) {
+            profiles.put(newProfile.uuid, newProfile);
+            addProfileToThirtPartyIDs(newProfile);
+            return newProfile.uuid;
         } else {
             return null;
         }
@@ -116,9 +122,9 @@ public class DSHashMap implements DataStructure {
             );
             //update HashMap thirdPartyIDs
             this.thirdPartyIDs.clear();
-            profiles.forEach((u, p) -> {
-                addProfileToThirtPartyIDs(p);
-            });
+            profiles.forEach((u, p) ->
+                    addProfileToThirtPartyIDs(p)
+            );
             return true;
         } else {
             return false;
@@ -135,26 +141,26 @@ public class DSHashMap implements DataStructure {
         //
         p.profileData.forEach((k, v) -> {
             if (schema.getThirdPartyIDs().contains(k)) {
-                Map<String, Set<UUID>> kList = this.thirdPartyIDs.get(k);
+                Map<String, Set<Profile>> kList = this.thirdPartyIDs.get(k);
                 //does the Map for third-party-id k exists in thirdPartyIDs?
                 if (kList == null) {
                     //create  Map of Sets (valueOfThirdPartyID->uuids), add
-                    Set<UUID> s = new HashSet<>();
-                    Map<String, Set<UUID>> m = new HashMap<String, Set<UUID>>();
-                    s.add(p.uuid);
+                    Set<Profile> s = new HashSet<>();
+                    Map<String, Set<Profile>> m = new HashMap<>();
+                    s.add(p);
                     m.put(v, s);
                     this.thirdPartyIDs.put(k, m);
                 } else {
-                    Set<UUID> sList = kList.get(v);
+                    Set<Profile> sList = kList.get(v);
                     //does an entry for value v of third-party-id k exists?
                     if (sList == null) {
                         //create Set uuids
-                        Set<UUID> s = new HashSet<>();
-                        s.add(p.uuid);
+                        Set<Profile> s = new HashSet<>();
+                        s.add(p);
                         kList.put(v, s);
                     } else {
                         //add uuid of profile to third-party-IDs(k)-> value(v)-> uuids
-                        kList.get(v).add(p.uuid);
+                        kList.get(v).add(p);
                     }
                 }
             }
