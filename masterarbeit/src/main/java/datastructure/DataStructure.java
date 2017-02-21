@@ -22,7 +22,7 @@ public interface DataStructure {
      */
     void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException;
 
-    //get, insert, change
+    //get, insertProfile, change
 
     /**
      * Searching for a profile with given uuid. Returns the profile if it exists. Otherwise returns null.

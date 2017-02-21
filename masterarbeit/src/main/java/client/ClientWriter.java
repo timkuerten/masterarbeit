@@ -12,19 +12,36 @@ public class ClientWriter {
     private DataStructure ds;
     private TimeLogger timeLogger;
     private WriterLogger writerLogger;
+    private boolean logInsertProfile, logUpdateProfile, logAddSchema, logChangeSchema;
 
-    public ClientWriter(DataStructure ds) {
+    public ClientWriter(DataStructure ds, TimeLogger timeLogger, boolean writerLoggerAppend) {
         this.ds = ds;
-        timeLogger = new TimeLogger(TimeLogger.class.getName());
-        writerLogger = new WriterLogger(WriterLogger.class.getName());
+        this.timeLogger = timeLogger;
+        //writerLogger = new WriterLogger(WriterLogger.class.getName(), writerLoggerAppend);
     }
 
-    public UUID insert(Map<String, String> profileData) {
+    public void setLogInsertProfile(boolean logInsertProfile) {
+        this.logInsertProfile = logInsertProfile;
+    }
+
+    public void setLogUpdateProfile(boolean logUpdateProfile) {
+        this.logUpdateProfile = logUpdateProfile;
+    }
+
+    public void setLodAddSchema(boolean lodAddSchema) {
+        this.logAddSchema = lodAddSchema;
+    }
+
+    public void setLogChangeSchema(boolean logChangeSchema) {
+        this.logChangeSchema = logChangeSchema;
+    }
+
+    public UUID insertProfile(Map<String, String> profileData) {
         long startTime = System.nanoTime();
         UUID returnValue = ds.insert(profileData);
         long estimatedTime = System.nanoTime() - startTime;
         timeLogger.insertProfile(estimatedTime);
-        writerLogger.insertProfile(returnValue, profileData);
+        //writerLogger.insertProfile(returnValue, profileData);
         return returnValue;
     }
 
@@ -33,7 +50,17 @@ public class ClientWriter {
         boolean returnValue = ds.update(uuid, profileData);
         long estimatedTime = System.nanoTime() - startTime;
         timeLogger.updateProfile(estimatedTime);
-        writerLogger.updateProfile(uuid, profileData);
+        //writerLogger.updateProfile(uuid, profileData);
+        return returnValue;
+    }
+
+    //schema
+    public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
+        long startTime = System.nanoTime();
+        boolean returnValue = ds.addSchema(schema, thirdPartyIDs);
+        long estimatedTime = System.nanoTime() - startTime;
+        timeLogger.addSchema(estimatedTime);
+        //writerLogger.changeSchema(schema, thirdPartyIDs);
         return returnValue;
     }
 
@@ -43,7 +70,7 @@ public class ClientWriter {
         boolean returnValue = ds.changeSchema(schema, thirdPartyIDs);
         long estimatedTime = System.nanoTime() - startTime;
         timeLogger.changeSchema(estimatedTime);
-        writerLogger.changeSchema(schema, thirdPartyIDs);
+        //writerLogger.changeSchema(schema, thirdPartyIDs);
         return returnValue;
     }
 

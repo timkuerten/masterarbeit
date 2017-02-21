@@ -22,4 +22,5 @@ public class SchemaTest {
         thrown.expect(Exception.class);
         Schema s = new Schema(schema, thirdPartyIDs);
     }
+
 }

@@ -1,18 +1,9 @@
 package client;
 
-import java.util.logging.Logger;
+public class TimeLogger extends AbstractLogger {
 
-public class TimeLogger {
-
-    private static Logger logger;
-
-    public TimeLogger(String fileName) {
-        logger = Logger.getLogger(fileName);
-        //load existing file
-    }
-
-    public void loadFile(String fileName) {
-
+    public TimeLogger(String fileName, boolean append) {
+        super(fileName, append);
     }
 
     public void getProfileByUuid(long estimatedTime) {
@@ -33,6 +24,10 @@ public class TimeLogger {
 
     public void getSchema(long estimatedTime) {
         logger.info("getSchema " + estimatedTime);
+    }
+
+    public void addSchema(long estimatedTime) {
+        logger.info("addSchema " + estimatedTime);
     }
 
     public void changeSchema(long estimatedTime) {

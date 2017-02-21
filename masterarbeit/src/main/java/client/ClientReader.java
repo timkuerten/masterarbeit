@@ -11,35 +11,65 @@ public class ClientReader {
 
     private DataStructure ds;
     private TimeLogger timeLogger;
+    private boolean logGetUuid, logGetThirdPartyID, logGetSchema;
 
-    public ClientReader(DataStructure ds) {
+    public ClientReader(DataStructure ds, TimeLogger timeLogger) {
         this.ds = ds;
-        timeLogger = new TimeLogger(TimeLogger.class.getName());
+        this.timeLogger = timeLogger;
+        logGetUuid = true;
+        logGetThirdPartyID = true;
+        logGetSchema = true;
+    }
+
+    public void setLogGetUuid(boolean logGetUuid) {
+        this.logGetUuid = logGetUuid;
+    }
+
+    public void setLogGetThirdPartyID(boolean logGetThirdPartyID) {
+        this.logGetThirdPartyID = logGetThirdPartyID;
+    }
+
+    public void setLogGetSchema(boolean logGetSchema) {
+        this.logGetSchema = logGetSchema;
     }
 
     public Profile get(UUID uuid) {
-        long startTime = System.nanoTime();
-        Profile returnValue = ds.get(uuid);
-        long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.getProfileByUuid(estimatedTime);
-        return returnValue;
+        if (logGetUuid) {
+            long startTime = System.nanoTime();
+            Profile returnValue = ds.get(uuid);
+            long estimatedTime = System.nanoTime() - startTime;
+            timeLogger.getProfileByUuid(estimatedTime);
+            return returnValue;
+        } else {
+            return ds.get(uuid);
+        }
     }
 
-    public Set<Profile> get(String ThirdPartyID, String value) {
-        long startTime = System.nanoTime();
-        Set<Profile> returnValue = ds.get(ThirdPartyID, value);
-        long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.getProfileByUuid(estimatedTime);
-        return returnValue;
+    public Set<Profile> get(String thirdPartyID, String value) {
+        if (logGetThirdPartyID) {
+            long startTime = System.nanoTime();
+            Set<Profile> returnValue = ds.get(thirdPartyID, value);
+            long estimatedTime = System.nanoTime() - startTime;
+            timeLogger.getProfileByThirdPartyID(estimatedTime);
+            return returnValue;
+        } else {
+            return ds.get(thirdPartyID, value);
+        }
+
     }
 
     //schema
     public Schema getSchema() {
-        long startTime = System.nanoTime();
-        Schema returnValue = ds.getSchema();
-        long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.getSchema(estimatedTime);
-        return returnValue;
+        if (logGetSchema) {
+            long startTime = System.nanoTime();
+            Schema returnValue = ds.getSchema();
+            long estimatedTime = System.nanoTime() - startTime;
+            timeLogger.getSchema(estimatedTime);
+            return returnValue;
+        } else {
+            return ds.getSchema();
+        }
+
     }
 
 }

@@ -24,7 +24,6 @@ public class ProfileTest {
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Stadt");
 
-
         //create profiles and add them
         uuid1 = UUID.randomUUID();
         uuid2 = UUID.randomUUID();
@@ -47,4 +46,5 @@ public class ProfileTest {
     public void testToString() {
         assertThat(p1.uuid, is(uuid1));
     }
+
 }

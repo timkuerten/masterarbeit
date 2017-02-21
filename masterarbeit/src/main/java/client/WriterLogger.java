@@ -1,21 +1,13 @@
 package client;
 
-import datastructure.Profile;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class WriterLogger {
+public class WriterLogger extends AbstractLogger {
 
-    private static Logger logger;
-
-    public WriterLogger(String fileName) {
-        logger = Logger.getLogger(fileName);
-        //load existing file
+    public WriterLogger(String fileName, boolean append) {
+        super(fileName, append);
     }
 
     public void loadFile(String fileName) {

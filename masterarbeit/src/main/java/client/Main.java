@@ -1,27 +1,24 @@
 package client;
 
-import datastructure.DataStructure;
-import datastructure.DSHashMap;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-        //create schema
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Vorname", "Nachname", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Alter");
-        try {
-            //create data structure
-            DataStructure ds = new DSHashMap(schema, thirdPartyIDs);
-        } catch (Exception e) {
-            System.out.print("Fehler beim Erstellen der Datenstruktur");
-        }
+    public static void main(String[] args) {
+        startScenario();
+    }
 
+    private static void startScenario() {
+        Scenario scenario = new Scenario("DSUnsorted");
+        //Scenario scenario = new Scenario("DSHashMap");
+        instructions(scenario);
+    }
+
+    public static void instructions(Scenario scenario) {
+        scenario.addProfiles(999);
+        UUID uuid = scenario.addOneProfile();
+        scenario.getOneProfileByUuid(uuid);
+        scenario.getProfilesByThirdPartyID("Alter", "50");
     }
 
 }

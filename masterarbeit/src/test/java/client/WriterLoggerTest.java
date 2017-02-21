@@ -1,5 +1,6 @@
 package client;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ public class WriterLoggerTest {
 
     @Before
     public void setUp() {
-        logger = new WriterLogger("WriterLoggerTest");
+        logger = new WriterLogger("WriterLoggerTest.log", true);
     }
 
     @Test
@@ -41,6 +42,11 @@ public class WriterLoggerTest {
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Stadt");
         logger.changeSchema(schema, thirdPartyIDs);
+    }
+
+    @After
+    public void closeLogger() {
+        logger.close();
     }
 
 }

@@ -65,8 +65,8 @@ public class DSUnsorted implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
-        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
-        if (newProfile.correspondToSchema(schema.getSchema())) {
+        if (schema.getSchema().containsAll(profileData.keySet())) {
+            Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
             profiles.put(newProfile.uuid, newProfile);
             return newProfile.uuid;
         } else {
