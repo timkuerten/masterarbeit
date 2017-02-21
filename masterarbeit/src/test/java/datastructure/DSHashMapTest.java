@@ -1,8 +1,8 @@
 package datastructure;
 
-import org.junit.*;
+import org.junit.Before;
 
-public class DataStructureTest extends AbstractDataStructureTest {
+public class DSHashMapTest extends AbstractDataStructureTest {
 
     @Before
     public void setUp() {
@@ -10,7 +10,7 @@ public class DataStructureTest extends AbstractDataStructureTest {
         setUpSchema();
 
         //create ds
-        ds = new DSUnsorted(schema, thirdPartyIDs);
+        ds = new DSHashMap(schema, thirdPartyIDs);
 
         //create profiles and add them to ds
         createExampleProfilesAndAddThem();
