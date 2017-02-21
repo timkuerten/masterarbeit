@@ -12,9 +12,9 @@ import java.util.*;
  */
 public class DSHashMap implements DataStructure {
 
-    Schema schema;
-    Map<UUID, Profile> profiles = new HashMap<>();
-    Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
+    private Schema schema;
+    private Map<UUID, Profile> profiles = new HashMap<>();
+    private Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
 
     public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         init(schema, thirdPartyIDs);
@@ -26,7 +26,7 @@ public class DSHashMap implements DataStructure {
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
-     * @throws Exception throws exception if third-party-IDs are not contained in schema
+     * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
     public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
@@ -50,14 +50,12 @@ public class DSHashMap implements DataStructure {
      * @return profiles which contain the given third-party-ID and value
      */
     public Set<Profile> get(String ThirdPartyID, String value) {
-        if (this.schema.getThirdPartyIDs().contains(ThirdPartyID) == false) {
+        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
             return null;
         } else if ((thirdPartyIDs.get(ThirdPartyID) != null) && thirdPartyIDs.get(ThirdPartyID).get(value) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
             //search for profiles
-            this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(profile -> {
-                returnProfiles.add(profile);
-            });
+            this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(returnProfiles::add);
             return returnProfiles;
         } else {
             return new HashSet<>();
@@ -115,12 +113,12 @@ public class DSHashMap implements DataStructure {
      * @return if schema and third third-party-IDs are changed
      */
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        if (this.schema.update(schema, thirdPartyIDs)) {
-            //update profileData of every profile that they correlate to new schema
+        if (this.schema.change(schema, thirdPartyIDs)) {
+            //change profileData of every profile that they correlate to new schema
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
             );
-            //update HashMap thirdPartyIDs
+            //change HashMap thirdPartyIDs
             this.thirdPartyIDs.clear();
             profiles.forEach((u, p) ->
                     addProfileToThirtPartyIDs(p)
@@ -131,13 +129,17 @@ public class DSHashMap implements DataStructure {
         }
     }
 
+    public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
+        return this.schema.add(schema, thirdPartyIDs);
+    }
+
     /**
      * Adds profile to thirdPartyIDs. Therefore every third-party-ID in profileData of profile will be add to thirdPartyIDs,
      * and gets a HashMap, that map value of third-party-ID to a Set of profiles, as value
      *
      * @param p profile p which should be add to thirdPartyIDs
      */
-    public void addProfileToThirtPartyIDs(Profile p) {
+    private void addProfileToThirtPartyIDs(Profile p) {
         //
         p.profileData.forEach((k, v) -> {
             if (schema.getThirdPartyIDs().contains(k)) {

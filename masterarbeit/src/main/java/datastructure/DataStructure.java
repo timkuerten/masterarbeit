@@ -1,5 +1,7 @@
 package datastructure;
 
+import exception.SchemaException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,11 +18,11 @@ public interface DataStructure {
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
-     * @throws Exception throws exception if third-party-IDs are not contained in schema
+     * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
-    void init(Set<String> schema, Set<String> thirdPartyIDs) throws RuntimeException;
+    void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException;
 
-    //get, insert, update
+    //get, insert, change
 
     /**
      * Searching for a profile with given uuid. Returns the profile if it exists. Otherwise returns null.
@@ -73,5 +75,7 @@ public interface DataStructure {
      * @return if schema and third third-party-IDs are changed
      */
     boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs);
+
+    boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs);
 
 }

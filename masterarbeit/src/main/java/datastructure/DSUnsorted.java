@@ -9,8 +9,8 @@ import java.util.*;
  */
 public class DSUnsorted implements DataStructure {
 
-    Schema schema;
-    Map<UUID, Profile> profiles = new HashMap<>();
+    private Schema schema;
+    private Map<UUID, Profile> profiles = new HashMap<>();
 
     public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         init(schema, thirdPartyIDs);
@@ -22,7 +22,7 @@ public class DSUnsorted implements DataStructure {
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
-     * @throws Exception throws exception if third-party-IDs are not contained in schema
+     * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
     public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
@@ -46,12 +46,12 @@ public class DSUnsorted implements DataStructure {
      * @return profiles which contain the given third-party-ID and value
      */
     public Set<Profile> get(String ThirdPartyID, String value) {
-        if (this.schema.getThirdPartyIDs().contains(ThirdPartyID) == false) {
+        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
             return null;
         }
         Set<Profile> retrunProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
-            if (v.profileData.get(ThirdPartyID) == value) {
+            if (v.profileData.get(ThirdPartyID).equals(value)) {
                 retrunProfiles.add(v);
             }
         });
@@ -99,6 +99,10 @@ public class DSUnsorted implements DataStructure {
         return this.schema;
     }
 
+    public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
+        return this.schema.add(schema, thirdPartyIDs);
+    }
+
     /**
      * Change current schema and third-party-IDs to given schema nd third-party-IDs if third-party-IDs contained in schema and returns true. Otherwise returns false.
      *
@@ -107,8 +111,8 @@ public class DSUnsorted implements DataStructure {
      * @return if schema and third third-party-IDs are changed
      */
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        if (this.schema.update(schema, thirdPartyIDs)) {
-            //update profileData of every profile that they correlate to new schema
+        if (this.schema.change(schema, thirdPartyIDs)) {
+            //change profileData of every profile that they correlate to new schema
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
             );

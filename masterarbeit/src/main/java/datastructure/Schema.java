@@ -14,10 +14,10 @@ public class Schema {
      *
      * @param schema        schema of profiles
      * @param thirdPartyIDs third-party-IDs in schema
-     * @throws Exception third-party-IDs must be contained in schema
+     * @throws SchemaException third-party-IDs must be contained in schema
      */
     public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
-        if (update(schema, thirdPartyIDs) == false) { //if it is true, schema and thirdPartyIDs get updated
+        if (!change(schema, thirdPartyIDs)) { //if it is true, schema and thirdPartyIDs get updated
             throw new SchemaException(schema, thirdPartyIDs);
         }
     }
@@ -43,13 +43,35 @@ public class Schema {
     }
 
     /**
-     * Sets new schema and third-party-IDs. It checks if third-party-IDs contained in schema.
+     * Checks if new third-party-IDs contained in union of new and old schema. If it's true, schema and third-party-IDs are added.
      *
      * @param schema        schema of profiles
      * @param thirdPartyIDs third-party-IDs in schema
      * @return if third-party-IDs are contained in schema
      */
-    protected boolean update(Set<String> schema, Set<String> thirdPartyIDs) {
+    protected boolean add(Set<String> schema, Set<String> thirdPartyIDs) {
+        Set<String> newSchema = new HashSet<>();
+        newSchema.addAll(this.schema);
+        newSchema.addAll(schema);
+        if (newSchema.containsAll(thirdPartyIDs)) {
+            //use addAll to prevent manipulation
+            this.schema.addAll(schema);
+            this.thirdPartyIDs.addAll(thirdPartyIDs);
+            return true;
+        } else {
+            //if schema doesn't contain thirdPartyIDs don't change it
+            return false;
+        }
+    }
+
+    /**
+     * Checks if third-party-IDs contained in schema. If it's true, sets new schema and third-party-IDs.
+     *
+     * @param schema        schema of profiles
+     * @param thirdPartyIDs third-party-IDs in schema
+     * @return if third-party-IDs are contained in schema
+     */
+    protected boolean change(Set<String> schema, Set<String> thirdPartyIDs) {
         if (schema.containsAll(thirdPartyIDs)) {
             //delete old schema and thirdPartyIDs and set new one
             this.schema.clear();
@@ -62,6 +84,16 @@ public class Schema {
             //if schema doesn't contain thirdPartyIDs don't change it
             return false;
         }
+    }
+
+    /**
+     * Overrides toString()
+     *
+     * @return this schema as String
+     */
+    @Override
+    public String toString() {
+        return "<schema: " + schema + ", thirdPartyIDs: " + thirdPartyIDs + ">";
     }
 
 }
