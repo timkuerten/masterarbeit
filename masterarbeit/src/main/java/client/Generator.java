@@ -6,16 +6,15 @@ import java.util.*;
 
 public class Generator {
 
-    public Database database;
+    private Database database;
 
-    Random random;
+    private Random random;
 
     public Generator(Database database, long startValue) {
         this.database = database;
         //initialize random number generator which always generates same random numbers if startValue is same
         random = new Random(startValue);
     }
-
 
     public Profile generateNewProfile() {
         Map<String, String> profileData = new HashMap<>();
@@ -45,8 +44,7 @@ public class Generator {
         //Hausnummer (1, ..., 1000)
         profileData.put("Hausnummer", Integer.toString(Math.abs(1 + random.nextInt() % 1000)));
 
-        Profile p = new Profile(UUID.randomUUID(), profileData);
-        return p;
+        return new Profile(UUID.randomUUID(), profileData);
     }
 
 }

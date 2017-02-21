@@ -1,12 +1,8 @@
 package client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import datastructure.DataStructure;
 import datastructure.DSHashMap;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +21,6 @@ public class Main {
         } catch (Exception e) {
             System.out.print("Fehler beim Erstellen der Datenstruktur");
         }
-
 
     }
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Set;
 
 public class Database {
 
@@ -26,7 +25,6 @@ public class Database {
         this.lastName = lastName;
         this.city = city;
         this.street = street;
-
     }
 
 }

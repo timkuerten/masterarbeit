@@ -1,10 +1,13 @@
 package datastructure;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Profile {
 
+    //universal unique identifier
     final UUID uuid;
+
     Map<String, String> profileData;
 
     /**
@@ -53,9 +56,10 @@ public class Profile {
      * @param schema new schema of profileData
      */
     protected void update(Schema schema) {
-        this.profileData.entrySet()
+        profileData = profileData.entrySet()
                 .stream()
-                .filter(map -> schema.getSchema().contains(map.getKey()));
+                .filter(map -> schema.getSchema().contains(map.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public boolean correspondToSchema(Set<String> schema) {

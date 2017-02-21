@@ -10,9 +10,8 @@ import java.util.UUID;
 public class ClientWriter {
 
     private DataStructure ds;
-    TimeLogger timeLogger;
-    WriterLogger writerLogger;
-
+    private TimeLogger timeLogger;
+    private WriterLogger writerLogger;
 
     public ClientWriter(DataStructure ds) {
         this.ds = ds;

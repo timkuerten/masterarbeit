@@ -7,10 +7,10 @@ import datastructure.Schema;
 import java.util.Set;
 import java.util.UUID;
 
-public class ClientReader{
+public class ClientReader {
 
     private DataStructure ds;
-    TimeLogger timeLogger;
+    private TimeLogger timeLogger;
 
     public ClientReader(DataStructure ds) {
         this.ds = ds;
