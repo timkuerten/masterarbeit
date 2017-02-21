@@ -1,20 +1,28 @@
 package datastructure;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 abstract public class AbstractDataStructureTest {
-    public DataStructure ds;
-    public UUID uuid1;
-    public UUID uuid2;
-    public UUID uuid3;
-    public Set<String> schema;
-    public Set<String> thirdPartyIDs;
+    protected DataStructure ds;
+    private UUID uuid1;
+    private UUID uuid2;
+    private UUID uuid3;
+    protected Set<String> schema;
+    protected Set<String> thirdPartyIDs;
+    private Map<String, String> profileData;
 
+    @Before
     public void setUpSchema() {
         schema = new HashSet<>();
         schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
@@ -22,7 +30,7 @@ abstract public class AbstractDataStructureTest {
         thirdPartyIDs.add("Stadt");
     }
 
-    public void createExampleProfilesAndAddThem() {
+    protected void createExampleProfilesAndAddThem() {
         Map<String, String> profileData1 = new HashMap<>();
         profileData1.put("Name", "Tim");
         profileData1.put("Adresse", "Bruchfeldweg 18");
@@ -40,6 +48,14 @@ abstract public class AbstractDataStructureTest {
         uuid3 = ds.insert(profileData3);
     }
 
+    @Before
+    public void setUpProfileData() {
+        profileData = new HashMap<>();
+        profileData.put("Name", "Tim");
+        profileData.put("Adresse", "Bruchfeldweg 18");
+        profileData.put("Stadt", "MS");
+    }
+
     @Test
     public void getProfileByID() {
         //System.out.println("Test");
@@ -53,7 +69,6 @@ abstract public class AbstractDataStructureTest {
         uuids1.add(uuid2);
         Set<UUID> uuids2 = new HashSet<>();
         ds.get("Stadt", "MS").forEach(x -> uuids2.add(x.getUuid()));
-        System.out.println("#uuids2: " + uuids2.size());
         assertThat(uuids2.equals(uuids1), is(true));
     }
 
@@ -142,9 +157,62 @@ abstract public class AbstractDataStructureTest {
         assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
     }
 
-    public void printNumberOfMSProfiles() {
-        Set<UUID> uuids2 = new HashSet<>();
-        ds.get("Stadt", "MS").forEach(x -> uuids2.add(x.getUuid()));
-        System.out.println("#uuids2: " + uuids2.size());
+    //manipulation tests
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void manipulateGetSchema() {
+        Schema s1 = ds.getSchema();
+        thrown.expect(UnsupportedOperationException.class);
+        s1.getThirdPartyIDs().add("Name");
     }
+
+    @Test
+    public void manipulateChangeSchema() {
+        schema = new HashSet<>();
+        schema.addAll(Arrays.asList("a", "b"));
+        thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("a");
+        ds.changeSchema(schema, thirdPartyIDs);
+        schema.add("c");
+        thirdPartyIDs.add("b");
+        Assert.assertThat(ds.getSchema().getSchema(), containsInAnyOrder("a", "b"));
+        Assert.assertThat(ds.getSchema().getThirdPartyIDs(), contains("a"));
+    }
+
+    @Test
+    public void manipulateGetProfileByID() {
+        UUID uuid = ds.insert(profileData);
+        Profile profile = ds.get(uuid);
+        thrown.expect(UnsupportedOperationException.class);
+        profile.getProfileData().put("a", "b");
+    }
+
+    @Test
+    public void manipulateGetProfileByThirdPartyID() {
+        ds.insert(profileData);
+        Set<Profile> profiles = ds.get("Stadt", "MS");
+        profiles.forEach(x -> {
+            thrown.expect(UnsupportedOperationException.class);
+            x.getProfileData().put("a", "b");
+        });
+    }
+
+    @Test
+    public void manipulateInsertProfile() {
+        UUID uuid = ds.insert(profileData);
+        //manipulate
+        profileData.put("Name", "Hans");
+        Assert.assertThat(ds.get(uuid).getProfileData().get("Name"), is("Tim"));
+    }
+
+    @Test
+    public void manipulateSchemaAfterCreateDs() {
+        schema.add("a");
+        thirdPartyIDs.add("a");
+        Assert.assertThat(ds.getSchema().getSchema().contains("a"), is(false));
+        Assert.assertThat(ds.getSchema().getThirdPartyIDs().contains("a"), is(false));
+    }
+
 }

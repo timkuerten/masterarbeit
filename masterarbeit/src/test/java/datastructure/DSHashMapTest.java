@@ -6,9 +6,6 @@ public class DSHashMapTest extends AbstractDataStructureTest {
 
     @Before
     public void setUp() {
-        //create schema
-        setUpSchema();
-
         //create ds
         ds = new DSHashMap(schema, thirdPartyIDs);
 
