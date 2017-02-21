@@ -111,7 +111,6 @@ abstract public class AbstractDataStructureTest {
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Name");
         ds.addSchema(schema, thirdPartyIDs);
-        System.out.println(ds.getSchema());
         assertThat(ds.getSchema().getSchema().containsAll(Arrays.asList("b", "c", "a")), is(true));
         assertThat(ds.getSchema().getThirdPartyIDs().contains("Name"), is(true));
     }

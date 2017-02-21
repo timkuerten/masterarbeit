@@ -13,13 +13,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ProfileTest {
 
-    Profile p1;
-    Profile p2;
-    Profile p3;
-
-    UUID uuid1;
-    UUID uuid2;
-    UUID uuid3;
+    private Profile p1, p2, p3;
+    private UUID uuid1, uuid2, uuid3;
 
     @Before
     public void setUp() throws Exception {

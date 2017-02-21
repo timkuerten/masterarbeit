@@ -62,7 +62,13 @@ public class Profile {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public boolean correspondToSchema(Set<String> schema) {
+    /**
+     * Checks if profile data corresponds to given schema.
+     *
+     * @param schema given schema
+     * @return if profile data corresponds to given schema
+     */
+    protected boolean correspondToSchema(Set<String> schema) {
         return (schema.containsAll(profileData.keySet()));
     }
 
