@@ -1,66 +1,43 @@
 package datastructure;
 
-import java.util.*;
+import org.junit.Test;
 
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(Parameterized.class)
-public class DataStructureTest {
+public class AbstractDataStructureTest {
+    public DataStructure ds;
+    public UUID uuid1;
+    public UUID uuid2;
+    public UUID uuid3;
+    public Set<String> schema;
+    public Set<String> thirdPartyIDs;
 
-    static DataStructure ds;
-    static UUID uuid1, uuid2, uuid3;
-
-    public DataStructureTest(DataStructure ds) {
-        System.out.println("constructor");
-        this.ds = ds;
-        //create schema
-        Set<String> schema = new HashSet<>();
+    public void setUpSchema() {
+        schema = new HashSet<>();
         schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Stadt");
+    }
 
-        //create ds
-        //ds = new DSUnsorted(); //DSHashMap();
-        ds.init(schema, thirdPartyIDs);
-
-        //create profiles and add them
+    public void createExampleProfilesAndAddThem() {
         Map<String, String> profileData1 = new HashMap<>();
         profileData1.put("Name", "Tim");
         profileData1.put("Adresse", "Bruchfeldweg 18");
         profileData1.put("Stadt", "MS");
-        uuid1 = ds.insert(profileData1);
         Map<String, String> profileData2 = new HashMap<>();
         profileData2.put("Name", "Karl");
         profileData2.put("Adresse", "Buchenweg 3");
         profileData2.put("Stadt", "MS");
-        uuid2 = ds.insert(profileData2);
         Map<String, String> profileData3 = new HashMap<>();
         profileData3.put("Name", "Susi");
         profileData3.put("Adresse", "Finkenweg 30");
         profileData3.put("Stadt", "Hamburg");
+        uuid1 = ds.insert(profileData1);
+        uuid2 = ds.insert(profileData2);
         uuid3 = ds.insert(profileData3);
-        printNumberOfMSProfiles();
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> instancesToTest() {
-        System.out.println("parameters");
-
-        //create schema
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Stadt");
-
-        return Arrays.asList(
-                new Object[]{new DSUnsorted(schema, thirdPartyIDs)},
-                new Object[]{new DSHashMap(schema, thirdPartyIDs)}
-        );
     }
 
     @Test
@@ -170,5 +147,4 @@ public class DataStructureTest {
         ds.get("Stadt", "MS").forEach(x -> uuids2.add(x.getUuid()));
         System.out.println("#uuids2: " + uuids2.size());
     }
-
 }
