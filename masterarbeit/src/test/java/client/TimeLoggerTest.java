@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class TimeLoggerTest {
 
-    TimeLogger logger;
+    private TimeLogger logger;
 
     @Before
     public void setUp() {

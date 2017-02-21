@@ -7,7 +7,7 @@ import java.util.*;
 
 public class WriterLoggerTest {
 
-    WriterLogger logger;
+    private WriterLogger logger;
 
     @Before
     public void setUp() {
