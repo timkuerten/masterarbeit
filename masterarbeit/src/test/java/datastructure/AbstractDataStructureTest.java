@@ -7,7 +7,7 @@ import java.util.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AbstractDataStructureTest {
+abstract public class AbstractDataStructureTest {
     public DataStructure ds;
     public UUID uuid1;
     public UUID uuid2;
