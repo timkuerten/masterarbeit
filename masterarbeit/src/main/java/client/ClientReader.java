@@ -55,7 +55,6 @@ public class ClientReader {
         } else {
             return ds.get(thirdPartyID, value);
         }
-
     }
 
     //schema

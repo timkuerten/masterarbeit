@@ -64,7 +64,6 @@ public class ClientWriter {
         return returnValue;
     }
 
-    //schema
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         long startTime = System.nanoTime();
         boolean returnValue = ds.changeSchema(schema, thirdPartyIDs);

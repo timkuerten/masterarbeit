@@ -3,12 +3,16 @@ package client;
 import datastructure.DSHashMap;
 import datastructure.DSUnsorted;
 import datastructure.DataStructure;
-import datastructure.Profile;
 
 import java.util.*;
 
 public class ScenarioTest extends AbstractScenario {
 
+    /**
+     *
+     *
+     * @param dataStructure what data structure is used? Needed to create name of logger.
+     */
     public ScenarioTest(String dataStructure) {
         super();
         //create schema
@@ -26,6 +30,9 @@ public class ScenarioTest extends AbstractScenario {
         clientWriter = new ClientWriter(ds, timeLogger, false);
     }
 
+    /**
+     * Do something with data structure
+     */
     @Override
     public void run() {
         addProfiles(999);
