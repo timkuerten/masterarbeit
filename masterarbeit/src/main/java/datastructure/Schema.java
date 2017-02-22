@@ -10,7 +10,7 @@ public class Schema {
     private Set<String> thirdPartyIDs = new HashSet<>();
 
     /**
-     * constructor to create schema and third-party-IDs
+     * Constructor to create schema and third-party-IDs
      *
      * @param schema        schema of profiles
      * @param thirdPartyIDs third-party-IDs in schema
@@ -50,11 +50,13 @@ public class Schema {
      * @return if third-party-IDs are contained in schema
      */
     protected boolean add(Set<String> schema, Set<String> thirdPartyIDs) {
+        // newSchema is union of old and given schema
         Set<String> newSchema = new HashSet<>();
         newSchema.addAll(this.schema);
         newSchema.addAll(schema);
         if (newSchema.containsAll(thirdPartyIDs)) {
-            //use addAll to prevent manipulation
+            // add schema and thirdPartyIDs
+            // use addAll to prevent manipulation
             this.schema.addAll(schema);
             this.thirdPartyIDs.addAll(thirdPartyIDs);
             return true;
@@ -73,15 +75,15 @@ public class Schema {
      */
     protected boolean change(Set<String> schema, Set<String> thirdPartyIDs) {
         if (schema.containsAll(thirdPartyIDs)) {
-            //delete old schema and thirdPartyIDs and set new one
+            // delete old schema and thirdPartyIDs and set new one
             this.schema.clear();
             this.thirdPartyIDs.clear();
-            //use addAll to prevent manipulation
+            // use addAll to prevent manipulation
             this.schema.addAll(schema);
             this.thirdPartyIDs.addAll(thirdPartyIDs);
             return true;
         } else {
-            //if schema doesn't contain thirdPartyIDs don't change it
+            // if schema doesn't contain thirdPartyIDs don't change it
             return false;
         }
     }

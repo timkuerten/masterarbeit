@@ -12,16 +12,6 @@ import java.util.UUID;
  */
 public interface DataStructure {
 
-    /**
-     * Should be used after construction. Give a schema and third-party-IDs to data structure.
-     * It throws an exception if third-party-IDs are not contained in schema.
-     *
-     * @param schema        schema for profiles
-     * @param thirdPartyIDs third-party-IDs of schema
-     * @throws SchemaException throws exception if third-party-IDs are not contained in schema
-     */
-    void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException;
-
     //get, insertProfile, change
 
     /**

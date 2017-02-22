@@ -12,19 +12,15 @@ public class DSUnsorted implements DataStructure {
     private Schema schema;
     private Map<UUID, Profile> profiles = new HashMap<>();
 
-    public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
-        init(schema, thirdPartyIDs);
-    }
-
     /**
-     * Should be used after construction. Give a schema and third-party-IDs to data structure.
+     * Constructor. Give a schema and third-party-IDs to data structure.
      * It throws an exception if third-party-IDs are not contained in schema.
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
+    public DSUnsorted(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
@@ -51,6 +47,7 @@ public class DSUnsorted implements DataStructure {
         }
         Set<Profile> retrunProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
+            // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
             if (v.profileData.get(ThirdPartyID).equals(value)) {
                 retrunProfiles.add(v);
             }
@@ -67,6 +64,7 @@ public class DSUnsorted implements DataStructure {
     public UUID insert(Map<String, String> profileData) {
         if (schema.getSchema().containsAll(profileData.keySet())) {
             Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+            // add profile to profiles
             profiles.put(newProfile.uuid, newProfile);
             return newProfile.uuid;
         } else {
@@ -75,10 +73,10 @@ public class DSUnsorted implements DataStructure {
     }
 
     /**
-     * Searching for profile with uuid and add data to it. If profile can not be found return false, otherwise true.
+     * Searching for profile with uuid and add data. If profile can not be found return false, otherwise true.
      *
      * @param uuid        uuid of profile
-     * @param profileData data of profile
+     * @param profileData data that should be added to profile
      * @return if profile with uuid can be found
      */
     public boolean update(UUID uuid, HashMap<String, String> profileData) {
@@ -112,7 +110,7 @@ public class DSUnsorted implements DataStructure {
      */
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         if (this.schema.change(schema, thirdPartyIDs)) {
-            //change profileData of every profile that they correlate to new schema
+            // update profileData of every profile to given schema
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
             );

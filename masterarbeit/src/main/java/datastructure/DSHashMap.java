@@ -16,19 +16,15 @@ public class DSHashMap implements DataStructure {
     private Map<UUID, Profile> profiles = new HashMap<>();
     private Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
 
-    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
-        init(schema, thirdPartyIDs);
-    }
-
     /**
-     * Should be used after construction. Give a schema and third-party-IDs to data structure.
+     * Constructor. Give a schema and third-party-IDs to data structure.
      * It throws an exception if third-party-IDs are not contained in schema.
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
-    public void init(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
+    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
