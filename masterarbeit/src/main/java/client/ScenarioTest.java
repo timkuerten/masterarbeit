@@ -11,7 +11,7 @@ public class ScenarioTest extends AbstractScenario {
     /**
      *
      *
-     * @param dataStructure what data structure is used? Needed to create name of logger.
+     * @param dataStructure what data structure is used? Needed to use data structure with this name.
      */
     public ScenarioTest(String dataStructure) {
         super();
@@ -31,7 +31,7 @@ public class ScenarioTest extends AbstractScenario {
     }
 
     /**
-     * Do something with data structure
+     * Add 100 profiles to data structure, get a profile by its UUID and get profiles by third-party-ID
      */
     @Override
     public void run() {
