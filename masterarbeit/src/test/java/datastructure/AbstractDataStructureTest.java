@@ -42,7 +42,6 @@ abstract public class AbstractDataStructureTest {
         Map<String, String> profileData3 = new HashMap<>();
         profileData3.put("Name", "Susi");
         profileData3.put("Adresse", "Finkenweg 30");
-        profileData3.put("Stadt", "Hamburg");
         uuid1 = ds.insert(profileData1);
         uuid2 = ds.insert(profileData2);
         uuid3 = ds.insert(profileData3);

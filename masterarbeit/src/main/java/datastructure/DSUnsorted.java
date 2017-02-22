@@ -45,14 +45,15 @@ public class DSUnsorted implements DataStructure {
         if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
             return null;
         }
-        Set<Profile> retrunProfiles = new HashSet<>();
+        Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            if (v.profileData.get(ThirdPartyID).equals(value)) {
-                retrunProfiles.add(v);
+            String thirdPartyId = v.profileData.get(ThirdPartyID);
+            if (thirdPartyId != null && thirdPartyId.equals(value)) {
+                returnProfiles.add(v);
             }
         });
-        return retrunProfiles;
+        return returnProfiles;
     }
 
     /**
