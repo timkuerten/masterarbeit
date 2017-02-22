@@ -6,8 +6,8 @@ import java.util.*;
 
 /**
  * Class to save and manage profiles in two HashMaps. In HashMap profiles every profile (value) is mapped to a uuid (key).
- * The HashMap thirdPartiIDs exits to search faster for third-party-IDs. Therefore the keys of thirdPartiIDs are third-party-IDs
- * which are mapped to a Hashmap. This HashMap contains every value of third-party-IDs as keys and map them to a Set of
+ * The HashMap thirdPartyIDs exits to search faster for third-party-IDs. Therefore the keys of thirdPartiIDs are third-party-IDs
+ * which are mapped to a HashMap. This HashMap contains every value of third-party-IDs as keys and map them to a Set of
  * profiles which have given third-party-ID and value.
  */
 public class DSHashMap implements DataStructure {
@@ -50,7 +50,7 @@ public class DSHashMap implements DataStructure {
             return null;
         } else if ((thirdPartyIDs.get(ThirdPartyID) != null) && thirdPartyIDs.get(ThirdPartyID).get(value) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
-            //search for profiles
+            // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
             this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(returnProfiles::add);
             return returnProfiles;
         } else {
@@ -65,9 +65,11 @@ public class DSHashMap implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
-        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
-        if (newProfile.correspondToSchema(schema.getSchema())) {
+        if (schema.getSchema().containsAll(profileData.keySet())) {
+            Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+            // add new profile to profiles
             profiles.put(newProfile.uuid, newProfile);
+            // add profile to thirdPartyIDs
             addProfileToThirtPartyIDs(newProfile);
             return newProfile.uuid;
         } else {
@@ -110,11 +112,11 @@ public class DSHashMap implements DataStructure {
      */
     public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         if (this.schema.change(schema, thirdPartyIDs)) {
-            //change profileData of every profile that they correlate to new schema
+            // change profileData of every profile that they correlate to new schema
             profiles.values().forEach(profile ->
                     profile.update(this.schema)
             );
-            //change HashMap thirdPartyIDs
+            // change HashMap of thirdPartyIDs
             this.thirdPartyIDs.clear();
             profiles.forEach((u, p) ->
                     addProfileToThirtPartyIDs(p)
