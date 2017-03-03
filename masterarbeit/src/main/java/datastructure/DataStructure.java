@@ -32,6 +32,16 @@ public interface DataStructure {
     Set<Profile> get(String ThirdPartyID, String value);
 
     /**
+     * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and range of value.
+     *
+     * @param ThirdPartyID third-party-ID
+     * @param minValue minimal value of third-party-ID
+     * @param maxValue maximal value of third-party-ID
+     * @return profiles which contain the given third-party-ID and range of value
+     */
+    Set<Profile> get(String ThirdPartyID, String minValue, String maxValue);
+
+    /**
      * Creates a new profile with given data, saves it in data structure and returns uuid.
      *
      * @param profileData data of new profile

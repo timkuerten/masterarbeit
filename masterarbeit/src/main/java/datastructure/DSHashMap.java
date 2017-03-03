@@ -59,6 +59,50 @@ public class DSHashMap implements DataStructure {
     }
 
     /**
+     * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and range of value.
+     *
+     * @param ThirdPartyID third-party-ID
+     * @param minValue minimal value of third-party-ID
+     * @param maxValue maximal value of third-party-ID
+     * @return profiles which contain the given third-party-ID and range of value
+     */
+    public Set<Profile> get(String ThirdPartyID, String minValue, String maxValue) {
+        // first idea
+        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
+            return null;
+        } else if (thirdPartyIDs.get(ThirdPartyID) != null) {
+            Set<Profile> returnProfiles = new HashSet<>();
+            if (minValue != null && maxValue != null) {
+                this.thirdPartyIDs.get(ThirdPartyID).forEach((k, v) -> {
+                    if (k.compareTo(minValue) >= 0 && k.compareTo(maxValue) <= 0) {
+                        returnProfiles.addAll(v);
+                    }
+                });
+            }
+            else if (minValue != null) {
+                this.thirdPartyIDs.get(ThirdPartyID).forEach((k, v) -> {
+                    if (k.compareTo(minValue) >= 0) {
+                        returnProfiles.addAll(v);
+                    }
+                });
+            } else if (maxValue != null) {
+                this.thirdPartyIDs.get(ThirdPartyID).forEach((k, v) -> {
+                    if (k.compareTo(maxValue) <= 0) {
+                        returnProfiles.addAll(v);
+                    }
+                });
+            } else {
+                this.thirdPartyIDs.get(ThirdPartyID).forEach((k, v) -> {
+                    returnProfiles.addAll(v);
+                });
+            }
+            return returnProfiles;
+        } else {
+            return new HashSet<>();
+        }
+    }
+
+    /**
      * Creates a new profile with given data, saves it in data structure and returns uuid.
      *
      * @param profileData data of new profile

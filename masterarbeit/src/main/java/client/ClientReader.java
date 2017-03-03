@@ -68,7 +68,6 @@ public class ClientReader {
         } else {
             return ds.getSchema();
         }
-
     }
 
 }

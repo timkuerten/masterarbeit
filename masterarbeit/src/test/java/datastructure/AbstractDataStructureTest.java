@@ -72,6 +72,11 @@ abstract public class AbstractDataStructureTest {
     }
 
     @Test
+    public void getProfilesByRange() {
+        System.out.println("Alle mit Stadt: " + ds.get("Stadt", null, null));
+    }
+
+    @Test
     public void getProfileByNonThirdPartyID() {
         assertThat(ds.get("Name", "Tim"), is(nullValue(null)));
     }
