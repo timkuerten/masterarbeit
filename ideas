@@ -1,0 +1,13 @@
+new DS:
+- profiles in HashMap
+- third-party-IDs in Hash Map
+- sorted doubly linked list/Array of values of third-party-IDs
+- values of third-party-IDs in Hashmap (with links to list/Array)
+
+insert:
+- do it like DSHashMap, but create sorted doubly linked list/Array of values of third-party-IDs before do it in HashMap of third-party-IDs
+
+get:
+- search for third-party-ID value of min and/or max
+- if found, go to next till value don't append to range
+- else binary search or interpolation search
