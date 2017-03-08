@@ -57,6 +57,18 @@ public class ClientReader {
         }
     }
 
+    public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
+        if (logGetThirdPartyID) {
+            long startTime = System.nanoTime();
+            Set<Profile> returnValue = ds.get(thirdPartyID, minValue, maxValue);
+            long estimatedTime = System.nanoTime() - startTime;
+            timeLogger.getProfileByThirdPartyID(estimatedTime);
+            return returnValue;
+        } else {
+            return ds.get(thirdPartyID, minValue, maxValue);
+        }
+    }
+
     //schema
     public Schema getSchema() {
         if (logGetSchema) {

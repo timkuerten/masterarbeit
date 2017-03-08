@@ -7,8 +7,23 @@ public class Main {
     }
 
     private static void startScenario() {
-        ScenarioTest scenario = new ScenarioTest("DSUnsorted");
-        //ScenarioTest scenario = new ScenarioTest("DSHashMap");
+        int i = 2;
+        ScenarioTest scenario;
+
+        switch (i) {
+            case 0:
+                scenario = new ScenarioTest("DSUnsorted");
+                break;
+            case 1:
+                scenario = new ScenarioTest("DSHashMap");
+                break;
+            case 2:
+                scenario = new ScenarioTest("DSSortedArray");
+                break;
+            default:
+                scenario = new ScenarioTest("DSUnsorted");
+                break;
+        }
         scenario.run();
     }
 

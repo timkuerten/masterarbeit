@@ -1,6 +1,7 @@
 package datastructure;
 
 import exception.SchemaException;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -10,11 +11,12 @@ import java.util.*;
  * which are mapped to a HashMap. This HashMap contains every value of third-party-IDs as keys and map them to a Set of
  * profiles which have given third-party-ID and value.
  */
-public class DSHashMap implements DataStructure {
+public class DSSortedArray implements DataStructure {
 
     private Schema schema;
     private Map<UUID, Profile> profiles = new HashMap<>();
     private Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
+    private Map<String, List<Pair<String, Set<Profile>>>> thirdPartyIDs2 = new HashMap<>();
 
     /**
      * Constructor. Give a schema and third-party-IDs to data structure.
@@ -24,7 +26,7 @@ public class DSHashMap implements DataStructure {
      * @param thirdPartyIDs third-party-IDs of schema
      * @throws SchemaException throws exception if third-party-IDs are not contained in schema
      */
-    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
+    public DSSortedArray(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 

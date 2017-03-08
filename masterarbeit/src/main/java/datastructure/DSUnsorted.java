@@ -57,7 +57,7 @@ public class DSUnsorted implements DataStructure {
     }
 
     /**
-     * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and range of value.
+     * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and its range of value.
      *
      * @param ThirdPartyID third-party-ID
      * @param minValue     minimal value of third-party-ID
@@ -81,7 +81,7 @@ public class DSUnsorted implements DataStructure {
                     if (thirdPartyId.compareTo(minValue) >= 0) {
                         returnProfiles.add(v);
                     }
-                } else if (minValue != null && maxValue != null) {
+                } else if (maxValue != null) {
                     if (thirdPartyId.compareTo(maxValue) <= 0) {
                         returnProfiles.add(v);
                     }

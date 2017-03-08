@@ -68,4 +68,17 @@ public abstract class AbstractScenario {
     public Set<Profile> getProfilesByThirdPartyID(String thirdPartyId, String value) {
         return clientReader.get(thirdPartyId, value);
     }
+
+    /**
+     * Searches for profiles with given third-party-ID and range
+     *
+     * @param thirdPartyId third-party-ID of profiles
+     * @param minValue minimal value of thirdPartyId
+     * @param maxValue maximal value of thirdPartyId
+     * @return profiles that have given third-party-ID and value
+     */
+    public Set<Profile> getProfilesByRange(String thirdPartyId, String minValue, String maxValue) {
+        return clientReader.get(thirdPartyId, minValue, maxValue);
+    }
+
 }

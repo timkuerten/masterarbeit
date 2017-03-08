@@ -73,7 +73,12 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void getProfilesByRange() {
-        System.out.println("Alle mit Stadt: " + ds.get("Stadt", null, null));
+        Set<UUID> uuids1 = new HashSet<>();
+        uuids1.add(uuid1);
+        uuids1.add(uuid2);
+        Set<UUID> uuids2 = new HashSet<>();
+        ds.get("Stadt", "Aachen", "Werl").forEach(x -> uuids2.add(x.getUuid()));
+        assertThat(uuids2.equals(uuids1), is(true));
     }
 
     @Test
