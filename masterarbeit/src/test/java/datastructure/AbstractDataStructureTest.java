@@ -1,5 +1,6 @@
 package datastructure;
 
+import exception.UuidNullPointerException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -177,7 +178,7 @@ abstract public class AbstractDataStructureTest {
         assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
     }
 
-    //manipulation tests
+    // manipulation tests
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -233,6 +234,22 @@ abstract public class AbstractDataStructureTest {
         thirdPartyIDs.add("a");
         Assert.assertThat(ds.getSchema().getSchema().contains("a"), is(false));
         Assert.assertThat(ds.getSchema().getThirdPartyIDs().contains("a"), is(false));
+    }
+
+    // null variables
+
+    @Test
+    public void aTest() {
+        thrown.expect(UuidNullPointerException.class);
+        ds.get(null);
+    }
+
+    @Test
+    public void bTest() {
+        HashMap<String, String> profileData = new HashMap<>();
+        profileData.put("Name", "Tom");
+        thrown.expect(UuidNullPointerException.class);
+        ds.update(null, profileData);
     }
 
 }

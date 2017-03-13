@@ -1,6 +1,6 @@
 package datastructure;
 
-import exception.SchemaException;
+import exception.SchemaNotAllowedException;
 
 import java.util.*;
 
@@ -14,11 +14,11 @@ public class Schema {
      *
      * @param schema        schema of profiles
      * @param thirdPartyIDs third-party-IDs in schema
-     * @throws SchemaException third-party-IDs must be contained in schema
+     * @throws SchemaNotAllowedException third-party-IDs must be contained in schema
      */
-    public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
+    public Schema(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaNotAllowedException {
         if (!change(schema, thirdPartyIDs)) { //if it is true, schema and thirdPartyIDs get updated
-            throw new SchemaException(schema, thirdPartyIDs);
+            throw new SchemaNotAllowedException(schema, thirdPartyIDs);
         }
     }
 
@@ -62,7 +62,7 @@ public class Schema {
             return true;
         } else {
             //if schema doesn't contain thirdPartyIDs don't change it
-            return false;
+            throw new SchemaNotAllowedException(newSchema, thirdPartyIDs);
         }
     }
 

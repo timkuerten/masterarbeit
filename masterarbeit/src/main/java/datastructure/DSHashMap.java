@@ -1,6 +1,7 @@
 package datastructure;
 
-import exception.SchemaException;
+import exception.SchemaNotAllowedException;
+import exception.UuidNullPointerException;
 
 import java.util.*;
 
@@ -22,9 +23,9 @@ public class DSHashMap implements DataStructure {
      *
      * @param schema        schema for profiles
      * @param thirdPartyIDs third-party-IDs of schema
-     * @throws SchemaException throws exception if third-party-IDs are not contained in schema
+     * @throws SchemaNotAllowedException throws exception if third-party-IDs are not contained in schema
      */
-    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaException {
+    public DSHashMap(Set<String> schema, Set<String> thirdPartyIDs) throws SchemaNotAllowedException {
         this.schema = new Schema(schema, thirdPartyIDs);
     }
 
@@ -35,6 +36,9 @@ public class DSHashMap implements DataStructure {
      * @return profile with given uuid
      */
     public Profile get(UUID uuid) {
+        if (uuid == null) {
+            throw new UuidNullPointerException();
+        }
         return profiles.get(uuid);
     }
 
@@ -130,6 +134,9 @@ public class DSHashMap implements DataStructure {
      * @return if profile with uuid can be found
      */
     public boolean update(UUID uuid, HashMap<String, String> profileData) {
+        if (uuid == null) {
+            throw new UuidNullPointerException();
+        }
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
             addProfileToThirtPartyIDs(profiles.get(uuid));
