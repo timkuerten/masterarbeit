@@ -239,13 +239,13 @@ abstract public class AbstractDataStructureTest {
     // null variables
 
     @Test
-    public void aTest() {
+    public void getProfileByIDWithNullUuid() {
         thrown.expect(UuidNullPointerException.class);
         ds.get(null);
     }
 
     @Test
-    public void bTest() {
+    public void updateProfileWithNullUuid() {
         HashMap<String, String> profileData = new HashMap<>();
         profileData.put("Name", "Tom");
         thrown.expect(UuidNullPointerException.class);
