@@ -87,7 +87,7 @@ public class DSSortedArray implements DataStructure {
             throw new ThirdPartyIDNullPointerException();
         }
         else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
-            throw new MinMaxValueException(minValue, maxValue);
+            throw new RangeValueException(minValue, maxValue);
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {

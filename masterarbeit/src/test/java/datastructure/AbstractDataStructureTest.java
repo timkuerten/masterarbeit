@@ -84,7 +84,7 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void getProfilesByRangeMaxValueLargerThanMinValue() {
-        thrown.expect(MinMaxValueException.class);
+        thrown.expect(RangeValueException.class);
         ds.get("Stadt", "Werl", "Aachen");
     }
 
