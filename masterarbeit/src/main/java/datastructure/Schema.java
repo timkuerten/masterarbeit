@@ -1,6 +1,7 @@
 package datastructure;
 
 import exception.SchemaNotAllowedException;
+import exception.SchemaNullPointerException;
 
 import java.util.*;
 
@@ -50,19 +51,37 @@ public class Schema {
      * @return if third-party-IDs are contained in schema
      */
     protected boolean add(Set<String> schema, Set<String> thirdPartyIDs) {
-        // newSchema is union of old and given schema
-        Set<String> newSchema = new HashSet<>();
-        newSchema.addAll(this.schema);
-        newSchema.addAll(schema);
-        if (newSchema.containsAll(thirdPartyIDs)) {
-            // add schema and thirdPartyIDs
-            // use addAll to prevent manipulation
-            this.schema.addAll(schema);
-            this.thirdPartyIDs.addAll(thirdPartyIDs);
-            return true;
+        if (thirdPartyIDs == null) {
+            if (schema == null) {
+                // schema == null && thirdPartyIDs == null
+                throw new SchemaNullPointerException();
+            } else {
+                // schema != null && thirdPartyIDs == null
+                this.schema.addAll(schema);
+                return true;
+            }
         } else {
-            //if schema doesn't contain thirdPartyIDs don't change it
-            throw new SchemaNotAllowedException(newSchema, thirdPartyIDs);
+            // thirdPartyIDs != null
+            // newSchema is union of old and given schema
+            Set<String> newSchema = new HashSet<>();
+            newSchema.addAll(this.schema);
+            if (schema != null) {
+                // schema != null && thirdPartyIDs != null
+                newSchema.addAll(schema);
+            }
+            if (newSchema.containsAll(thirdPartyIDs)) {
+                // add schema and thirdPartyIDs
+                // use addAll to prevent manipulation
+                if (schema != null) {
+                    // schema != null && thirdPartyIDs != null
+                    this.schema.addAll(schema);
+                }
+                this.thirdPartyIDs.addAll(thirdPartyIDs);
+                return true;
+            } else {
+                //if schema doesn't contain thirdPartyIDs don't change it
+                throw new SchemaNotAllowedException(newSchema, thirdPartyIDs);
+            }
         }
     }
 
@@ -74,7 +93,20 @@ public class Schema {
      * @return if third-party-IDs are contained in schema
      */
     protected boolean change(Set<String> schema, Set<String> thirdPartyIDs) {
-        if (schema.containsAll(thirdPartyIDs)) {
+        if (schema == null) {
+            if (thirdPartyIDs == null) {
+                this.schema.clear();
+                this.thirdPartyIDs.clear();
+                return true;
+            } else {
+                throw new SchemaNotAllowedException();
+            }
+        } else if (thirdPartyIDs == null) {
+            this.schema.clear();
+            this.thirdPartyIDs.clear();
+            this.schema.addAll(schema);
+            return true;
+        } else if (schema.containsAll(thirdPartyIDs)) {
             // delete old schema and thirdPartyIDs and set new one
             this.schema.clear();
             this.thirdPartyIDs.clear();

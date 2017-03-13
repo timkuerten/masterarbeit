@@ -1,7 +1,6 @@
 package datastructure;
 
-import exception.SchemaNotAllowedException;
-import exception.UuidNullPointerException;
+import exception.*;
 
 import java.util.*;
 
@@ -32,20 +31,31 @@ public class DSUnsorted implements DataStructure {
      * @return profile with given uuid
      */
     public Profile get(UUID uuid) {
+        // null check
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
+
         return profiles.get(uuid);
     }
 
     /**
-     * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which contain the given third-party-ID and value.
+     * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which correlate to the given third-party-ID and value.
      *
      * @param thirdPartyID third-party-ID
      * @param value        value of third-party-ID
      * @return profiles which contain the given third-party-ID and value
      */
     public Set<Profile> get(String thirdPartyID, String value) {
+        // null checks
+        if (thirdPartyID == null) {
+            throw new ThirdPartyIDNullPointerException();
+        }
+        else if (value == null) {
+            throw new ValueNullPointerException();
+        }
+
+        // do the third-party-IDs in schema contain the given third-party-ID?
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
         }
@@ -69,8 +79,16 @@ public class DSUnsorted implements DataStructure {
      * @return profiles which contain the given third-party-ID and range of value
      */
     public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
+        // null check
+        if (thirdPartyID == null) {
+            throw new ThirdPartyIDNullPointerException();
+        }
+        else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+            throw new MinMaxValueException();
+        }
+
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
-            return null;
+            return Collections.emptySet();
         }
         Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
@@ -104,6 +122,11 @@ public class DSUnsorted implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
+        // null checks
+        if (profileData == null) {
+            throw new ProfileDataNullPointerException();
+        }
+
         if (schema.getSchema().containsAll(profileData.keySet())) {
             Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
             // add new profile to profiles
@@ -122,9 +145,14 @@ public class DSUnsorted implements DataStructure {
      * @return if profile with uuid can be found
      */
     public boolean update(UUID uuid, HashMap<String, String> profileData) {
+        // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
+        else if (profileData == null) {
+            throw new ProfileDataNullPointerException();
+        }
+
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
             return true;

@@ -45,7 +45,7 @@ public class DSSortedArray implements DataStructure {
     }
 
     /**
-     * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which contain the given third-party-ID and value.
+     * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which correlate to the given third-party-ID and value.
      *
      * @param thirdPartyID third-party-ID
      * @param value        value of third-party-ID

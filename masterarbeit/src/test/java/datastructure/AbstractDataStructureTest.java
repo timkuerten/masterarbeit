@@ -1,9 +1,6 @@
 package datastructure;
 
-import exception.ProfileDataNullPointerException;
-import exception.ThirdPartyIDNullPointerException;
-import exception.UuidNullPointerException;
-import exception.ValueNullPointerException;
+import exception.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -77,12 +74,18 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void getProfilesByRange() {
-        Set<UUID> uuids1 = new HashSet<>();
-        uuids1.add(uuid1);
-        uuids1.add(uuid2);
-        Set<UUID> uuids2 = new HashSet<>();
-        ds.get("Stadt", "Aachen", "Werl").forEach(x -> uuids2.add(x.getUuid()));
-        assertThat(uuids2.equals(uuids1), is(true));
+        Set<UUID> uuidSet1 = new HashSet<>();
+        uuidSet1.add(uuid1);
+        uuidSet1.add(uuid2);
+        Set<UUID> uuidSet2 = new HashSet<>();
+        ds.get("Stadt", "Aachen", "Werl").forEach(x -> uuidSet2.add(x.getUuid()));
+        assertThat(uuidSet2.equals(uuidSet1), is(true));
+    }
+
+    @Test
+    public void getProfilesByRangeMaxValueLargerThanMinValue() {
+        thrown.expect(MinMaxValueException.class);
+        ds.get("Stadt", "Werl", "Aachen");
     }
 
     @Test
@@ -267,14 +270,16 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void getProfilesByRangeWithNullMinValue() {
-        thrown.expect(ValueNullPointerException.class);
+        //thrown.expect(ValueNullPointerException.class);
         ds.get("Stadt", null, "Werl");
+        // TODO: assertThat()
     }
 
     @Test
     public void getProfilesByRangeWithNullMaxValue() {
-        thrown.expect(ValueNullPointerException.class);
+        //thrown.expect(ValueNullPointerException.class);
         ds.get("Stadt", "Aachen", null);
+        // TODO: assertThat()
     }
 
 
@@ -300,20 +305,33 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void addSchemaWithNullSchema() {
+        Set<String> oldSchema = ds.getSchema().getSchema();
+        Set<String> oldThirdPartyIDs = ds.getSchema().getThirdPartyIDs();
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Name");
         ds.addSchema(null, thirdPartyIDs);
+        // add old third-party-IDs to added third-party-IDs
+        thirdPartyIDs.addAll(oldThirdPartyIDs);
+        assertThat(ds.getSchema().getSchema(), is(oldSchema));
+        assertThat(ds.getSchema().getThirdPartyIDs(), is(thirdPartyIDs));
     }
 
     @Test
     public void addSchemaWithNullThirdPartyIDs() {
+        Set<String> oldSchema = ds.getSchema().getSchema();
+        Set<String> oldThirdPartyIDs = ds.getSchema().getThirdPartyIDs();
         Set<String> schema = new HashSet<>();
         schema.addAll(Arrays.asList("a", "b", "c"));
         ds.addSchema(schema, null);
+        // add old schema to added schema
+        schema.addAll(oldSchema);
+        assertThat(ds.getSchema().getSchema(), is(schema));
+        assertThat(ds.getSchema().getThirdPartyIDs(), is(oldThirdPartyIDs));
     }
 
     @Test
     public void addSchemaWithNullSchemaAndThirdPartyIDs() {
+        thrown.expect(SchemaNullPointerException.class);
         ds.addSchema(null, null);
     }
 
@@ -321,19 +339,24 @@ abstract public class AbstractDataStructureTest {
     public void changeSchemaWithNullSchema() {
         Set<String> thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Name");
+        thrown.expect(SchemaNotAllowedException.class);
         ds.changeSchema(null, thirdPartyIDs);
     }
 
     @Test
     public void changeSchemaWithNullThirdPartyIDs() {
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
+        Set<String> schema = new HashSet<>();
+        schema.add("Name");
         ds.changeSchema(schema, null);
+        assertThat(ds.getSchema().getSchema(), is(schema));
+        assertThat(ds.getSchema().getThirdPartyIDs(), is(Collections.emptySet()));
     }
 
     @Test
     public void changeSchemaWithNullSchemaAndThirdPartyIDs() {
         ds.changeSchema(null, null);
+        assertThat(ds.getSchema().getSchema(), is(Collections.emptySet()));
+        assertThat(ds.getSchema().getThirdPartyIDs(), is(Collections.emptySet()));
     }
 
 }
