@@ -1,6 +1,9 @@
 package datastructure;
 
+import exception.ProfileDataNullPointerException;
+import exception.ThirdPartyIDNullPointerException;
 import exception.UuidNullPointerException;
+import exception.ValueNullPointerException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -246,32 +249,38 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void getProfileByThirdPartyIDWithNullThirdPartyID() {
+        thrown.expect(ThirdPartyIDNullPointerException.class);
         ds.get(null, "MS");
     }
 
     @Test
     public void getProfileByThirdPartyIDWithNullValue() {
+        thrown.expect(ValueNullPointerException.class);
         ds.get("Stadt", null);
     }
 
     @Test
     public void getProfilesByRangeWithNullThirdPartyID() {
+        thrown.expect(ThirdPartyIDNullPointerException.class);
         ds.get(null, "Aachen", "Werl");
     }
 
     @Test
     public void getProfilesByRangeWithNullMinValue() {
+        thrown.expect(ValueNullPointerException.class);
         ds.get("Stadt", null, "Werl");
     }
 
     @Test
     public void getProfilesByRangeWithNullMaxValue() {
+        thrown.expect(ValueNullPointerException.class);
         ds.get("Stadt", "Aachen", null);
     }
 
 
     @Test
     public void insertProfileWithNullProfileData() {
+        thrown.expect(ProfileDataNullPointerException.class);
         ds.insert(null);
     }
 
@@ -285,6 +294,7 @@ abstract public class AbstractDataStructureTest {
 
     @Test
     public void updateProfileWithNullProfileData() {
+        thrown.expect(ProfileDataNullPointerException.class);
         ds.update(uuid1, null);
     }
 
