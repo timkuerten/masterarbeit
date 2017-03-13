@@ -84,7 +84,7 @@ public class DSUnsorted implements DataStructure {
             throw new ThirdPartyIDNullPointerException();
         }
         else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
-            throw new MinMaxValueException();
+            throw new MinMaxValueException(minValue, maxValue);
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
@@ -122,7 +122,7 @@ public class DSUnsorted implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
-        // null checks
+        // null check
         if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }

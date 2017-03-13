@@ -1,7 +1,6 @@
 package datastructure;
 
-import exception.SchemaNotAllowedException;
-import exception.UuidNullPointerException;
+import exception.*;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -38,9 +37,11 @@ public class DSSortedArray implements DataStructure {
      * @return profile with given uuid
      */
     public Profile get(UUID uuid) {
+        // null check
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
+
         return profiles.get(uuid);
     }
 
@@ -52,6 +53,14 @@ public class DSSortedArray implements DataStructure {
      * @return profiles which contain the given third-party-ID and value
      */
     public Set<Profile> get(String thirdPartyID, String value) {
+        // null checks
+        if (thirdPartyID == null) {
+            throw new ThirdPartyIDNullPointerException();
+        }
+        else if (value == null) {
+            throw new ValueNullPointerException();
+        }
+
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
         } else if ((thirdPartyIDs.get(thirdPartyID) != null) && thirdPartyIDs.get(thirdPartyID).get(value) != null) {
@@ -60,7 +69,7 @@ public class DSSortedArray implements DataStructure {
             this.thirdPartyIDs.get(thirdPartyID).get(value).forEach(returnProfiles::add);
             return returnProfiles;
         } else {
-            return new HashSet<>();
+            return Collections.emptySet();
         }
     }
 
@@ -73,9 +82,16 @@ public class DSSortedArray implements DataStructure {
      * @return profiles which contain the given third-party-ID and range of value
      */
     public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
-        // first idea
+        // null check
+        if (thirdPartyID == null) {
+            throw new ThirdPartyIDNullPointerException();
+        }
+        else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+            throw new MinMaxValueException(minValue, maxValue);
+        }
+
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
-            return null;
+            return Collections.emptySet();
         } else if (thirdPartyIDs.get(thirdPartyID) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
             if (minValue != null && maxValue != null) {
@@ -116,6 +132,11 @@ public class DSSortedArray implements DataStructure {
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
+        // null check
+        if (profileData == null) {
+            throw new ProfileDataNullPointerException();
+        }
+
         if (schema.getSchema().containsAll(profileData.keySet())) {
             Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
             // add new profile to profiles
@@ -136,9 +157,14 @@ public class DSSortedArray implements DataStructure {
      * @return if profile with uuid can be found
      */
     public boolean update(UUID uuid, HashMap<String, String> profileData) {
+        // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
+        else if (profileData == null) {
+            throw new ProfileDataNullPointerException();
+        }
+
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
             addProfileToThirtPartyIDs(profiles.get(uuid));

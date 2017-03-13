@@ -289,6 +289,16 @@ abstract public class AbstractDataStructureTest {
     }
 
     @Test
+    public void getProfilesByRangeWithNullMinAndMaxValue() {
+        Set<UUID> uuidSet1 = new HashSet<>();
+        uuidSet1.add(uuid1);
+        uuidSet1.add(uuid2);
+        Set<UUID> uuidSet2 = new HashSet<>();
+        ds.get("Stadt", "Aachen", null).forEach(x -> uuidSet2.add(x.getUuid()));
+        assertThat(uuidSet2.equals(uuidSet1), is(true));
+    }
+
+    @Test
     public void insertProfileWithNullProfileData() {
         thrown.expect(ProfileDataNullPointerException.class);
         ds.insert(null);
