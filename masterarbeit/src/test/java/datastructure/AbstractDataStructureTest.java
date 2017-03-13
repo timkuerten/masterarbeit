@@ -239,9 +239,40 @@ abstract public class AbstractDataStructureTest {
     // null variables
 
     @Test
-    public void getProfileByIDWithNullUuid() {
+    public void getProfileByIDWithNullUUID() {
         thrown.expect(UuidNullPointerException.class);
         ds.get(null);
+    }
+
+    @Test
+    public void getProfileByThirdPartyIDWithNullThirdPartyID() {
+        ds.get(null, "MS");
+    }
+
+    @Test
+    public void getProfileByThirdPartyIDWithNullValue() {
+        ds.get("Stadt", null);
+    }
+
+    @Test
+    public void getProfilesByRangeWithNullThirdPartyID() {
+        ds.get(null, "Aachen", "Werl");
+    }
+
+    @Test
+    public void getProfilesByRangeWithNullMinValue() {
+        ds.get("Stadt", null, "Werl");
+    }
+
+    @Test
+    public void getProfilesByRangeWithNullMaxValue() {
+        ds.get("Stadt", "Aachen", null);
+    }
+
+
+    @Test
+    public void insertProfileWithNullProfileData() {
+        ds.insert(null);
     }
 
     @Test
@@ -250,6 +281,49 @@ abstract public class AbstractDataStructureTest {
         profileData.put("Name", "Tom");
         thrown.expect(UuidNullPointerException.class);
         ds.update(null, profileData);
+    }
+
+    @Test
+    public void updateProfileWithNullProfileData() {
+        ds.update(uuid1, null);
+    }
+
+    @Test
+    public void addSchemaWithNullSchema() {
+        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("Name");
+        ds.addSchema(null, thirdPartyIDs);
+    }
+
+    @Test
+    public void addSchemaWithNullThirdPartyIDs() {
+        Set<String> schema = new HashSet<>();
+        schema.addAll(Arrays.asList("a", "b", "c"));
+        ds.addSchema(schema, null);
+    }
+
+    @Test
+    public void addSchemaWithNullSchemaAndThirdPartyIDs() {
+        ds.addSchema(null, null);
+    }
+
+    @Test
+    public void changeSchemaWithNullSchema() {
+        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("Name");
+        ds.changeSchema(null, thirdPartyIDs);
+    }
+
+    @Test
+    public void changeSchemaWithNullThirdPartyIDs() {
+        Set<String> thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("Name");
+        ds.changeSchema(schema, null);
+    }
+
+    @Test
+    public void changeSchemaWithNullSchemaAndThirdPartyIDs() {
+        ds.changeSchema(null, null);
     }
 
 }
