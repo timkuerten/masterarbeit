@@ -10,10 +10,10 @@ import java.util.UUID;
 public class WriterLogger extends AbstractLogger {
 
     /**
-     * Constructor. It creates a LOGGER with handler.
+     * Constructor. It creates a logger with handler.
      *
      * @param fileName name of logfile; it will get a ".log" suffix
-     * @param append   if LOGGER should use appending file or create new
+     * @param append   if logger should use appending file or create new
      */
     public WriterLogger(String fileName, boolean append) {
         super(fileName, append);
@@ -26,7 +26,7 @@ public class WriterLogger extends AbstractLogger {
      * @param profileData profile data of new profile
      */
     public void insertProfile(UUID uuid, Map<String, String> profileData) {
-        LOGGER.info("insertProfile(" + uuid + ", " + profileData + ")");
+        logger.info("insertProfile(" + uuid + ", " + profileData + ")");
     }
 
     /**
@@ -36,7 +36,7 @@ public class WriterLogger extends AbstractLogger {
      * @param profileData profile data that should be add to profile with uuid
      */
     public void updateProfile(UUID uuid, Map<String, String> profileData) {
-        LOGGER.info("updateProfile(" + uuid + ", " + profileData + ")");
+        logger.info("updateProfile(" + uuid + ", " + profileData + ")");
     }
 
     /**
@@ -46,7 +46,7 @@ public class WriterLogger extends AbstractLogger {
      * @param thirdPartyIDs new third-party-ID
      */
     public void changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        LOGGER.info("changeSchema(" + schema + ", " + thirdPartyIDs + ")");
+        logger.info("changeSchema(" + schema + ", " + thirdPartyIDs + ")");
     }
 
 }

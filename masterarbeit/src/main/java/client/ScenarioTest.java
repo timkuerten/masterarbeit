@@ -40,11 +40,11 @@ public class ScenarioTest extends AbstractScenario {
     }
 
     /**
-     * Add 100000 profiles to data structure, get a profile by its UUID and get profiles by third-party-ID
+     * Add 10000 profiles to data structure, get a profile by its UUID and get profiles by third-party-ID
      */
     @Override
     public void run() {
-        addProfiles(99999);
+        addProfiles(9999);
         UUID uuid = addOneProfile();
         getOneProfileByUuid(uuid);
         getProfilesByThirdPartyID("Name", "Tim");

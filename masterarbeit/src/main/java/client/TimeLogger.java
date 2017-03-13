@@ -6,10 +6,10 @@ package client;
 public class TimeLogger extends AbstractLogger {
 
     /**
-     * Constructor. It creates a LOGGER with handler.
+     * Constructor. It creates a logger with handler.
      *
      * @param fileName name of logfile; it will get a ".log" suffix
-     * @param append   if LOGGER should use appending file or create new
+     * @param append   if logger should use appending file or create new
      */
     public TimeLogger(String fileName, boolean append) {
         super(fileName, append);
@@ -21,7 +21,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of getProfileByUuid
      */
     public void getProfileByUuid(long estimatedTime) {
-        LOGGER.info("getProfileByUuid " + estimatedTime);
+        logger.info("getProfileByUuid " + estimatedTime);
     }
 
     /**
@@ -30,7 +30,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of getProfileByThirdPartyID
      */
     public void getProfileByThirdPartyID(long estimatedTime) {
-        LOGGER.info("getProfileByThirdPartyID " + estimatedTime);
+        logger.info("getProfileByThirdPartyID " + estimatedTime);
     }
 
     /**
@@ -39,7 +39,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of getProfileByRange
      */
     public void getProfileByRange(long estimatedTime) {
-        LOGGER.info("getProfileByRange " + estimatedTime);
+        logger.info("getProfileByRange " + estimatedTime);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of insertProfile
      */
     public void insertProfile(long estimatedTime) {
-        LOGGER.info("insertProfile " + estimatedTime);
+        logger.info("insertProfile " + estimatedTime);
     }
 
     /**
@@ -57,7 +57,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of updateProfile
      */
     public void updateProfile(long estimatedTime) {
-        LOGGER.info("updateProfile " + estimatedTime);
+        logger.info("updateProfile " + estimatedTime);
     }
 
     /**
@@ -66,7 +66,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of getSchema
      */
     public void getSchema(long estimatedTime) {
-        LOGGER.info("getSchema " + estimatedTime);
+        logger.info("getSchema " + estimatedTime);
     }
 
     /**
@@ -75,7 +75,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of addSchema
      */
     public void addSchema(long estimatedTime) {
-        LOGGER.info("addSchema " + estimatedTime);
+        logger.info("addSchema " + estimatedTime);
     }
 
     /**
@@ -84,7 +84,7 @@ public class TimeLogger extends AbstractLogger {
      * @param estimatedTime estimated time of changeSchema
      */
     public void changeSchema(long estimatedTime) {
-        LOGGER.info("changeSchema " + estimatedTime);
+        logger.info("changeSchema " + estimatedTime);
     }
 
 }
