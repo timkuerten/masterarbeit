@@ -155,7 +155,7 @@ public class DSHashMap implements DataStructure {
      * @param profileData data of profile
      * @return if profile with uuid can be found
      */
-    public boolean update(UUID uuid, HashMap<String, String> profileData) {
+    public boolean update(UUID uuid, Map<String, String> profileData) {
         // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();

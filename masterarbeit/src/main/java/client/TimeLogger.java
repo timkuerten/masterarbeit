@@ -25,21 +25,21 @@ public class TimeLogger extends AbstractLogger {
     }
 
     /**
-     * Creates an entry for getProfileByThirdPartyID with its estimatedTime
+     * Creates an entry for getProfilesByThirdPartyID with its estimatedTime
      *
-     * @param estimatedTime estimated time of getProfileByThirdPartyID
+     * @param estimatedTime estimated time of getProfilesByThirdPartyID
      */
     public void getProfileByThirdPartyID(long estimatedTime) {
-        logger.info("getProfileByThirdPartyID " + estimatedTime);
+        logger.info("getProfilesByThirdPartyID " + estimatedTime);
     }
 
     /**
-     * Creates an entry for getProfileByRange with its estimatedTime
+     * Creates an entry for getProfilesByRange with its estimatedTime
      *
-     * @param estimatedTime estimated time of getProfileByRange
+     * @param estimatedTime estimated time of getProfilesByRange
      */
     public void getProfileByRange(long estimatedTime) {
-        logger.info("getProfileByRange " + estimatedTime);
+        logger.info("getProfilesByRange " + estimatedTime);
     }
 
     /**

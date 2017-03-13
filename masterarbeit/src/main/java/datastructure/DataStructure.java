@@ -54,7 +54,7 @@ public interface DataStructure {
      * @param profileData data of profile
      * @return if profile with uuid can be found
      */
-    boolean update(UUID uuid, HashMap<String, String> profileData);
+    boolean update(UUID uuid, Map<String, String> profileData);
 
     //schema
 

@@ -34,6 +34,11 @@ public class TimeSaverTest {
     }
 
     @Test
+    public void getSize() {
+        assertThat(timeSaver.getNumberOfTimes(), is(101));
+    }
+
+    @Test
     public void getMinimalTimeAsString() {
         assertThat(timeSaver.getMinAsString(), is("0"));
     }

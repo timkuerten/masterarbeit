@@ -1,12 +1,15 @@
 package client;
 
 import java.lang.reflect.Array;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TimeSaver {
 
     private List<Long> times;
+    private NumberFormat nf = NumberFormat.getNumberInstance(Locale.GERMAN);
 
     public TimeSaver() {
         times = new ArrayList<>();
@@ -57,11 +60,19 @@ public class TimeSaver {
         }
     }
 
+    public int getNumberOfTimes() {
+        return times.size();
+    }
+
+    public String getNumberOfTimesAsString() {
+        return String.valueOf(nf.format(times.size()));
+    }
+
     public String getMinAsString() {
         if (times.isEmpty()) {
             return "not available";
         } else {
-            return String.valueOf(getMin());
+            return String.valueOf(nf.format(getMin()));
         }
     }
 
@@ -69,7 +80,7 @@ public class TimeSaver {
         if (times.isEmpty()) {
             return "not available";
         } else {
-            return String.valueOf(getMax());
+            return String.valueOf(nf.format(getMax()));
         }
     }
 
@@ -77,7 +88,7 @@ public class TimeSaver {
         if (times.isEmpty()) {
             return "not available";
         } else {
-            return String.valueOf(getAverage());
+            return String.valueOf(nf.format(getAverage()));
         }
     }
 

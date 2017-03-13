@@ -13,11 +13,25 @@ public class ClientWriter {
     private TimeLogger timeLogger;
     private WriterLogger writerLogger;
     private boolean logInsertProfile, logUpdateProfile, logAddSchema, logChangeSchema;
+    private TimeSaverManager timeSaverManager;
 
-    public ClientWriter(DataStructure ds, TimeLogger timeLogger, boolean writerLoggerAppend) {
+    public ClientWriter(DataStructure ds, TimeLogger timeLogger, boolean writerLoggerAppend,
+            TimeSaverManager timeSaverManager) {
         this.ds = ds;
         this.timeLogger = timeLogger;
+        if (timeLogger == null) {
+            logInsertProfile = false;
+            logUpdateProfile = false;
+            logAddSchema = false;
+            logChangeSchema = false;
+        } else {
+            logInsertProfile = true;
+            logUpdateProfile = true;
+            logAddSchema = true;
+            logChangeSchema = true;
+        }
         //writerLogger = new WriterLogger(WriterLogger.class.getName(), writerLoggerAppend);
+        this.timeSaverManager = timeSaverManager;
     }
 
     public void setLogInsertProfile(boolean logInsertProfile) {
@@ -28,7 +42,7 @@ public class ClientWriter {
         this.logUpdateProfile = logUpdateProfile;
     }
 
-    public void setLodAddSchema(boolean lodAddSchema) {
+    public void setLogAddSchema(boolean lodAddSchema) {
         this.logAddSchema = lodAddSchema;
     }
 
@@ -40,17 +54,23 @@ public class ClientWriter {
         long startTime = System.nanoTime();
         UUID returnValue = ds.insert(profileData);
         long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.insertProfile(estimatedTime);
+        if (logInsertProfile) {
+            timeLogger.insertProfile(estimatedTime);
+        }
         //writerLogger.insertProfile(returnValue, profileData);
+        timeSaverManager.insertProfile(estimatedTime);
         return returnValue;
     }
 
-    public boolean updateProfile(UUID uuid, HashMap<String, String> profileData) {
+    public boolean updateProfile(UUID uuid, Map<String, String> profileData) {
         long startTime = System.nanoTime();
         boolean returnValue = ds.update(uuid, profileData);
         long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.updateProfile(estimatedTime);
+        if (logUpdateProfile) {
+            timeLogger.updateProfile(estimatedTime);
+        }
         //writerLogger.updateProfile(uuid, profileData);
+        timeSaverManager.updateProfile(estimatedTime);
         return returnValue;
     }
 
@@ -59,8 +79,11 @@ public class ClientWriter {
         long startTime = System.nanoTime();
         boolean returnValue = ds.addSchema(schema, thirdPartyIDs);
         long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.addSchema(estimatedTime);
+        if (logAddSchema) {
+            timeLogger.addSchema(estimatedTime);
+        }
         //writerLogger.changeSchema(schema, thirdPartyIDs);
+        timeSaverManager.addSchema(estimatedTime);
         return returnValue;
     }
 
@@ -68,8 +91,11 @@ public class ClientWriter {
         long startTime = System.nanoTime();
         boolean returnValue = ds.changeSchema(schema, thirdPartyIDs);
         long estimatedTime = System.nanoTime() - startTime;
-        timeLogger.changeSchema(estimatedTime);
+        if (logChangeSchema) {
+            timeLogger.changeSchema(estimatedTime);
+        }
         //writerLogger.changeSchema(schema, thirdPartyIDs);
+        timeSaverManager.changeSchema(estimatedTime);
         return returnValue;
     }
 

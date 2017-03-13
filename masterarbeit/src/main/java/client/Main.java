@@ -7,7 +7,7 @@ public class Main {
     }
 
     private static void startScenario() {
-        int i = 2;
+        int i = 1;
         ScenarioTest scenario;
 
         switch (i) {
@@ -24,7 +24,7 @@ public class Main {
                 scenario = new ScenarioTest("DSUnsorted");
                 break;
         }
-        scenario.run();
+        scenario.run(100000, 100);
     }
 
 }

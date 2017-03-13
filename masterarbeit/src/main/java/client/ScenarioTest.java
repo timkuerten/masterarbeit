@@ -9,6 +9,8 @@ import java.util.*;
 
 public class ScenarioTest extends AbstractScenario {
 
+    private TimeSaverManager timeSaverManager;
+
     /**
      * @param dataStructure what data structure is used? Needed to use data structure with this name.
      */
@@ -33,10 +35,12 @@ public class ScenarioTest extends AbstractScenario {
                 break;
         }
 
-        String timeLoggerName = dataStructure + "." + TimeLogger.class.getName();
-        TimeLogger timeLogger = new TimeLogger(timeLoggerName, false);
-        clientReader = new ClientReader(ds, timeLogger);
-        clientWriter = new ClientWriter(ds, timeLogger, false);
+        timeSaverManager = new TimeSaverManager();
+
+        //String timeLoggerName = dataStructure + "." + TimeLogger.class.getName();
+        //TimeLogger timeLogger = new TimeLogger(timeLoggerName, false);
+        clientReader = new ClientReader(ds, null, timeSaverManager);
+        clientWriter = new ClientWriter(ds, null, false, timeSaverManager);
     }
 
     /**
@@ -44,11 +48,37 @@ public class ScenarioTest extends AbstractScenario {
      */
     @Override
     public void run() {
-        addProfiles(9999);
-        UUID uuid = addOneProfile();
-        getOneProfileByUuid(uuid);
-        getProfilesByThirdPartyID("Name", "Tim");
+        insertProfiles(1000);
+        UUID uuid = insertProfile();
+        getProfileByUuid(uuid);
+        getProfilesByThirdPartyID("Name", "Runfried Mühlberger");
         getProfilesByRange("Name", "Ralf", "Roland");
+        System.out.println(timeSaverManager.printOutTimeSavers());
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void run(int profiles, int iterations) {
+        List<UUID> uuids = new ArrayList<>(insertProfiles(profiles));
+        //uuids.iterator().next()
+        getProfileByUuid(uuids, iterations);
+        getProfilesByThirdPartyID("Name", "Runfried Mühlberger", iterations);
+        getProfilesByRange("Name", "Raa", "Rzz", iterations);
+        Map<String, String> profileData = new HashMap<>();
+        profileData.put("Name", "Ralf Schmidt");
+        profileData.put("Straße", "Bruchfeldweg");
+        profileData.put("Stadt", "48161 Münster");
+        updateProfile(uuids.get(0), profileData, iterations);
+        getSchema(iterations);
+        schema = new HashSet<>();
+        schema.addAll(Arrays.asList("a", "b", "c", "d"));
+        thirdPartyIDs = new HashSet<>();
+        thirdPartyIDs.add("b");
+        addSchema(schema, thirdPartyIDs, iterations);
+        changeSchema(schema, thirdPartyIDs, iterations);
+        System.out.println(timeSaverManager.printOutTimeSavers());
     }
 
 }
