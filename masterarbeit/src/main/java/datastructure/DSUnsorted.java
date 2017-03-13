@@ -41,18 +41,18 @@ public class DSUnsorted implements DataStructure {
     /**
      * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which contain the given third-party-ID and value.
      *
-     * @param ThirdPartyID third-party-ID
+     * @param thirdPartyID third-party-ID
      * @param value        value of third-party-ID
      * @return profiles which contain the given third-party-ID and value
      */
-    public Set<Profile> get(String ThirdPartyID, String value) {
-        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
+    public Set<Profile> get(String thirdPartyID, String value) {
+        if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
         }
         Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            String thirdPartyId = v.profileData.get(ThirdPartyID);
+            String thirdPartyId = v.profileData.get(thirdPartyID);
             if (thirdPartyId != null && thirdPartyId.equals(value)) {
                 returnProfiles.add(v);
             }
@@ -63,19 +63,19 @@ public class DSUnsorted implements DataStructure {
     /**
      * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and its range of value.
      *
-     * @param ThirdPartyID third-party-ID
+     * @param thirdPartyID third-party-ID
      * @param minValue     minimal value of third-party-ID
      * @param maxValue     maximal value of third-party-ID
      * @return profiles which contain the given third-party-ID and range of value
      */
-    public Set<Profile> get(String ThirdPartyID, String minValue, String maxValue) {
-        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
+    public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
+        if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
         }
         Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            String thirdPartyId = v.profileData.get(ThirdPartyID);
+            String thirdPartyId = v.profileData.get(thirdPartyID);
             if (thirdPartyId != null) {
                 if (minValue != null && maxValue != null) {
                     if (thirdPartyId.compareTo(minValue) >= 0 && thirdPartyId.compareTo(maxValue) <= 0) {

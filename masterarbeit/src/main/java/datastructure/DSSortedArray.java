@@ -47,17 +47,17 @@ public class DSSortedArray implements DataStructure {
     /**
      * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which contain the given third-party-ID and value.
      *
-     * @param ThirdPartyID third-party-ID
+     * @param thirdPartyID third-party-ID
      * @param value        value of third-party-ID
      * @return profiles which contain the given third-party-ID and value
      */
-    public Set<Profile> get(String ThirdPartyID, String value) {
-        if (!this.schema.getThirdPartyIDs().contains(ThirdPartyID)) {
+    public Set<Profile> get(String thirdPartyID, String value) {
+        if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
-        } else if ((thirdPartyIDs.get(ThirdPartyID) != null) && thirdPartyIDs.get(ThirdPartyID).get(value) != null) {
+        } else if ((thirdPartyIDs.get(thirdPartyID) != null) && thirdPartyIDs.get(thirdPartyID).get(value) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            this.thirdPartyIDs.get(ThirdPartyID).get(value).forEach(returnProfiles::add);
+            this.thirdPartyIDs.get(thirdPartyID).get(value).forEach(returnProfiles::add);
             return returnProfiles;
         } else {
             return new HashSet<>();
