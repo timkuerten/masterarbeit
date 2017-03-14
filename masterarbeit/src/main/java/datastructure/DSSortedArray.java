@@ -15,8 +15,8 @@ public class DSSortedArray implements DataStructure {
 
     private Schema schema;
     private Map<UUID, Profile> profiles = new HashMap<>();
-    private Map<String, Map<String, Set<Profile>>> thirdPartyIDs = new HashMap<>();
-    private Map<String, List<Pair<String, Set<Profile>>>> thirdPartyIDs2 = new HashMap<>();
+    private Map<String, Map<String, Pair<String, Set<Profile>>>> thirdPartyIDsMap = new HashMap<>();
+    private Map<String, ArrayList<Pair<String, Set<Profile>>>> thirdPartyIDsArray = new HashMap<>();
 
     /**
      * Constructor. Give a schema and third-party-IDs to data structure.
@@ -56,17 +56,17 @@ public class DSSortedArray implements DataStructure {
         // null checks
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        }
-        else if (value == null) {
+        } else if (value == null) {
             throw new ValueNullPointerException();
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
-        } else if ((thirdPartyIDs.get(thirdPartyID) != null) && thirdPartyIDs.get(thirdPartyID).get(value) != null) {
+        } else if ((thirdPartyIDsMap.get(thirdPartyID) != null)
+                && thirdPartyIDsMap.get(thirdPartyID).get(value) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            this.thirdPartyIDs.get(thirdPartyID).get(value).forEach(returnProfiles::add);
+            this.thirdPartyIDsMap.get(thirdPartyID).get(value).getValue().forEach(returnProfiles::add);
             return returnProfiles;
         } else {
             return Collections.emptySet();
@@ -85,44 +85,70 @@ public class DSSortedArray implements DataStructure {
         // null check
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        }
-        else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+        } else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return Collections.emptySet();
-        } else if (thirdPartyIDs.get(thirdPartyID) != null) {
-            Set<Profile> returnProfiles = new HashSet<>();
-            if (minValue != null && maxValue != null) {
-                if (minValue.compareTo(maxValue) == 0) {
-                    return get(thirdPartyID, minValue);
-                } else {
-                    this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                        if (k.compareTo(minValue) >= 0 && k.compareTo(maxValue) <= 0) {
-                            returnProfiles.addAll(v);
-                        }
-                    });
-                }
-            } else if (minValue != null) {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                    if (k.compareTo(minValue) >= 0) {
-                        returnProfiles.addAll(v);
-                    }
-                });
-            } else if (maxValue != null) {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                    if (k.compareTo(maxValue) <= 0) {
-                        returnProfiles.addAll(v);
-                    }
-                });
-            } else {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> returnProfiles.addAll(v));
-            }
-            return returnProfiles;
-        } else {
-            return new HashSet<>();
         }
+
+        ArrayList<Pair<String, Set<Profile>>> values = this.thirdPartyIDsArray.get(thirdPartyID);
+
+        if (values == null || values.size() == 0) {
+            return Collections.emptySet();
+        }
+        Set<Profile> returnProfiles = new HashSet<>();
+
+        int arraySize = values.size();
+        int left = 0;
+        int right = arraySize - 1;
+
+        if (minValue != null) {
+            int lLeft = 0;
+            int rLeft = arraySize - 1;
+            while (rLeft - lLeft > 1) {
+                left = (lLeft + rLeft) / 2;
+                if (values.get(left).getKey().compareTo(minValue) > 0) {
+                    rLeft = left;
+                } else if (values.get(left).getKey().compareTo(minValue) < 0) {
+                    lLeft = left;
+                } else {
+                    break;
+                }
+                if (values.get(lLeft).getKey().compareTo(minValue) < 0) {
+                    left = rLeft;
+                } else {
+                    left = rLeft;
+                }
+            }
+        }
+
+        if (maxValue != null) {
+            int lRight = left;
+            int rRight = arraySize - 1;
+            while (rRight - lRight > 1) {
+                right = (lRight + rRight) / 2;
+                if (values.get(right).getKey().compareTo(maxValue) > 0) {
+                    rRight = right;
+                } else if (values.get(right).getKey().compareTo(maxValue) < 0) {
+                    lRight = right;
+                } else {
+                    break;
+                }
+            }
+            if (values.get(rRight).getKey().compareTo(maxValue) > 0) {
+                right = lRight;
+            } else {
+                right = rRight;
+            }
+        }
+
+        for (int i = left; i <= right; i++) {
+            returnProfiles.addAll(values.get(i).getValue());
+        }
+
+        return returnProfiles;
     }
 
     /**
@@ -131,6 +157,7 @@ public class DSSortedArray implements DataStructure {
      * @param profileData data of new profile
      * @return uuid of new profile
      */
+
     public UUID insert(Map<String, String> profileData) {
         // null check
         if (profileData == null) {
@@ -142,7 +169,8 @@ public class DSSortedArray implements DataStructure {
             // add new profile to profiles
             profiles.put(newProfile.uuid, newProfile);
             // add profile to thirdPartyIDs
-            addProfileToThirtPartyIDs(newProfile);
+            addProfileToThirdPartyIDsMap(newProfile);
+            addProfileToThirdPartyIDsMap(newProfile);
             return newProfile.uuid;
         } else {
             return null;
@@ -160,14 +188,13 @@ public class DSSortedArray implements DataStructure {
         // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();
-        }
-        else if (profileData == null) {
+        } else if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }
 
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
-            addProfileToThirtPartyIDs(profiles.get(uuid));
+            addProfileToThirdPartyIDsMap(profiles.get(uuid));
             return true;
         } else {
             return false;
@@ -197,9 +224,9 @@ public class DSSortedArray implements DataStructure {
                     profile.update(this.schema)
             );
             // change HashMap of thirdPartyIDs
-            this.thirdPartyIDs.clear();
+            this.thirdPartyIDsMap.clear();
             profiles.forEach((u, p) ->
-                    addProfileToThirtPartyIDs(p)
+                    addProfileToThirdPartyIDsMap(p)
             );
             return true;
         } else {
@@ -211,40 +238,41 @@ public class DSSortedArray implements DataStructure {
         return this.schema.add(schema, thirdPartyIDs);
     }
 
-    /**
-     * Adds profile to thirdPartyIDs. Therefore every third-party-ID in profileData of profile will be add to thirdPartyIDs,
-     * and gets a HashMap, that map value of third-party-ID to a Set of profiles, as value
-     *
-     * @param p profile p which should be add to thirdPartyIDs
-     */
-    private void addProfileToThirtPartyIDs(Profile p) {
-        //
+    private void addProfileToThirdPartyIDsMap(Profile p) {
         p.profileData.forEach((k, v) -> {
             if (schema.getThirdPartyIDs().contains(k)) {
-                Map<String, Set<Profile>> kList = this.thirdPartyIDs.get(k);
-                //does the Map for third-party-id k exists in thirdPartyIDs?
+                Map<String, Pair<String, Set<Profile>>> kList = this.thirdPartyIDsMap.get(k);
                 if (kList == null) {
-                    //create  Map of Sets (valueOfThirdPartyID->uuids), add
                     Set<Profile> s = new HashSet<>();
-                    Map<String, Set<Profile>> m = new HashMap<>();
                     s.add(p);
-                    m.put(v, s);
-                    this.thirdPartyIDs.put(k, m);
+                    Pair<String, Set<Profile>> pair = createPairAndAddItToSortedArray(k, v, s);
+                    Map<String, Pair<String, Set<Profile>>> m = new HashMap<>();
+                    m.put(v, pair);
+                    this.thirdPartyIDsMap.put(k, m);
                 } else {
-                    Set<Profile> sList = kList.get(v);
-                    //does an entry for value v of third-party-id k exists?
+                    Pair<String, Set<Profile>> sList = kList.get(v);
                     if (sList == null) {
                         //create Set uuids
                         Set<Profile> s = new HashSet<>();
                         s.add(p);
-                        kList.put(v, s);
+                        Pair<String, Set<Profile>> pair = createPairAndAddItToSortedArray(k, v, s);
+                        kList.put(v, pair);
                     } else {
-                        //add uuid of profile to third-party-IDs(k)-> value(v)-> uuids
-                        kList.get(v).add(p);
+                        sList.getValue().add(p);
                     }
                 }
             }
         });
+    }
+
+    private Pair<String, Set<Profile>> createPairAndAddItToSortedArray(String thirdPartyId, String value,
+            Set<Profile> profiles) {
+        Pair<String, Set<Profile>> pair = new Pair<>(value, profiles);
+        ArrayList<Pair<String, Set<Profile>>> values =
+                thirdPartyIDsArray.computeIfAbsent(thirdPartyId, k -> new ArrayList<>());
+        values.add(pair);
+        values.sort(Comparator.comparing(Pair::getKey));
+        return pair;
     }
 
 }

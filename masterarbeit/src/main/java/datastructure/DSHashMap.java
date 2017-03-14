@@ -141,7 +141,7 @@ public class DSHashMap implements DataStructure {
             // add new profile to profiles
             profiles.put(newProfile.uuid, newProfile);
             // add profile to thirdPartyIDs
-            addProfileToThirtPartyIDs(newProfile);
+            addProfileToThirdPartyIDs(newProfile);
             return newProfile.uuid;
         } else {
             return null;
@@ -166,7 +166,7 @@ public class DSHashMap implements DataStructure {
 
         if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
             profiles.get(uuid).profileData.putAll(profileData);
-            addProfileToThirtPartyIDs(profiles.get(uuid));
+            addProfileToThirdPartyIDs(profiles.get(uuid));
             return true;
         } else {
             return false;
@@ -198,7 +198,7 @@ public class DSHashMap implements DataStructure {
             // change HashMap of thirdPartyIDs
             this.thirdPartyIDs.clear();
             profiles.forEach((u, p) ->
-                    addProfileToThirtPartyIDs(p)
+                    addProfileToThirdPartyIDs(p)
             );
             return true;
         } else {
@@ -216,7 +216,7 @@ public class DSHashMap implements DataStructure {
      *
      * @param p profile p which should be add to thirdPartyIDs
      */
-    private void addProfileToThirtPartyIDs(Profile p) {
+    private void addProfileToThirdPartyIDs(Profile p) {
         //
         p.profileData.forEach((k, v) -> {
             if (schema.getThirdPartyIDs().contains(k)) {
@@ -239,7 +239,7 @@ public class DSHashMap implements DataStructure {
                         kList.put(v, s);
                     } else {
                         //add uuid of profile to third-party-IDs(k)-> value(v)-> uuids
-                        kList.get(v).add(p);
+                        sList.add(p);
                     }
                 }
             }
