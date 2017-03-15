@@ -144,8 +144,10 @@ public class DSSortedArray implements DataStructure {
             }
         }
 
+
         for (int i = left; i <= right; i++) {
             returnProfiles.addAll(values.get(i).getValue());
+            //values.get(i).getValue().forEach(p -> System.out.println(p.getProfileData().get("Name")));
         }
 
         return returnProfiles;
@@ -270,8 +272,40 @@ public class DSSortedArray implements DataStructure {
         Pair<String, Set<Profile>> pair = new Pair<>(value, profiles);
         ArrayList<Pair<String, Set<Profile>>> values =
                 thirdPartyIDsArray.computeIfAbsent(thirdPartyId, k -> new ArrayList<>());
-        values.add(pair);
-        values.sort(Comparator.comparing(Pair::getKey));
+
+        // old
+        //values.add(pair);
+        //values.sort(Comparator.comparing(Pair::getKey));
+
+        if (values.isEmpty()) {
+            values.add(pair);
+        } else {
+            int left = 0;
+            int right = values.size() - 1;
+            int index;
+            while (right - left > 1) {
+                index = (left + right) / 2;
+                if (values.get(index).getKey().compareTo(value) > 0) {
+                    right = index;
+                } else if (values.get(index).getKey().compareTo(value) < 0) {
+                    left = index;
+                }
+            }
+            if (values.get(left).getKey().compareTo(value) > 0) {
+                index = left;
+            } else {
+                index = left + 1;
+            }
+
+            values.add(index, pair);
+        }
+        /*
+        System.out.println("Sortieren: ");
+        values.forEach(v -> {
+            System.out.println(v.getKey());
+        });
+        */
+
         return pair;
     }
 

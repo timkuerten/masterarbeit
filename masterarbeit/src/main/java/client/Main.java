@@ -8,23 +8,23 @@ public class Main {
 
     private static void startScenario() {
         int i = 2;
-        ScenarioTest scenario;
+        ScenarioBenchmarks scenario;
 
         switch (i) {
             case 0:
-                scenario = new ScenarioTest("DSUnsorted");
+                scenario = new ScenarioBenchmarks("DSUnsorted");
                 break;
             case 1:
-                scenario = new ScenarioTest("DSHashMap");
+                scenario = new ScenarioBenchmarks("DSHashMap");
                 break;
             case 2:
-                scenario = new ScenarioTest("DSSortedArray");
+                scenario = new ScenarioBenchmarks("DSSortedArray");
                 break;
             default:
-                scenario = new ScenarioTest("DSUnsorted");
+                scenario = new ScenarioBenchmarks("DSUnsorted");
                 break;
         }
-        scenario.run(1000, 10);
+        scenario.run(1000, 100);
     }
 
 }

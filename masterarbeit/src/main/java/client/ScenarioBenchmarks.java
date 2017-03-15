@@ -7,14 +7,14 @@ import datastructure.DataStructure;
 
 import java.util.*;
 
-public class ScenarioTest extends AbstractScenario {
+public class ScenarioBenchmarks extends AbstractScenario {
 
     private TimeSaverManager timeSaverManager;
 
     /**
      * @param dataStructure what data structure is used? Needed to use data structure with this name.
      */
-    public ScenarioTest(String dataStructure) {
+    public ScenarioBenchmarks(String dataStructure) {
         super();
         //create schema
         schema.addAll(Arrays.asList("Name", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
@@ -62,7 +62,6 @@ public class ScenarioTest extends AbstractScenario {
     @Override
     public void run(int profiles, int iterations) {
         List<UUID> uuids = new ArrayList<>(insertProfiles(profiles));
-        //uuids.iterator().next()
         getProfileByUuid(uuids, iterations);
         getProfilesByThirdPartyID("Name", "Runfried Mühlberger", iterations);
         getProfilesByRange("Name", "Raa", "Rzz", iterations);
