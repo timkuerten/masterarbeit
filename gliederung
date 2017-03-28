@@ -1,0 +1,31 @@
+Motivation
+(Big Data, Intuit, Apache Cassandra (NoSQL-DBMS), Profildaten, preiswerter Hauptspeicher, in-memory, Bereichsanfragen)
+
+Anforderungen an die Datenstruktur
+(Profile erstellen; Profildaten ändern; nach Profilen suchen (ID, Third-Party-ID, Bereichsanfrage tpID); Schema ändern)
+
+Technische Anforderungen an die Indexstruktur
+(Verwaltung von Profilen; bereitstellen von Methoden zum einfügen, ändern und suchen von Profilen; Verwaltung vom Schema)
+
+In-memory Datenbanken
+(Beschreibung, Vor- und Nachteile gegenüber herkömmlichen DBMS; feature work; scope)
+
+Indexdatenstrukturen
+(Index, HashMaps, naive DS, welche habe ich mir angeguckt, warum?)
+
+k-d-Baum
+(Einleitung, Definition, Eigenschaften, Beweis der Eigenschaften, Implementierung, Fazit)
+
+cross-tree
+(Beschreibung)
+
+Implementierung
+(kd-Baum, cross-tree)
+
+Testumgebung
+
+Benchmarks
+
+Auswertung
+
+Fazit
