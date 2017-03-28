@@ -18,7 +18,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
         super();
         //create schema
         schema.addAll(Arrays.asList("Name", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
-        thirdPartyIDs.add("Name");
+        thirdPartyIDs.add("Alter");
         DataStructure ds;
         switch (dataStructure) {
             case "DSUnsorted":
@@ -63,8 +63,12 @@ public class ScenarioBenchmarks extends AbstractScenario {
     public void run(int profiles, int iterations) {
         List<UUID> uuids = new ArrayList<>(insertProfiles(profiles));
         getProfileByUuid(uuids, iterations);
-        getProfilesByThirdPartyID("Name", "Runfried Mühlberger", iterations);
-        getProfilesByRange("Name", "Raa", "Rzz", iterations);
+        //getProfilesByThirdPartyID("Name", "Runfried Mühlberger", iterations);
+        getProfilesByThirdPartyID("Alter", "20", iterations);
+        //getProfilesByRange("Name", "Olaf John", "Stilla Gille", iterations);
+        //System.out.println("--------------------------");
+        //getProfilesByRange("Name", "Raa", "Rzz", iterations);
+        getProfilesByRange("Alter", "20", "22", iterations);
         Map<String, String> profileData = new HashMap<>();
         profileData.put("Name", "Ralf Schmidt");
         profileData.put("Straße", "Bruchfeldweg");
@@ -77,7 +81,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
         thirdPartyIDs.add("b");
         addSchema(schema, thirdPartyIDs, iterations);
         changeSchema(schema, thirdPartyIDs, iterations);
-        //System.out.println(timeSaverManager.printOutTimeSavers());
+        System.out.println(timeSaverManager.printOutTimeSavers());
     }
 
 }

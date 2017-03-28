@@ -105,45 +105,14 @@ public class DSSortedArray implements DataStructure {
         int right = arraySize - 1;
 
         if (minValue != null) {
-            int lLeft = 0;
-            int rLeft = arraySize - 1;
-            while (rLeft - lLeft > 1) {
-                left = (lLeft + rLeft) / 2;
-                if (values.get(left).getKey().compareTo(minValue) > 0) {
-                    rLeft = left;
-                } else if (values.get(left).getKey().compareTo(minValue) < 0) {
-                    lLeft = left;
-                } else {
-                    break;
-                }
-                if (values.get(lLeft).getKey().compareTo(minValue) < 0) {
-                    left = rLeft;
-                } else {
-                    left = rLeft;
-                }
+            left = indexOf(values, minValue);
+            if (values.get(left).getKey().compareTo(minValue) < 0) {
+                left = left + 1;
             }
         }
-
         if (maxValue != null) {
-            int lRight = left;
-            int rRight = arraySize - 1;
-            while (rRight - lRight > 1) {
-                right = (lRight + rRight) / 2;
-                if (values.get(right).getKey().compareTo(maxValue) > 0) {
-                    rRight = right;
-                } else if (values.get(right).getKey().compareTo(maxValue) < 0) {
-                    lRight = right;
-                } else {
-                    break;
-                }
-            }
-            if (values.get(rRight).getKey().compareTo(maxValue) > 0) {
-                right = lRight;
-            } else {
-                right = rRight;
-            }
+            right = indexOf(values, maxValue, left, values.size() - 1);
         }
-
 
         for (int i = left; i <= right; i++) {
             returnProfiles.addAll(values.get(i).getValue());
@@ -280,23 +249,10 @@ public class DSSortedArray implements DataStructure {
         if (values.isEmpty()) {
             values.add(pair);
         } else {
-            int left = 0;
-            int right = values.size() - 1;
-            int index;
-            while (right - left > 1) {
-                index = (left + right) / 2;
-                if (values.get(index).getKey().compareTo(value) > 0) {
-                    right = index;
-                } else if (values.get(index).getKey().compareTo(value) < 0) {
-                    left = index;
-                }
+            int index = indexOf(values, value);
+            if (values.get(index).getKey().compareTo(value) < 0) {
+                index = index + 1;
             }
-            if (values.get(left).getKey().compareTo(value) > 0) {
-                index = left;
-            } else {
-                index = left + 1;
-            }
-
             values.add(index, pair);
         }
         /*
@@ -305,8 +261,29 @@ public class DSSortedArray implements DataStructure {
             System.out.println(v.getKey());
         });
         */
-
         return pair;
+    }
+
+    private static int indexOf(ArrayList<Pair<String, Set<Profile>>> a, String key) {
+        return indexOf(a, key, 0, a.size() - 1);
+    }
+
+    private static int indexOf(ArrayList<Pair<String, Set<Profile>>> a, String key, int left, int right) {
+        int lo = left;
+        int hi = right;
+        int mid = 0;
+        while (lo <= hi) {
+            // Key is in a[lo..hi] or not present.
+            mid = lo + (hi - lo) / 2;
+            if (key.compareTo(a.get(mid).getKey()) < 0) {
+                hi = mid - 1;
+            } else if (key.compareTo(a.get(mid).getKey()) > 0) {
+                lo = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        return mid;
     }
 
 }

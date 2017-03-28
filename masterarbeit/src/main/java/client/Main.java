@@ -24,7 +24,7 @@ public class Main {
                 scenario = new ScenarioBenchmarks("DSUnsorted");
                 break;
         }
-        scenario.run(1000, 100);
+        scenario.run(100000, 100);
     }
 
 }
