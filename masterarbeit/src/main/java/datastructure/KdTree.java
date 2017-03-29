@@ -269,9 +269,9 @@ public class KdTree {
     }
 
     private int compareToRange(String minValue, String maxValue, String input) {
-        if (input.compareTo(minValue) < 0) {
+        if (minValue != null && input.compareTo(minValue) < 0) {
             return -1;
-        } else if (input.compareTo(maxValue) > 0) {
+        } else if (maxValue != null && input.compareTo(maxValue) > 0) {
             return 1;
         } else {
             return 0;
