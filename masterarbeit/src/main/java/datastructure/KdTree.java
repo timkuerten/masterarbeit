@@ -18,6 +18,10 @@ public class KdTree {
         }
     }
 
+    private int incrementCd(int cd) {
+        return (cd + 1) % coordinates.length;
+    }
+
     public KdNode insert(Profile profile) {
         if (root != null) {
             return insert(profile, root, 0);
@@ -35,14 +39,14 @@ public class KdTree {
             return t;
         } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
             if (t.left != null) {
-                return insert(profile, t.left, (cd + 1) % coordinates.length);
+                return insert(profile, t.left, incrementCd(cd));
             } else {
                 t.left = new KdNode(profile, coordinates, t);
                 return t.left;
             }
         } else {
             if (t.right != null) {
-                return insert(profile, t.right, (cd + 1) % coordinates.length);
+                return insert(profile, t.right, incrementCd(cd));
             } else {
                 t.right = new KdNode(profile, coordinates, t);
                 return t.right;
@@ -151,21 +155,22 @@ public class KdTree {
         if (t == null) {
             return new HashSet<>();
         } else if (cd == dim) {
-            if (value.compareTo(t.coordinateValues[dim]) < 0) {
-                return get(t.left, dim, value, (cd + 1) % coordinates.length);
+            int comparison = value.compareTo(t.getValue(dim));
+            if (comparison < 0) {
+                return get(t.left, dim, value, incrementCd(cd));
             } else {
-                Set<Profile> returnValue = get(t.right, dim, value, (cd + 1) % coordinates.length);
-                if (value.compareTo(t.coordinateValues[dim]) == 0) {
+                Set<Profile> returnValue = get(t.right, dim, value, incrementCd(cd));
+                if (comparison == 0) {
                     returnValue.addAll(t.profiles);
                 }
                 return returnValue;
             }
         } else {
-            Set<Profile> returnValue = get(t.left, dim, value, (cd + 1) % coordinates.length);
-            if (value.compareTo(t.coordinateValues[dim]) == 0) {
+            Set<Profile> returnValue = get(t.left, dim, value, incrementCd(cd));
+            if (value.compareTo(t.getValue(dim)) == 0) {
                 returnValue.addAll(t.profiles);
             }
-            returnValue.addAll(get(t.right, dim, value, (cd + 1) % coordinates.length));
+            returnValue.addAll(get(t.right, dim, value, incrementCd(cd)));
             return returnValue;
         }
     }
@@ -193,7 +198,8 @@ public class KdTree {
             List<KdNode> tempKdNodes = new ArrayList<>();
             for (KdNode kdNode : kdNodes) {
                 if (cd == dim) {
-                    if (value.compareTo(kdNode.coordinateValues[dim]) < 0) {
+                    int comparison = value.compareTo(kdNode.coordinateValues[dim]);
+                    if (comparison < 0) {
                         if (kdNode.left != null) {
                             tempKdNodes.add(kdNode.left);
                         }
@@ -201,7 +207,7 @@ public class KdTree {
                         if (kdNode.right != null) {
                             tempKdNodes.add(kdNode.right);
                         }
-                        if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
+                        if (comparison == 0) {
                             profiles.addAll(kdNode.profiles);
                         }
                     }
@@ -217,7 +223,7 @@ public class KdTree {
                     }
                 }
             }
-            cd = (cd + 1) % coordinates.length;
+            cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
         return profiles;
@@ -244,23 +250,23 @@ public class KdTree {
         if (t == null) {
             return new HashSet<>();
         } else if (cd == dim) {
-            int comparison = compareToRange(minValue, maxValue, t.coordinateValues[dim]);
+            int comparison = compareToRange(minValue, maxValue, t.getValue(dim));
             if (comparison < 0) {
-                return get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+                return get(t.right, dim, minValue, maxValue, incrementCd(cd));
             } else if (comparison > 0) {
-                return get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+                return get(t.left, dim, minValue, maxValue, incrementCd(cd));
             } else {
-                Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+                Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, incrementCd(cd));
                 returnValue.addAll(t.profiles);
-                returnValue.addAll(get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length));
+                returnValue.addAll(get(t.right, dim, minValue, maxValue, incrementCd(cd)));
                 return returnValue;
             }
         } else {
-            Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
-            if (compareToRange(minValue, maxValue, t.coordinateValues[dim]) == 0) {
+            Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, incrementCd(cd));
+            if (compareToRange(minValue, maxValue, t.getValue(dim)) == 0) {
                 returnValue.addAll(t.profiles);
             }
-            returnValue.addAll(get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length));
+            returnValue.addAll(get(t.right, dim, minValue, maxValue, incrementCd(cd)));
             return returnValue;
         }
     }
@@ -303,9 +309,9 @@ public class KdTree {
             }
             return true;
         } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return deleteProfile(profile, t.left, (cd + 1) % coordinates.length);
+            return deleteProfile(profile, t.left, incrementCd(cd));
         } else {
-            return deleteProfile(profile, t.right, (cd + 1) % coordinates.length);
+            return deleteProfile(profile, t.right, incrementCd(cd));
         }
     }
 
@@ -322,9 +328,9 @@ public class KdTree {
         } else if (sameData(profileData, t)) {
             return t;
         } else if (profileData.get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return findNode(profileData, t.left, (cd + 1) % coordinates.length);
+            return findNode(profileData, t.left, incrementCd(cd));
         } else {
-            return findNode(profileData, t.right, (cd + 1) % coordinates.length);
+            return findNode(profileData, t.right, incrementCd(cd));
         }
     }
 
@@ -348,21 +354,21 @@ public class KdTree {
             if (t.left == null) {
                 return new Pair<>(t, cd);
             } else {
-                return findMin(t.left, dim, (cd + 1) % coordinates.length);
+                return findMin(t.left, dim, incrementCd(cd));
             }
         } else {
             if (t.left == null) {
                 if (t.right == null) {
                     return new Pair<>(t, cd);
                 } else {
-                    return min(findMin(t.parent, dim, (cd + 1) % coordinates.length), t, dim, cd);
+                    return min(findMin(t.parent, dim, incrementCd(cd)), t, dim, cd);
                 }
             } else {
                 if (t.right == null) {
-                    return min(findMin(t.left, dim, (cd + 1) % coordinates.length), t, dim, cd);
+                    return min(findMin(t.left, dim, incrementCd(cd)), t, dim, cd);
                 } else {
-                    return min(findMin(t.left, dim, (cd + 1) % coordinates.length),
-                            findMin(t.right, dim, (cd + 1) % coordinates.length), t, dim, cd);
+                    return min(findMin(t.left, dim, incrementCd(cd)),
+                            findMin(t.right, dim, incrementCd(cd)), t, dim, cd);
                 }
             }
         }
@@ -370,17 +376,17 @@ public class KdTree {
 
     private Pair<KdNode, Integer> min(Pair<KdNode, Integer> p1, Pair<KdNode, Integer> p2, KdNode t, int dim, int cd) {
         if (p1.getKey().coordinateValues[dim].compareTo(p2.getKey().coordinateValues[dim]) < 0) {
-            if (p1.getKey().coordinateValues[dim].compareTo(t.coordinateValues[dim]) < 0) {
+            if (p1.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
                 return p1;
             }
-        } else if (p2.getKey().coordinateValues[dim].compareTo(t.coordinateValues[dim]) < 0) {
+        } else if (p2.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
             return p2;
         }
         return new Pair<>(t, cd);
     }
 
     private Pair<KdNode, Integer> min(Pair<KdNode, Integer> p1, KdNode t, int dim, int cd) {
-        if (p1.getKey().coordinateValues[dim].compareTo(t.coordinateValues[dim]) < 0) {
+        if (p1.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
             return p1;
         }
         return new Pair<>(t, cd);
@@ -391,7 +397,7 @@ public class KdTree {
             throw new NullPointerException("Node cannot be null");
         }
 
-        int nextCd = (cd + 1) % coordinates.length;
+        int nextCd = incrementCd(cd);
         if (t.right != null) {
             // find
             Pair<KdNode, Integer> kdNode = findMin(t.right, cd, nextCd);

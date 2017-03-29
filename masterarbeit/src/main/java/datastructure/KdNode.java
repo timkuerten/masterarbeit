@@ -24,6 +24,14 @@ public class KdNode {
         this.parent = parent;
     }
 
+    public String getValue(int i) {
+        if (i < coordinateValues.length) {
+            return coordinateValues[i];
+        } else {
+            throw new ArrayIndexOutOfBoundsException("Index for coordinateValues is out of bounds");
+        }
+    }
+
     public void copyData(KdNode t) {
         coordinateValues = t.coordinateValues;
         profiles = t.profiles;
