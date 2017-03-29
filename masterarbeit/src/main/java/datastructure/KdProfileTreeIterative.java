@@ -443,39 +443,43 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return new Pair<>(t, cd);
     }
 
-    // TODO: rekursiv -> iterative
     private boolean deleteNode(KdNode t, int cd) {
         if (t == null) {
             throw new NullPointerException("Node cannot be null");
         }
-
-        int nextCd = incrementCd(cd);
-        if (t.right != null) {
-            // find
-            Pair<KdNode, Integer> kdNode = findMin(t.right, cd, nextCd);
-            // copy
-            t.copyData(kdNode.getKey());
-            // delete
-            return deleteNode(kdNode.getKey(), kdNode.getValue());
-        } else if (t.left != null) {
-            // find
-            Pair<KdNode, Integer> kdNode = findMin(t.left, cd, nextCd);
-            // copy
-            t.copyData(kdNode.getKey());
-            // delete
-            return deleteNode(kdNode.getKey(), kdNode.getValue());
-        } else {
-            if (t == root) {
-                root = null;
+        KdNode kdNode = t;
+        int newCd = cd;
+        while (true) {
+            if (kdNode.right != null) {
+                // find
+                Pair<KdNode, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
+                // copy
+                kdNode.copyData(tempKdNode.getKey());
+                // delete
+                kdNode = tempKdNode.getKey();
+                cd = tempKdNode.getValue();
+            } else if (kdNode.left != null) {
+                // find
+                Pair<KdNode, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
+                // copy
+                kdNode.copyData(tempKdNode.getKey());
+                // delete
+                kdNode = tempKdNode.getKey();
+                cd = tempKdNode.getValue();
             } else {
-                if (t.parent.left == t) {
-                    t.parent.left = null;
+                if (kdNode == root) {
+                    root = null;
                 } else {
-                    t.parent.right = null;
+                    if (kdNode.parent.left == kdNode) {
+                        kdNode.parent.left = null;
+                    } else {
+                        kdNode.parent.right = null;
+                    }
                 }
+                return true;
             }
-            return true;
         }
+
     }
 
     public KdNode updateProfile(Profile profile, Map<String, String> profileData) {
