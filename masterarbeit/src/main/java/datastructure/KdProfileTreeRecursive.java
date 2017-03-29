@@ -4,12 +4,12 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class KdTree {
+public class KdProfileTreeRecursive implements KdProfileTree {
 
     private String[] coordinates;
     private KdNode root;
 
-    public KdTree(Set<String> coordinates) {
+    public KdProfileTreeRecursive(Set<String> coordinates) {
         this.coordinates = new String[coordinates.size()];
         int i = 0;
         for (String coordinate : coordinates) {
@@ -22,6 +22,7 @@ public class KdTree {
         return (cd + 1) % coordinates.length;
     }
 
+    @Override
     public KdNode insert(Profile profile) {
         if (root != null) {
             return insert(profile, root, 0);
@@ -54,6 +55,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public void insert(Set<Profile> profiles) {
         // TODO:
 
@@ -65,6 +67,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public boolean contains(Profile profile) {
         KdNode kdNode = findNode(profile.getProfileData());
         if (kdNode != null) {
@@ -87,6 +90,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public Profile get(UUID uuid) {
         return get(uuid, root);
     }
@@ -137,6 +141,7 @@ public class KdTree {
         return null;
     }
 
+    @Override
     public Set<Profile> get(String thirdPartyID, String value) {
         if (root == null) {
             return Collections.emptySet();
@@ -231,6 +236,7 @@ public class KdTree {
         return -1;
     }
 
+    @Override
     public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
         if (root == null) {
             return Collections.emptySet();
@@ -321,6 +327,7 @@ public class KdTree {
         return profiles;
     }
 
+    @Override
     public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
         if (root == null || searchValues == null) {
             return Collections.emptySet();
@@ -489,6 +496,7 @@ public class KdTree {
         return true;
     }
 
+    @Override
     public boolean delete(Profile profile) {
         return deleteProfile(profile, root, 0);
     }
@@ -510,6 +518,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public KdNode findNode(Map<String, String> profileData) {
         if (profileData.size() != coordinates.length || root == null) {
             return null;
@@ -529,6 +538,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public String findMin(String thirdPartyID) {
         int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
@@ -616,6 +626,7 @@ public class KdTree {
         }
     }
 
+    @Override
     public KdNode updateProfile(Profile profile, Map<String, String> profileData) {
         delete(profile);
         profile.profileData = profileData;
