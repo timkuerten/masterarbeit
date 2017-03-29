@@ -268,6 +268,60 @@ public class KdTree {
         }
     }
 
+    // iterative
+    public Set<Profile> get2(String thirdPartyID, String minValue, String maxValue) {
+        if (root == null) {
+            return Collections.emptySet();
+        }
+        int dim = giveDimension(thirdPartyID);
+        if (dim < 0) {
+            return Collections.emptySet();
+        }
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                if (cd == dim) {
+                    int comparison = compareToRange(minValue, maxValue, kdNode.getValue(dim));
+                    if (comparison < 0) {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    } else if (comparison > 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        profiles.addAll(kdNode.profiles);
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    }
+                } else {
+                    if (compareToRange(minValue, maxValue, kdNode.getValue(dim)) == 0) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
+                }
+            }
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
+        }
+        return profiles;
+
+    }
+
     private int compareToRange(String minValue, String maxValue, String input) {
         if (minValue != null && input.compareTo(minValue) < 0) {
             return -1;

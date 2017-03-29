@@ -166,11 +166,11 @@ public class KdTreeTest {
     public void getProfilesByRange2() {
         Set<Profile> ps = new HashSet<>(
                 Arrays.asList(profiles[0], profiles[2], profiles[7]));
-        assertThat(kdTree.get("b", "3", "6").containsAll(ps), is(true));
+        assertThat(kdTree.get2("b", "3", "6").containsAll(ps), is(true));
     }
 
     @Test
-    public void getProfilesByRange3() {
+    public void getProfilesByRangeOneSideOpen() {
         Set<Profile> ps = new HashSet<>(
                 Arrays.asList(profiles[0], profiles[1], profiles[2], profiles[4], profiles[6], profiles[7], profiles[8],
                         profiles[9]));
