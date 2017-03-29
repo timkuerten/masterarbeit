@@ -95,7 +95,7 @@ public class KdTree {
     private Profile get(UUID uuid, KdNode t) {
         if (t == null) {
             return null;
-        } else  {
+        } else {
             // is any profile with uuid in t.profiles?
             for (Profile profile : t.profiles) {
                 if (profile.getUuid() == uuid) {
@@ -113,6 +113,9 @@ public class KdTree {
 
     // iterative
     public Profile get2(UUID uuid) {
+        if (root == null) {
+            return null;
+        }
         List<KdNode> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         KdNode kdNode;
@@ -138,12 +141,7 @@ public class KdTree {
         if (root == null) {
             return Collections.emptySet();
         }
-        int dim = -1;
-        for (int i = 0; i < coordinates.length; i++) {
-            if (coordinates[i].compareTo(thirdPartyID) == 0) {
-                dim = i;
-            }
-        }
+        int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return Collections.emptySet();
         }
@@ -180,12 +178,7 @@ public class KdTree {
         if (root == null) {
             return Collections.emptySet();
         }
-        int dim = -1;
-        for (int i = 0; i < coordinates.length; i++) {
-            if (coordinates[i].compareTo(thirdPartyID) == 0) {
-                dim = i;
-            }
-        }
+        int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return Collections.emptySet();
         }
@@ -229,16 +222,20 @@ public class KdTree {
         return profiles;
     }
 
+    private int giveDimension(String thirdPartyID) {
+        for (int i = 0; i < coordinates.length; i++) {
+            if (coordinates[i].compareTo(thirdPartyID) == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
         if (root == null) {
             return Collections.emptySet();
         }
-        int dim = -1;
-        for (int i = 0; i < coordinates.length; i++) {
-            if (coordinates[i].compareTo(thirdPartyID) == 0) {
-                dim = i;
-            }
-        }
+        int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return Collections.emptySet();
         }
@@ -334,13 +331,8 @@ public class KdTree {
         }
     }
 
-    public String findMin(String string) {
-        int dim = -1;
-        for (int i = 0; i < coordinates.length; i++) {
-            if (coordinates[i].compareTo(string) == 0) {
-                dim = i;
-            }
-        }
+    public String findMin(String thirdPartyID) {
+        int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return null;
         }
