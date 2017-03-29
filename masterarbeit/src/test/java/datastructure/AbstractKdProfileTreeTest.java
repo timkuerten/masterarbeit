@@ -71,6 +71,18 @@ abstract public class AbstractKdProfileTreeTest {
     }
 
     @Test
+    public void findMinSame() {
+        profilesData.add(createProfileData("2", "4"));
+        profilesData.add(createProfileData("2", "1"));
+        Profile profile10 = createProfile(profilesData.get(10));
+        Profile profile11 = createProfile(profilesData.get(11));
+        kdProfileTree.insert(profile10);
+        kdProfileTree.insert(profile11);
+
+        assertThat(kdProfileTree.findMin("a").equals(profiles[2].getProfileData().get("a")), is(true));
+    }
+
+    @Test
     public void deleteProfileInList() {
         Profile profile = profiles[0];
         assertThat(kdProfileTree.contains(profile), is(true));

@@ -27,6 +27,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
             root = new KdNode(profile, coordinates, null);
             return root;
         }
+
         Set<KdNode> kdNodes = new HashSet<>();
         kdNodes.add(root);
         int cd = 0;
@@ -51,6 +52,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     }
                 }
             }
+
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
@@ -70,12 +72,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
 
     public boolean contains(Profile profile) {
         KdNode kdNode = findNode(profile.getProfileData());
-        if (kdNode != null) {
-            if (kdNode.profiles.contains(profile)) {
-                return true;
-            }
-        }
-        return false;
+        return kdNode != null && kdNode.profiles.contains(profile);
     }
 
     // old
@@ -96,6 +93,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         if (root == null) {
             return null;
         }
+
         List<KdNode> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         KdNode kdNode;
@@ -109,11 +107,14 @@ public class KdProfileTreeIterative implements KdProfileTree {
             if (kdNode.left != null) {
                 kdNodes.add(kdNode.left);
             }
+
             if (kdNode.right != null) {
                 kdNodes.add(kdNode.right);
             }
+
             kdNodes.remove(kdNode);
         }
+
         return null;
     }
 
@@ -121,6 +122,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         if (root == null) {
             return Collections.emptySet();
         }
+
         int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return Collections.emptySet();
@@ -143,6 +145,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
                         if (kdNode.right != null) {
                             tempKdNodes.add(kdNode.right);
                         }
+
                         if (comparison == 0) {
                             profiles.addAll(kdNode.profiles);
                         }
@@ -151,14 +154,17 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
                         profiles.addAll(kdNode.profiles);
                     }
+
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     }
+
                     if (kdNode.right != null) {
                         tempKdNodes.add(kdNode.right);
                     }
                 }
             }
+
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
@@ -178,10 +184,12 @@ public class KdProfileTreeIterative implements KdProfileTree {
         if (root == null) {
             return Collections.emptySet();
         }
+
         int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return Collections.emptySet();
         }
+
         List<KdNode> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<Profile> profiles = new HashSet<>();
@@ -204,6 +212,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
                         if (kdNode.left != null) {
                             tempKdNodes.add(kdNode.left);
                         }
+
                         if (kdNode.right != null) {
                             tempKdNodes.add(kdNode.right);
                         }
@@ -212,14 +221,17 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     if (compareToRange(minValue, maxValue, kdNode.getValue(dim)) == 0) {
                         profiles.addAll(kdNode.profiles);
                     }
+
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     }
+
                     if (kdNode.right != null) {
                         tempKdNodes.add(kdNode.right);
                     }
                 }
             }
+
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
@@ -230,6 +242,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         if (root == null || searchValues2 == null) {
             return Collections.emptySet();
         }
+
         Set<Triple<Integer, String, String>> searchValues = new HashSet<>();
         for (Triple<String, String, String> searchValue : searchValues2) {
             int dim = giveDimension(searchValue.getFirst());
@@ -269,9 +282,11 @@ public class KdProfileTreeIterative implements KdProfileTree {
                         if (isInMultiRange(searchValues, kdNode)) {
                             profiles.addAll(kdNode.profiles);
                         }
+
                         if (kdNode.left != null) {
                             tempKdNodes.add(kdNode.left);
                         }
+
                         if (kdNode.right != null) {
                             tempKdNodes.add(kdNode.right);
                         }
@@ -280,14 +295,17 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     if (isInMultiRange(searchValues, kdNode)) {
                         profiles.addAll(kdNode.profiles);
                     }
+
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     }
+
                     if (kdNode.right != null) {
                         tempKdNodes.add(kdNode.right);
                     }
                 }
             }
+
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
@@ -335,6 +353,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -342,6 +361,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         if (profile == null) {
             return false;
         }
+
         KdNode kdNode = root;
         int cd = 0;
         while (true) {
@@ -364,6 +384,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     kdNode = kdNode.right;
                 }
             }
+
             cd = incrementCd(cd);
         }
     }
@@ -391,16 +412,17 @@ public class KdProfileTreeIterative implements KdProfileTree {
                     return null;
                 }
             }
+
             cd = incrementCd(cd);
         }
     }
 
-    // TODO: rekursiv -> iterative
     public String findMin(String thirdPartyID) {
         int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
             return null;
         }
+
         return findMin(root, dim, 0).getKey().coordinateValues[dim];
     }
 
@@ -408,52 +430,69 @@ public class KdProfileTreeIterative implements KdProfileTree {
     private Pair<KdNode, Integer> findMin(KdNode t, int dim, int cd) {
         if (t == null) {
             return null;
-        } else if (cd == dim) {
-            if (t.left == null) {
-                return new Pair<>(t, cd);
-            } else {
-                return findMin(t.left, dim, incrementCd(cd));
-            }
-        } else {
-            if (t.left == null) {
-                if (t.right == null) {
-                    return new Pair<>(t, cd);
+        }
+
+        Pair<KdNode, Integer> minPair = new Pair<>(t, cd);
+        Stack<Pair<KdNode, Integer>> pairStack = new Stack<>();
+        pairStack.add(minPair);
+        Pair<KdNode, Integer> pair;
+
+        while (!pairStack.isEmpty()) {
+            pair = pairStack.pop();
+
+            if (pair.getValue() == dim) {
+                if (pair.getKey().left == null) {
+                    if (pair.getKey().getValue(dim).compareTo(minPair.getKey().getValue(dim)) < 0) {
+                        minPair = new Pair<>(pair.getKey(), pair.getValue());
+                    }
                 } else {
-                    return min(findMin(t.parent, dim, incrementCd(cd)), t, dim, cd);
+                    pairStack.push(new Pair<>(pair.getKey().left, incrementCd(pair.getValue())));
                 }
             } else {
-                if (t.right == null) {
-                    return min(findMin(t.left, dim, incrementCd(cd)), t, dim, cd);
+                if (pair.getKey().left == null) {
+                    if (pair.getKey().right == null) {
+                        if (pair.getKey().getValue(dim).compareTo(minPair.getKey().getValue(dim)) < 0) {
+                            minPair = new Pair<>(pair.getKey(), pair.getValue());
+                        }
+                    } else {
+                        if (pair.getKey().getValue(dim).compareTo(minPair.getKey().getValue(dim)) < 0) {
+                            minPair = new Pair<>(pair.getKey(), pair.getValue());
+                        }
+
+                        if (pair.getKey().parent != null) {
+                            pairStack.push(new Pair<>(pair.getKey().right, incrementCd(cd)));
+                        }
+                    }
                 } else {
-                    return min(findMin(t.left, dim, incrementCd(cd)),
-                            findMin(t.right, dim, incrementCd(cd)), t, dim, cd);
+                    if (pair.getKey().right == null) {
+                        if (pair.getKey().getValue(dim).compareTo(minPair.getKey().getValue(dim)) < 0) {
+                            minPair = new Pair<>(pair.getKey(), pair.getValue());
+                        }
+
+                        if (pair.getKey().left != null) {
+                            pairStack.push(new Pair<>(pair.getKey().left, incrementCd(cd)));
+                        }
+                    } else {
+                        if (pair.getKey().getValue(dim).compareTo(minPair.getKey().getValue(dim)) < 0) {
+                            minPair = new Pair<>(pair.getKey(), pair.getValue());
+                        }
+
+                        if (pair.getKey().left != null) {
+                            pairStack.push(new Pair<>(pair.getKey().left, incrementCd(cd)));
+                        }
+                        pairStack.push(new Pair<>(pair.getKey().right, incrementCd(cd)));
+                    }
                 }
             }
         }
-    }
-
-    private Pair<KdNode, Integer> min(Pair<KdNode, Integer> p1, Pair<KdNode, Integer> p2, KdNode t, int dim, int cd) {
-        if (p1.getKey().coordinateValues[dim].compareTo(p2.getKey().coordinateValues[dim]) < 0) {
-            if (p1.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
-                return p1;
-            }
-        } else if (p2.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
-            return p2;
-        }
-        return new Pair<>(t, cd);
-    }
-
-    private Pair<KdNode, Integer> min(Pair<KdNode, Integer> p1, KdNode t, int dim, int cd) {
-        if (p1.getKey().coordinateValues[dim].compareTo(t.getValue(dim)) < 0) {
-            return p1;
-        }
-        return new Pair<>(t, cd);
+        return minPair;
     }
 
     private boolean deleteNode(KdNode t, int cd) {
         if (t == null) {
             throw new NullPointerException("Node cannot be null");
         }
+
         KdNode kdNode = t;
         int newCd = cd;
         while (true) {
@@ -483,10 +522,10 @@ public class KdProfileTreeIterative implements KdProfileTree {
                         kdNode.parent.right = null;
                     }
                 }
+
                 return true;
             }
         }
-
     }
 
     public KdNode updateProfile(Profile profile, Map<String, String> profileData) {
@@ -495,6 +534,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return insert(profile);
     }
 
+    // recursive
     @Override
     public String toString() {
         if (root == null) {
@@ -505,5 +545,3 @@ public class KdProfileTreeIterative implements KdProfileTree {
     }
 
 }
-
-
