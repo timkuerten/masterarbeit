@@ -22,37 +22,39 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return (cd + 1) % coordinates.length;
     }
 
-    // TODO: rekursiv -> iterative
     public KdNode insert(Profile profile) {
-        if (root != null) {
-            return insert(profile, root, 0);
-        } else {
+        if (root == null) {
             root = new KdNode(profile, coordinates, null);
             return root;
         }
-    }
-
-    private KdNode insert(Profile profile, KdNode t, int cd) {
-        if (t == null) {
-            throw new NullPointerException("Node cannot be null");
-        } else if (sameData(profile, t)) {
-            t.profiles.add(profile);
-            return t;
-        } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            if (t.left != null) {
-                return insert(profile, t.left, incrementCd(cd));
-            } else {
-                t.left = new KdNode(profile, coordinates, t);
-                return t.left;
+        Set<KdNode> kdNodes = new HashSet<>();
+        kdNodes.add(root);
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            Set<KdNode> tempKdNodes = new HashSet<>();
+            for (KdNode kdNode : kdNodes) {
+                if (sameData(profile, kdNode)) {
+                    kdNode.profiles.add(profile);
+                } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    } else {
+                        kdNode.left = new KdNode(profile, coordinates, kdNode);
+                        return kdNode.left;
+                    }
+                } else {
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    } else {
+                        kdNode.right = new KdNode(profile, coordinates, kdNode);
+                        return kdNode.right;
+                    }
+                }
             }
-        } else {
-            if (t.right != null) {
-                return insert(profile, t.right, incrementCd(cd));
-            } else {
-                t.right = new KdNode(profile, coordinates, t);
-                return t.right;
-            }
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
         }
+        return null;
     }
 
     public void insert(Set<Profile> profiles) {
@@ -66,7 +68,6 @@ public class KdProfileTreeIterative implements KdProfileTree {
         }
     }
 
-    // TODO: rekursiv -> iterative
     public boolean contains(Profile profile) {
         KdNode kdNode = findNode(profile.getProfileData());
         if (kdNode != null) {
@@ -291,7 +292,6 @@ public class KdProfileTreeIterative implements KdProfileTree {
             kdNodes = tempKdNodes;
         }
         return profiles;
-
     }
 
     private int compareToRange(String minValue, String maxValue, String input) {
@@ -337,25 +337,34 @@ public class KdProfileTreeIterative implements KdProfileTree {
         }
         return true;
     }
-    // TODO: rekursiv -> iterative
-    public boolean delete(Profile profile) {
-        return deleteProfile(profile, root, 0);
-    }
 
-    private boolean deleteProfile(Profile profile, KdNode t, int cd) {
-        if (t == null) {
+    public boolean delete(Profile profile) {
+        if (profile == null) {
             return false;
         }
-        if (sameData(profile, t)) {
-            t.profiles.remove(profile);
-            if (t.profiles.isEmpty()) {
-                deleteNode(t, cd);
+        KdNode kdNode = root;
+        int cd = 0;
+        while (true) {
+            if (sameData(profile, kdNode)) {
+                kdNode.profiles.remove(profile);
+                if (kdNode.profiles.isEmpty()) {
+                    deleteNode(kdNode, cd);
+                }
+                return true;
+            } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+                if (kdNode.left == null) {
+                    return false;
+                } else {
+                    kdNode = kdNode.left;
+                }
+            } else {
+                if (kdNode.right == null) {
+                    return false;
+                } else {
+                    kdNode = kdNode.right;
+                }
             }
-            return true;
-        } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return deleteProfile(profile, t.left, incrementCd(cd));
-        } else {
-            return deleteProfile(profile, t.right, incrementCd(cd));
+            cd = incrementCd(cd);
         }
     }
 
@@ -388,6 +397,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return findMin(root, dim, 0).getKey().coordinateValues[dim];
     }
 
+    // TODO: rekursiv -> iterative
     private Pair<KdNode, Integer> findMin(KdNode t, int dim, int cd) {
         if (t == null) {
             return null;
@@ -433,6 +443,7 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return new Pair<>(t, cd);
     }
 
+    // TODO: rekursiv -> iterative
     private boolean deleteNode(KdNode t, int cd) {
         if (t == null) {
             throw new NullPointerException("Node cannot be null");
@@ -467,11 +478,10 @@ public class KdProfileTreeIterative implements KdProfileTree {
         }
     }
 
-    // TODO: rekursiv -> iterative
     public KdNode updateProfile(Profile profile, Map<String, String> profileData) {
         delete(profile);
         profile.profileData = profileData;
-        return insert(profile, root, 0);
+        return insert(profile);
     }
 
     @Override
