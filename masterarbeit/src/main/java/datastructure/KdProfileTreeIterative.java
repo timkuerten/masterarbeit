@@ -4,12 +4,12 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class KdProfileTreeRecursive implements KdProfileTree {
+public class KdProfileTreeIterative implements KdProfileTree {
 
     private String[] coordinates;
     private KdNode root;
 
-    public KdProfileTreeRecursive(Set<String> coordinates) {
+    public KdProfileTreeIterative(Set<String> coordinates) {
         this.coordinates = new String[coordinates.size()];
         int i = 0;
         for (String coordinate : coordinates) {
@@ -22,6 +22,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         return (cd + 1) % coordinates.length;
     }
 
+    // TODO: rekursiv -> iterative
     public KdNode insert(Profile profile) {
         if (root != null) {
             return insert(profile, root, 0);
@@ -65,6 +66,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         }
     }
 
+    // TODO: rekursiv -> iterative
     public boolean contains(Profile profile) {
         KdNode kdNode = findNode(profile.getProfileData());
         if (kdNode != null) {
@@ -76,11 +78,11 @@ public class KdProfileTreeRecursive implements KdProfileTree {
     }
 
     // old
+    // TODO: rekursiv -> iterative
     public boolean contains2(Profile profile) {
         return contains(profile, root);
     }
 
-    // old
     private boolean contains(Profile profile, KdNode t) {
         if (t == null) {
             return false;
@@ -90,26 +92,28 @@ public class KdProfileTreeRecursive implements KdProfileTree {
     }
 
     public Profile get(UUID uuid) {
-        return get(uuid, root);
-    }
-
-    private Profile get(UUID uuid, KdNode t) {
-        if (t == null) {
+        if (root == null) {
             return null;
-        } else {
-            // is any profile with uuid in t.profiles?
-            for (Profile profile : t.profiles) {
+        }
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        KdNode kdNode;
+        while (!kdNodes.isEmpty()) {
+            kdNode = kdNodes.get(0);
+            for (Profile profile : kdNode.profiles) {
                 if (profile.getUuid() == uuid) {
                     return profile;
                 }
             }
-            Profile left = get(uuid, t.left);
-            if (left != null) {
-                return left;
-            } else {
-                return get(uuid, t.right);
+            if (kdNode.left != null) {
+                kdNodes.add(kdNode.left);
             }
+            if (kdNode.right != null) {
+                kdNodes.add(kdNode.right);
+            }
+            kdNodes.remove(kdNode);
         }
+        return null;
     }
 
     public Set<Profile> get(String thirdPartyID, String value) {
@@ -120,31 +124,44 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         if (dim < 0) {
             return Collections.emptySet();
         }
-        return get(root, dim, value, 0);
-    }
 
-    private Set<Profile> get(KdNode t, int dim, String value, int cd) {
-        if (t == null) {
-            return new HashSet<>();
-        } else if (cd == dim) {
-            int comparison = value.compareTo(t.getValue(dim));
-            if (comparison < 0) {
-                return get(t.left, dim, value, incrementCd(cd));
-            } else {
-                Set<Profile> returnValue = get(t.right, dim, value, incrementCd(cd));
-                if (comparison == 0) {
-                    returnValue.addAll(t.profiles);
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                if (cd == dim) {
+                    int comparison = value.compareTo(kdNode.coordinateValues[dim]);
+                    if (comparison < 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                        if (comparison == 0) {
+                            profiles.addAll(kdNode.profiles);
+                        }
+                    }
+                } else {
+                    if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
                 }
-                return returnValue;
             }
-        } else {
-            Set<Profile> returnValue = get(t.left, dim, value, incrementCd(cd));
-            if (value.compareTo(t.getValue(dim)) == 0) {
-                returnValue.addAll(t.profiles);
-            }
-            returnValue.addAll(get(t.right, dim, value, incrementCd(cd)));
-            return returnValue;
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
         }
+        return profiles;
     }
 
     private int giveDimension(String thirdPartyID) {
@@ -164,85 +181,117 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         if (dim < 0) {
             return Collections.emptySet();
         }
-        return get(root, dim, minValue, maxValue, 0);
-    }
-
-    private Set<Profile> get(KdNode t, int dim, String minValue, String maxValue, int cd) {
-        if (t == null) {
-            return new HashSet<>();
-        } else if (cd == dim) {
-            int comparison = compareToRange(minValue, maxValue, t.getValue(dim));
-            if (comparison < 0) {
-                return get(t.right, dim, minValue, maxValue, incrementCd(cd));
-            } else if (comparison > 0) {
-                return get(t.left, dim, minValue, maxValue, incrementCd(cd));
-            } else {
-                Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, incrementCd(cd));
-                returnValue.addAll(t.profiles);
-                returnValue.addAll(get(t.right, dim, minValue, maxValue, incrementCd(cd)));
-                return returnValue;
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                if (cd == dim) {
+                    int comparison = compareToRange(minValue, maxValue, kdNode.getValue(dim));
+                    if (comparison < 0) {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    } else if (comparison > 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        profiles.addAll(kdNode.profiles);
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    }
+                } else {
+                    if (compareToRange(minValue, maxValue, kdNode.getValue(dim)) == 0) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
+                }
             }
-        } else {
-            Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, incrementCd(cd));
-            if (compareToRange(minValue, maxValue, t.getValue(dim)) == 0) {
-                returnValue.addAll(t.profiles);
-            }
-            returnValue.addAll(get(t.right, dim, minValue, maxValue, incrementCd(cd)));
-            return returnValue;
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
         }
+        return profiles;
     }
 
-    public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
-        if (root == null || searchValues == null) {
+    public Set<Profile> get(Set<Triple<String, String, String>> searchValues2) {
+        if (root == null || searchValues2 == null) {
             return Collections.emptySet();
         }
-        Set<Triple<Integer, String, String>> searchValues2 = new HashSet<>();
-        for (Triple<String, String, String> searchValue : searchValues) {
+        Set<Triple<Integer, String, String>> searchValues = new HashSet<>();
+        for (Triple<String, String, String> searchValue : searchValues2) {
             int dim = giveDimension(searchValue.getFirst());
             if (dim < 0) {
                 return Collections.emptySet();
             }
-            searchValues2.add(new Triple<>(dim, searchValue.getSecond(), searchValue.getThird()));
+            searchValues.add(new Triple<>(dim, searchValue.getSecond(), searchValue.getThird()));
         }
-        return get(root, searchValues2, 0);
-    }
 
-    private Set<Profile> get(KdNode t, Set<Triple<Integer, String, String>> searchValues, int cd) {
-        if (t == null) {
-            return new HashSet<>();
-        } else {
-            Triple<Integer, String, String> cdTriple = null;
-            for (Triple<Integer, String, String> searchValue : searchValues) {
-                if (searchValue.getFirst().equals(cd)) {
-                    cdTriple = searchValue;
-                    break;
-                }
-            }
-
-            // does a range search exist for dimension cd?
-            if (cdTriple != null) {
-                int comparison = compareToRange(cdTriple.getSecond(), cdTriple.getThird(), t.getValue(cd));
-                if (comparison < 0) {
-                    return get(t.right, searchValues, incrementCd(cd));
-                } else if (comparison > 0) {
-                    return get(t.left, searchValues, incrementCd(cd));
-                } else {
-                    Set<Profile> returnValue = get(t.left, searchValues, incrementCd(cd));
-                    if (isInMultiRange(searchValues, t)) {
-                        returnValue.addAll(t.profiles);
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                Triple<Integer, String, String> cdTriple = null;
+                for (Triple<Integer, String, String> searchValue : searchValues) {
+                    if (searchValue.getFirst().equals(cd)) {
+                        cdTriple = searchValue;
+                        break;
                     }
-                    returnValue.addAll(get(t.right, searchValues, incrementCd(cd)));
-                    return returnValue;
                 }
-            } else {
-                Set<Profile> returnValue = get(t.left, searchValues, incrementCd(cd));
-                if (isInMultiRange(searchValues, t)) {
-                    returnValue.addAll(t.profiles);
+
+                // does a range search exist for dimension cd?
+                if (cdTriple != null) {
+                    int comparison = compareToRange(cdTriple.getSecond(), cdTriple.getThird(), kdNode.getValue(cd));
+                    if (comparison < 0) {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    } else if (comparison > 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        if (isInMultiRange(searchValues, kdNode)) {
+                            profiles.addAll(kdNode.profiles);
+                        }
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    }
+                } else {
+                    if (isInMultiRange(searchValues, kdNode)) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
                 }
-                returnValue.addAll(get(t.right, searchValues, incrementCd(cd)));
-                return returnValue;
             }
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
         }
+        return profiles;
+
     }
 
     private int compareToRange(String minValue, String maxValue, String input) {
@@ -288,7 +337,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         }
         return true;
     }
-
+    // TODO: rekursiv -> iterative
     public boolean delete(Profile profile) {
         return deleteProfile(profile, root, 0);
     }
@@ -310,6 +359,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         }
     }
 
+    // TODO: rekursiv -> iterative
     public KdNode findNode(Map<String, String> profileData) {
         if (profileData.size() != coordinates.length || root == null) {
             return null;
@@ -329,6 +379,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         }
     }
 
+    // TODO: rekursiv -> iterative
     public String findMin(String thirdPartyID) {
         int dim = giveDimension(thirdPartyID);
         if (dim < 0) {
@@ -416,6 +467,7 @@ public class KdProfileTreeRecursive implements KdProfileTree {
         }
     }
 
+    // TODO: rekursiv -> iterative
     public KdNode updateProfile(Profile profile, Map<String, String> profileData) {
         delete(profile);
         profile.profileData = profileData;

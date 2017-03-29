@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface KdProfileTree {
+
     KdNode insert(Profile profile);
 
     void insert(Set<Profile> profiles);
