@@ -368,23 +368,30 @@ public class KdProfileTreeIterative implements KdProfileTree {
         }
     }
 
-    // TODO: rekursiv -> iterative
     public KdNode findNode(Map<String, String> profileData) {
         if (profileData.size() != coordinates.length || root == null) {
             return null;
         }
-        return findNode(profileData, root, 0);
-    }
 
-    private KdNode findNode(Map<String, String> profileData, KdNode t, int cd) {
-        if (t == null) {
-            return null;
-        } else if (sameData(profileData, t)) {
-            return t;
-        } else if (profileData.get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return findNode(profileData, t.left, incrementCd(cd));
-        } else {
-            return findNode(profileData, t.right, incrementCd(cd));
+        KdNode kdNode = root;
+        int cd = 0;
+        while (true) {
+            if (sameData(profileData, kdNode)) {
+                return kdNode;
+            } else if (profileData.get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+                if (kdNode.left != null) {
+                    kdNode = kdNode.left;
+                } else {
+                    return null;
+                }
+            } else {
+                if (kdNode.right != null) {
+                    kdNode = kdNode.right;
+                } else {
+                    return null;
+                }
+            }
+            cd = incrementCd(cd);
         }
     }
 
