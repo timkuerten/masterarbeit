@@ -375,6 +375,77 @@ public class KdTree {
         }
     }
 
+    // iterative
+    public Set<Profile> get2(Set<Triple<String, String, String>> searchValues2) {
+        if (root == null || searchValues2 == null) {
+            return Collections.emptySet();
+        }
+        Set<Triple<Integer, String, String>> searchValues = new HashSet<>();
+        for (Triple<String, String, String> searchValue : searchValues2) {
+            int dim = giveDimension(searchValue.getFirst());
+            if (dim < 0) {
+                return Collections.emptySet();
+            }
+            searchValues.add(new Triple<>(dim, searchValue.getSecond(), searchValue.getThird()));
+        }
+
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                Triple<Integer, String, String> cdTriple = null;
+                for (Triple<Integer, String, String> searchValue : searchValues) {
+                    if (searchValue.getFirst().equals(cd)) {
+                        cdTriple = searchValue;
+                        break;
+                    }
+                }
+
+                // does a range search exist for dimension cd?
+                if (cdTriple != null) {
+                    int comparison = compareToRange(cdTriple.getSecond(), cdTriple.getThird(), kdNode.getValue(cd));
+                    if (comparison < 0) {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    } else if (comparison > 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        if (isInMultiRange(searchValues, kdNode)) {
+                            profiles.addAll(kdNode.profiles);
+                        }
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                    }
+                } else {
+                    if (isInMultiRange(searchValues, kdNode)) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
+
+                }
+            }
+            cd = incrementCd(cd);
+            kdNodes = tempKdNodes;
+        }
+        return profiles;
+
+    }
+
     private int compareToRange(String minValue, String maxValue, String input) {
         if (minValue != null && input.compareTo(minValue) < 0) {
             return -1;
