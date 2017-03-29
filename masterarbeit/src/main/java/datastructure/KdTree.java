@@ -2,8 +2,7 @@ package datastructure;
 
 import javafx.util.Pair;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class KdTree {
 
@@ -19,11 +18,6 @@ public class KdTree {
         }
     }
 
-    /**
-     * Insert one profile.
-     *
-     * @param profile inserts this profile
-     */
     public KdNode insert(Profile profile) {
         if (root != null) {
             return insert(profile, root, 0);
@@ -31,15 +25,6 @@ public class KdTree {
             root = new KdNode(profile, coordinates, null);
             return root;
         }
-    }
-
-    /**
-     * Insert a set of profiles.
-     *
-     * @param profiles inserts this profiles
-     */
-    public void insert(Set<Profile> profiles) {
-        // TODO:
     }
 
     private KdNode insert(Profile profile, KdNode t, int cd) {
@@ -65,6 +50,184 @@ public class KdTree {
         }
     }
 
+    public void insert(Set<Profile> profiles) {
+        // TODO:
+
+    }
+
+    public void insert2(List<Profile> profiles) {
+        for (Profile profile : profiles) {
+            insert(profile);
+        }
+    }
+
+    public boolean contains(Profile profile) {
+        KdNode kdNode = findNode(profile.getProfileData());
+        if (kdNode != null) {
+            if (kdNode.profiles.contains(profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contains2(Profile profile) {
+        return contains(profile, root);
+    }
+
+    private boolean contains(Profile profile, KdNode t) {
+        if (t == null) {
+            return false;
+        } else {
+            return t.profiles.contains(profile) || (contains(profile, t.left) || contains(profile, t.right));
+        }
+    }
+
+    public Profile get(UUID uuid) {
+        return get(uuid, root);
+    }
+
+    // recursive
+    private Profile get(UUID uuid, KdNode t) {
+        if (t == null) {
+            return null;
+        } else  {
+            // is any profile with uuid in t.profiles?
+            for (Profile profile : t.profiles) {
+                if (profile.getUuid() == uuid) {
+                    return profile;
+                }
+            }
+            Profile left = get(uuid, t.left);
+            if (left != null) {
+                return left;
+            } else {
+                return get(uuid, t.right);
+            }
+        }
+    }
+
+    // iterative
+    public Profile get2(UUID uuid) {
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        KdNode kdNode;
+        while (!kdNodes.isEmpty()) {
+            kdNode = kdNodes.get(0);
+            for (Profile profile : kdNode.profiles) {
+                if (profile.getUuid() == uuid) {
+                    return profile;
+                }
+            }
+            if (kdNode.left != null) {
+                kdNodes.add(kdNode.left);
+            }
+            if (kdNode.right != null) {
+                kdNodes.add(kdNode.right);
+            }
+            kdNodes.remove(kdNode);
+        }
+        return null;
+    }
+
+    public Set<Profile> get(String thirdPartyID, String value) {
+        if (root == null) {
+            return Collections.emptySet();
+        }
+        int dim = -1;
+        for (int i = 0; i < coordinates.length; i++) {
+            if (coordinates[i].compareTo(thirdPartyID) == 0) {
+                dim = i;
+            }
+        }
+        if (dim < 0) {
+            return Collections.emptySet();
+        }
+        return get(root, dim, value, 0);
+    }
+
+    // recursive
+    private Set<Profile> get(KdNode t, int dim, String value, int cd) {
+        if (t == null) {
+            return new HashSet<>();
+        } else if (cd == dim) {
+            if (value.compareTo(t.coordinateValues[dim]) < 0) {
+                return get(t.left, dim, value, (cd + 1) % coordinates.length);
+            } else {
+                Set<Profile> returnValue = get(t.right, dim, value, (cd + 1) % coordinates.length);
+                if (value.compareTo(t.coordinateValues[dim]) == 0) {
+                    returnValue.addAll(t.profiles);
+                }
+                return returnValue;
+            }
+        } else {
+            Set<Profile> returnValue = get(t.left, dim, value, (cd + 1) % coordinates.length);
+            if (value.compareTo(t.coordinateValues[dim]) == 0) {
+                returnValue.addAll(t.profiles);
+            }
+            returnValue.addAll(get(t.right, dim, value, (cd + 1) % coordinates.length));
+            return returnValue;
+        }
+    }
+
+    // iterative
+    public Set<Profile> get2(String thirdPartyID, String value) {
+        if (root == null) {
+            return Collections.emptySet();
+        }
+        int dim = -1;
+        for (int i = 0; i < coordinates.length; i++) {
+            if (coordinates[i].compareTo(thirdPartyID) == 0) {
+                dim = i;
+            }
+        }
+        if (dim < 0) {
+            return Collections.emptySet();
+        }
+
+        List<KdNode> kdNodes = new ArrayList<>();
+        kdNodes.add(root);
+        Set<Profile> profiles = new HashSet<>();
+        int cd = 0;
+        while (!kdNodes.isEmpty()) {
+            List<KdNode> tempKdNodes = new ArrayList<>();
+            for (KdNode kdNode : kdNodes) {
+                if (cd == dim) {
+                    if (value.compareTo(kdNode.coordinateValues[dim]) < 0) {
+                        if (kdNode.left != null) {
+                            tempKdNodes.add(kdNode.left);
+                        }
+                    } else {
+                        if (kdNode.right != null) {
+                            tempKdNodes.add(kdNode.right);
+                        }
+                        if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
+                            profiles.addAll(kdNode.profiles);
+                        }
+                    }
+                } else {
+                    if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
+                        profiles.addAll(kdNode.profiles);
+                    }
+                    if (kdNode.left != null) {
+                        tempKdNodes.add(kdNode.left);
+                    }
+                    if (kdNode.right != null) {
+                        tempKdNodes.add(kdNode.right);
+                    }
+                }
+            }
+            cd = (cd + 1) % coordinates.length;
+            kdNodes = tempKdNodes;
+        }
+        return profiles;
+    }
+
+    public Set<Profile> get(String ThirdPartyID, String minValue, String maxValue) {
+        // TODO
+        return null;
+    }
+
     private boolean sameData(Profile profile, KdNode t) {
         return sameData(profile.getProfileData(), t);
     }
@@ -82,22 +245,21 @@ public class KdTree {
         return deleteProfile(profile, root, 0);
     }
 
-    private boolean delete(Profile profile, KdNode t, int cd) {
+    private boolean deleteProfile(Profile profile, KdNode t, int cd) {
         if (t == null) {
             return false;
-        } else if (sameData(profile, t)) {
+        }
+        if (sameData(profile, t)) {
             t.profiles.remove(profile);
+            if (t.profiles.isEmpty()) {
+                deleteNode(t, cd);
+            }
             return true;
         } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return delete(profile, t.left, (cd + 1) % coordinates.length);
+            return deleteProfile(profile, t.left, (cd + 1) % coordinates.length);
         } else {
-            return delete(profile, t.right, (cd + 1) % coordinates.length);
+            return deleteProfile(profile, t.right, (cd + 1) % coordinates.length);
         }
-    }
-
-    public boolean findProfile(Profile profile) {
-        // TODO:
-        return false;
     }
 
     public KdNode findNode(Map<String, String> profileData) {
@@ -175,23 +337,6 @@ public class KdTree {
             return p1;
         }
         return new Pair<>(t, cd);
-    }
-
-    private boolean deleteProfile(Profile profile, KdNode t, int cd) {
-        if (t == null) {
-            return false;
-        }
-        if (sameData(profile, t)) {
-            t.profiles.remove(profile);
-            if (t.profiles.isEmpty()) {
-                deleteNode(t, cd);
-            }
-            return true;
-        } else if (profile.getProfileData().get(coordinates[cd]).compareTo(t.coordinateValues[cd]) < 0) {
-            return deleteProfile(profile, t.left, (cd + 1) % coordinates.length);
-        } else {
-            return deleteProfile(profile, t.right, (cd + 1) % coordinates.length);
-        }
     }
 
     private boolean deleteNode(KdNode t, int cd) {
