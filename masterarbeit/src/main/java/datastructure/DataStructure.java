@@ -23,21 +23,21 @@ public interface DataStructure {
     /**
      * Searching for a profile with given third-party-ID and its value. Returns a set of profiles which correlate to the given third-party-ID and value.
      *
-     * @param ThirdPartyID third-party-ID
+     * @param thirdPartyID third-party-ID
      * @param value        value of third-party-ID
      * @return profiles which contain the given third-party-ID and value
      */
-    Set<Profile> get(String ThirdPartyID, String value);
+    Set<Profile> get(String thirdPartyID, String value);
 
     /**
      * Searching for a profile with given third-party-ID and its range of value. Returns a set of profiles which contain the given third-party-ID and range of value.
      *
-     * @param ThirdPartyID third-party-ID
+     * @param thirdPartyID third-party-ID
      * @param minValue minimal value of third-party-ID
      * @param maxValue maximal value of third-party-ID
      * @return profiles which contain the given third-party-ID and range of value
      */
-    Set<Profile> get(String ThirdPartyID, String minValue, String maxValue);
+    Set<Profile> get(String thirdPartyID, String minValue, String maxValue);
 
     /**
      * Creates a new profile with given data, saves it in data structure and returns uuid.
