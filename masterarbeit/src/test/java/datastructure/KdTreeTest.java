@@ -177,4 +177,24 @@ public class KdTreeTest {
         assertThat(kdTree.get("a", null, "6").containsAll(ps), is(true));
     }
 
+    @Test
+    public void getProfilesByMultiRange() {
+        Set<Profile> ps = new HashSet<>(
+                Arrays.asList(profiles[3], profiles[4], profiles[6]));
+        Set<Triple<String, String, String>> searchValues = new HashSet<>();
+        searchValues.add(new Triple<>("a", "3", "7"));
+        searchValues.add(new Triple<>("b", "6", null));
+        assertThat(kdTree.get(searchValues).containsAll(ps), is(true));
+    }
+
+    @Test
+    public void getProfilesByMultiRangeWithoutFullMultiRange() {
+        Set<Profile> ps = new HashSet<>(
+                Arrays.asList(profiles[0], profiles[1], profiles[4], profiles[6], profiles[7], profiles[8],
+                        profiles[9]));
+        Set<Triple<String, String, String>> searchValues = new HashSet<>();
+        searchValues.add(new Triple<>("a", "3", "6"));
+        assertThat(kdTree.get(searchValues).containsAll(ps), is(true));
+    }
+
 }

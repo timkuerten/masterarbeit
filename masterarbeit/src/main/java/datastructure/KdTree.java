@@ -319,7 +319,60 @@ public class KdTree {
             kdNodes = tempKdNodes;
         }
         return profiles;
+    }
 
+    public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
+        if (root == null || searchValues == null) {
+            return Collections.emptySet();
+        }
+        Set<Triple<Integer, String, String>> searchValues2 = new HashSet<>();
+        for (Triple<String, String, String> searchValue : searchValues) {
+            int dim = giveDimension(searchValue.getFirst());
+            if (dim < 0) {
+                return Collections.emptySet();
+            }
+            searchValues2.add(new Triple<>(dim, searchValue.getSecond(), searchValue.getThird()));
+        }
+        return get(root, searchValues2, 0);
+    }
+
+    // recursive
+    private Set<Profile> get(KdNode t, Set<Triple<Integer, String, String>> searchValues, int cd) {
+        if (t == null) {
+            return new HashSet<>();
+        } else {
+            Triple<Integer, String, String> cdTriple = null;
+            for (Triple<Integer, String, String> searchValue : searchValues) {
+                if (searchValue.getFirst().equals(cd)) {
+                    cdTriple = searchValue;
+                    break;
+                }
+            }
+
+            // does a range search exist for dimension cd?
+            if (cdTriple != null) {
+                int comparison = compareToRange(cdTriple.getSecond(), cdTriple.getThird(), t.getValue(cd));
+                if (comparison < 0) {
+                    return get(t.right, searchValues, incrementCd(cd));
+                } else if (comparison > 0) {
+                    return get(t.left, searchValues, incrementCd(cd));
+                } else {
+                    Set<Profile> returnValue = get(t.left, searchValues, incrementCd(cd));
+                    if (isInMultiRange(searchValues, t)) {
+                        returnValue.addAll(t.profiles);
+                    }
+                    returnValue.addAll(get(t.right, searchValues, incrementCd(cd)));
+                    return returnValue;
+                }
+            } else {
+                Set<Profile> returnValue = get(t.left, searchValues, incrementCd(cd));
+                if (isInMultiRange(searchValues, t)) {
+                    returnValue.addAll(t.profiles);
+                }
+                returnValue.addAll(get(t.right, searchValues, incrementCd(cd)));
+                return returnValue;
+            }
+        }
     }
 
     private int compareToRange(String minValue, String maxValue, String input) {
@@ -330,6 +383,26 @@ public class KdTree {
         } else {
             return 0;
         }
+    }
+
+    private boolean isInMultiRange(Set<Triple<Integer, String, String>> searchValues, KdNode kdNode) {
+        /*
+        boolean returnValue = true;
+        for (Triple<Integer, String, String> t : searchValues) {
+            if (t.getSecond() != null && kdNode.getValue(t.getFirst()).compareTo(t.getSecond()) < 0) {
+                returnValue = false;
+            } else if (t.getThird() != null && kdNode.getValue(t.getFirst()).compareTo(t.getThird()) > 0) {
+                returnValue = false;
+            }
+        }
+
+        return returnValue;
+        */
+
+        return searchValues.stream()
+                .noneMatch(
+                        t -> ((t.getSecond() != null && kdNode.getValue(t.getFirst()).compareTo(t.getSecond()) < 0) || (
+                                t.getThird() != null && kdNode.getValue(t.getFirst()).compareTo(t.getThird()) > 0)));
     }
 
     private boolean sameData(Profile profile, KdNode t) {
