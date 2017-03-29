@@ -223,9 +223,56 @@ public class KdTree {
         return profiles;
     }
 
-    public Set<Profile> get(String ThirdPartyID, String minValue, String maxValue) {
-        // TODO
-        return null;
+    public Set<Profile> get(String thirdPartyID, String minValue, String maxValue) {
+        if (root == null) {
+            return Collections.emptySet();
+        }
+        int dim = -1;
+        for (int i = 0; i < coordinates.length; i++) {
+            if (coordinates[i].compareTo(thirdPartyID) == 0) {
+                dim = i;
+            }
+        }
+        if (dim < 0) {
+            return Collections.emptySet();
+        }
+        return get(root, dim, minValue, maxValue, 0);
+    }
+
+    // recursive
+    private Set<Profile> get(KdNode t, int dim, String minValue, String maxValue, int cd) {
+        if (t == null) {
+            return new HashSet<>();
+        } else if (cd == dim) {
+            int comparison = compareToRange(minValue, maxValue, t.coordinateValues[dim]);
+            if (comparison < 0) {
+                return get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+            } else if (comparison > 0) {
+                return get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+            } else {
+                Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+                returnValue.addAll(t.profiles);
+                returnValue.addAll(get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length));
+                return returnValue;
+            }
+        } else {
+            Set<Profile> returnValue = get(t.left, dim, minValue, maxValue, (cd + 1) % coordinates.length);
+            if (compareToRange(minValue, maxValue, t.coordinateValues[dim]) == 0) {
+                returnValue.addAll(t.profiles);
+            }
+            returnValue.addAll(get(t.right, dim, minValue, maxValue, (cd + 1) % coordinates.length));
+            return returnValue;
+        }
+    }
+
+    private int compareToRange(String minValue, String maxValue, String input) {
+        if (input.compareTo(minValue) < 0) {
+            return -1;
+        } else if (input.compareTo(maxValue) > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     private boolean sameData(Profile profile, KdNode t) {

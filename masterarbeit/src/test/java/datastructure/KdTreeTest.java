@@ -154,4 +154,12 @@ public class KdTreeTest {
         assertThat(kdTree.get2("b", "9").containsAll(ps), is(true));
     }
 
+    @Test
+    public void getProfilesByRange() {
+        Set<Profile> ps = new HashSet<>(
+                Arrays.asList(profiles[0], profiles[1], profiles[4], profiles[6], profiles[7], profiles[8],
+                        profiles[9]));
+        assertThat(kdTree.get("a", "3", "6").containsAll(ps), is(true));
+    }
+
 }
