@@ -87,16 +87,4 @@ public class ClientWriter {
         return returnValue;
     }
 
-    public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        long startTime = System.nanoTime();
-        boolean returnValue = ds.changeSchema(schema, thirdPartyIDs);
-        long estimatedTime = System.nanoTime() - startTime;
-        if (logChangeSchema) {
-            timeLogger.changeSchema(estimatedTime);
-        }
-        //writerLogger.changeSchema(schema, thirdPartyIDs);
-        timeSaverManager.changeSchema(estimatedTime);
-        return returnValue;
-    }
-
 }

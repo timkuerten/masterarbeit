@@ -1,5 +1,6 @@
 package client;
 
+import client.Input.Generator;
 import org.junit.Before;
 import org.junit.Test;
 

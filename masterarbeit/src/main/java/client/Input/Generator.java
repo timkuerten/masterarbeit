@@ -1,4 +1,4 @@
-package client;
+package client.Input;
 
 import java.util.*;
 

@@ -148,16 +148,4 @@ public abstract class AbstractScenario {
         return returnValue;
     }
 
-    public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        return clientWriter.changeSchema(schema, thirdPartyIDs);
-    }
-
-    public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs, int counter) {
-        boolean returnValue = false;
-        for (int i = 0; i < counter; i++) {
-            returnValue = changeSchema(schema, thirdPartyIDs);
-        }
-        return returnValue;
-    }
-
 }

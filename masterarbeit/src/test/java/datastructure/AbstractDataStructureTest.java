@@ -131,59 +131,6 @@ abstract public class AbstractDataStructureTest {
         assertThat(ds.getSchema().getThirdPartyIDs().contains("Name"), is(true));
     }
 
-    @Test
-    public void changeSchema() {
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
-        ds.changeSchema(schema, thirdPartyIDs);
-        Set<UUID> lUuid = new HashSet<>();
-        ds.get("Name", "Tim").forEach(x -> lUuid.add(x.getUuid()));
-        assertThat(lUuid, hasItem(uuid1));
-    }
-
-    @Test
-    public void changeSchemaAndGet() {
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
-        ds.changeSchema(schema, thirdPartyIDs);
-        Set<UUID> lUuid = new HashSet<>();
-        ds.get("Name", "Tim").forEach(x -> lUuid.add(x.getUuid()));
-        assertThat(lUuid, hasItem(uuid1));
-    }
-
-    @Test
-    public void changeToNotAllowedSchema() {
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Adresse", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Stadt");
-        assertThat(ds.changeSchema(schema, thirdPartyIDs), is(false));
-    }
-
-    @Test
-    public void changeSchemaAndUseOldThirdPartyID() {
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
-        ds.changeSchema(schema, thirdPartyIDs);
-        assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
-    }
-
-    @Test
-    public void updateProfileAndChangeSchema() {
-        Set<String> schema = new HashSet<>();
-        schema.addAll(Arrays.asList("Name", "Stadt", "Alter"));
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
-        ds.changeSchema(schema, thirdPartyIDs);
-        assertThat(ds.get("Stadt", "MS"), is(nullValue(null)));
-    }
-
     // manipulation tests
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -193,19 +140,6 @@ abstract public class AbstractDataStructureTest {
         Schema s1 = ds.getSchema();
         thrown.expect(UnsupportedOperationException.class);
         s1.getThirdPartyIDs().add("Name");
-    }
-
-    @Test
-    public void manipulateChangeSchema() {
-        schema = new HashSet<>();
-        schema.addAll(Arrays.asList("a", "b"));
-        thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("a");
-        ds.changeSchema(schema, thirdPartyIDs);
-        schema.add("c");
-        thirdPartyIDs.add("b");
-        Assert.assertThat(ds.getSchema().getSchema(), containsInAnyOrder("a", "b"));
-        Assert.assertThat(ds.getSchema().getThirdPartyIDs(), contains("a"));
     }
 
     @Test
@@ -348,30 +282,6 @@ abstract public class AbstractDataStructureTest {
     public void addSchemaWithNullSchemaAndThirdPartyIDs() {
         thrown.expect(SchemaNullPointerException.class);
         ds.addSchema(null, null);
-    }
-
-    @Test
-    public void changeSchemaWithNullSchema() {
-        Set<String> thirdPartyIDs = new HashSet<>();
-        thirdPartyIDs.add("Name");
-        thrown.expect(SchemaNotAllowedException.class);
-        ds.changeSchema(null, thirdPartyIDs);
-    }
-
-    @Test
-    public void changeSchemaWithNullThirdPartyIDs() {
-        Set<String> schema = new HashSet<>();
-        schema.add("Name");
-        ds.changeSchema(schema, null);
-        assertThat(ds.getSchema().getSchema(), is(schema));
-        assertThat(ds.getSchema().getThirdPartyIDs(), is(Collections.emptySet()));
-    }
-
-    @Test
-    public void changeSchemaWithNullSchemaAndThirdPartyIDs() {
-        ds.changeSchema(null, null);
-        assertThat(ds.getSchema().getSchema(), is(Collections.emptySet()));
-        assertThat(ds.getSchema().getThirdPartyIDs(), is(Collections.emptySet()));
     }
 
 }

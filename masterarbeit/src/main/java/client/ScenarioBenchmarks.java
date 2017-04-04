@@ -80,7 +80,6 @@ public class ScenarioBenchmarks extends AbstractScenario {
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("b");
         addSchema(schema, thirdPartyIDs, iterations);
-        changeSchema(schema, thirdPartyIDs, iterations);
         System.out.println(timeSaverManager.printOutTimeSavers());
     }
 

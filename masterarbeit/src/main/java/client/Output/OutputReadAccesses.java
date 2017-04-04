@@ -1,4 +1,4 @@
-package client;
+package client.Output;
 
 import datastructure.Profile;
 import datastructure.Schema;
@@ -8,8 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public interface Output {
-
+public interface OutputReadAccesses {
 
     void get(UUID uuid, Profile returnValue);
 
@@ -19,14 +18,6 @@ public interface Output {
 
     void get(Set<Triple<Integer, String, String>> searchValues, Set<Profile> returnValue);
 
-    void insert(Map<String, String> profileData, UUID returnValue);
-
-    void update(UUID uuid, Map<String, String> profileData, boolean returnValue);
-
     void getSchema(Schema returnValue);
-
-    void changeSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue);
-
-    void addSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue);
 
 }
