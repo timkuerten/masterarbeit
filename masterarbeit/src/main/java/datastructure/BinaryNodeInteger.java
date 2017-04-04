@@ -7,7 +7,7 @@ public class BinaryNodeInteger {
     public BinaryNodeInteger left;
     public BinaryNodeInteger right;
     public BinaryNodeInteger parent = null;
-    public int key;
+    public Integer key;
 
     public BinaryNodeInteger(int key) {
         this.key = key;

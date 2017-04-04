@@ -2,12 +2,12 @@ package datastructure;
 
 import javafx.util.Pair;
 
-public class BinaryNode<T> {
+public class BinaryNode<T extends Comparable<? super T>> {
 
-    private BinaryNode<T> left;
-    private BinaryNode<T> right;
-    private BinaryNode<T> parent = null;
-    private T data;
+    public BinaryNode<T> left;
+    public BinaryNode<T> right;
+    public BinaryNode<T> parent = null;
+    public T data;
 
     public BinaryNode(T data) {
         setData(data);
