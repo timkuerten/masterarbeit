@@ -13,14 +13,14 @@ public abstract class AbstractScenario {
     protected Set<String> thirdPartyIDs;
     protected ClientReader clientReader;
     protected ClientWriter clientWriter;
-    private Generator generator;
+    private GeneratorOld generatorOld;
 
     /**
-     * Creates thirdPartyIDs, generator and schema
+     * Creates thirdPartyIDs, generatorOld and schema
      */
     public AbstractScenario() {
         thirdPartyIDs = new HashSet<>();
-        generator = new Generator(Long.MAX_VALUE);
+        generatorOld = new GeneratorOld(Long.MAX_VALUE);
         schema = new HashSet<>();
     }
 
@@ -98,7 +98,7 @@ public abstract class AbstractScenario {
      * @return uuid of new profile in data structure
      */
     public UUID insertProfile() {
-        return clientWriter.insertProfile(generator.generateNewProfileData());
+        return clientWriter.insertProfile(generatorOld.generateNewProfileData());
     }
 
     /**

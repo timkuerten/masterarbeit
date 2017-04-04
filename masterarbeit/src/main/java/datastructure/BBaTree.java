@@ -209,17 +209,11 @@ public class BBaTree {
             bBaNodeStack.push(tmpNode);
             if (key < tmpNode.key) {
                 tmpNode = tmpNode.left;
-                System.out.println("go left");
             } else {
                 tmpNode = tmpNode.right;
-
-                System.out.println("go right");
             }
         }
         // found the candidate leaf. Test whether key is same
-
-        System.out.println(tmpNode);
-
         if (tmpNode.key != key) {
             return false;
         }

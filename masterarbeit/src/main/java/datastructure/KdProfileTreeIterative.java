@@ -75,20 +75,6 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return kdNode != null && kdNode.profiles.contains(profile);
     }
 
-    // old
-    // TODO: rekursiv -> iterative
-    public boolean contains2(Profile profile) {
-        return contains(profile, root);
-    }
-
-    private boolean contains(Profile profile, KdNode t) {
-        if (t == null) {
-            return false;
-        } else {
-            return t.profiles.contains(profile) || (contains(profile, t.left) || contains(profile, t.right));
-        }
-    }
-
     public Profile get(UUID uuid) {
         if (root == null) {
             return null;
@@ -426,7 +412,6 @@ public class KdProfileTreeIterative implements KdProfileTree {
         return findMin(root, dim, 0).getKey().coordinateValues[dim];
     }
 
-    // TODO: rekursiv -> iterative
     private Pair<KdNode, Integer> findMin(KdNode t, int dim, int cd) {
         if (t == null) {
             return null;
