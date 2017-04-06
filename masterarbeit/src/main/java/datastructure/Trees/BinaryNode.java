@@ -1,5 +1,8 @@
 package datastructure.Trees;
 
+import exception.Trees.KeyNullPointerException;
+import exception.Trees.NoParentException;
+import exception.Trees.NodeNullPointerException;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -18,17 +21,17 @@ public class BinaryNode<T extends Comparable<? super T>> {
         setKey(key);
     }
 
-    public BinaryNode<T> addLeftChild(T data) {
-        return addLeftChild(new BinaryNode<>(data));
+    public BinaryNode<T> addLeftChild(T key) {
+        return addLeftChild(new BinaryNode<>(key));
     }
 
-    public BinaryNode<T> addRightChild(T data) {
-        return addRightChild(new BinaryNode<>(data));
+    public BinaryNode<T> addRightChild(T key) {
+        return addRightChild(new BinaryNode<>(key));
     }
 
     public BinaryNode<T> addLeftChild(BinaryNode<T> child) {
         if (child == null) {
-            throw new NullPointerException("Child cannot be null");
+            throw new NodeNullPointerException();
         }
         if (left != null) {
             throw new RuntimeException("Left child cannot add because it exists already");
@@ -40,7 +43,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
 
     public BinaryNode<T> addRightChild(BinaryNode<T> child) {
         if (child == null) {
-            throw new NullPointerException("Child cannot be null");
+            throw new NodeNullPointerException();
         }
         if (right != null) {
             throw new RuntimeException("Right child cannot add because it exists already");
@@ -63,9 +66,9 @@ public class BinaryNode<T extends Comparable<? super T>> {
         addRightChild(right);
     }
 
-    public Pair<BinaryNode<T>, BinaryNode<T>> addChildren(T dataLeft, T dataRight) {
-        BinaryNode<T> left = new BinaryNode<>(dataLeft);
-        BinaryNode<T> right = new BinaryNode<>(dataRight);
+    public Pair<BinaryNode<T>, BinaryNode<T>> addChildren(T keyLeft, T keyRight) {
+        BinaryNode<T> left = new BinaryNode<>(keyLeft);
+        BinaryNode<T> right = new BinaryNode<>(keyRight);
         addChildren(left, right);
         return new Pair<>(left, right);
     }
@@ -99,7 +102,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
 
     public void removeParent() {
         if (this.parent == null) {
-            throw new NullPointerException("Node " + this + " has no parent");
+            throw new NoParentException(this);
         }
 
         if (parent.getLeftChild() == this) {
@@ -111,7 +114,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
 
     private void setKey(T key) {
         if (key == null) {
-            throw new NullPointerException("Data cannot be null");
+            throw new KeyNullPointerException();
         }
         this.key = key;
     }

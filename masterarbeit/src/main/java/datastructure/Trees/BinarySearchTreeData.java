@@ -5,36 +5,36 @@ import exception.Trees.KeyAlreadyExistsException;
 import java.util.Collections;
 import java.util.List;
 
-public class BinarySearchTree<T extends Comparable<? super T>> {
+public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
 
-    BinaryNode<T> root;
+    private BinaryNodeData<T, U> root;
 
-    public BinarySearchTree() {
+    public BinarySearchTreeData() {
 
     }
 
-    public BinarySearchTree(T key) {
-        root = new BinaryNode<>(key);
+    public BinarySearchTreeData(T key, U data) {
+        root = new BinaryNodeData<>(key, data);
     }
 
     public boolean isEmpty() {
         return (root == null);
     }
 
-    public BinaryNode<T> insert(T key) {
-        BinaryNode<T> node = root;
+    public BinaryNodeData<T, U> insert(T key, U data) {
+        BinaryNodeData<T, U> node = root;
         while (true) {
             if (node.key.compareTo(key) == 0) {
                 throw new KeyAlreadyExistsException(key.toString());
             } else if (key.compareTo(node.key) > 0) {
                 if (node.right == null) {
-                    return node.addRightChild(new BinaryNode<>(key));
+                    return node.addRightChild(new BinaryNodeData<>(key, data));
                 } else {
                     node = node.right;
                 }
             } else {
                 if (node.left == null) {
-                    return node.addLeftChild(new BinaryNode<>(key));
+                    return node.addLeftChild(new BinaryNodeData<>(key, data));
                 } else {
                     node = node.left;
                 }
@@ -42,8 +42,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
         }
     }
 
-    public BinaryNode<T> get(T key) {
-        BinaryNode<T> node = root;
+    public BinaryNodeData<T, U> get(T key) {
+        BinaryNodeData<T, U> node = root;
         while (node != null) {
             if (node.key.compareTo(key) == 0) {
                 return node;
@@ -61,14 +61,14 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
     }
 
     public boolean delete(T key) {
-        BinaryNode<T> node = get(key);
+        BinaryNodeData<T, U> node = get(key);
         if (node == null || root == null) {
             return false;
         }
 
         // node to be removed has two children
         if (node.right != null && node.left != null) {
-            BinaryNode<T> node2 = node.right.inOrder().get(0);
+            BinaryNodeData<T, U> node2 = node.right.inOrder().get(0);
             node.key = node2.key;
             node = node2;
         }
@@ -79,7 +79,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 root = null;
                 return true;
             }
-            BinaryNode<T> parent = node.parent;
+            BinaryNodeData<T, U> parent = node.parent;
 
             if (parent.left != null && parent.left == node) {
                 parent.left = null;
@@ -90,7 +90,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
         } else {
             // node to be removed has one child
-            BinaryNode<T> child;
+            BinaryNodeData<T, U> child;
             if (node.left != null) {
                 if (node == root) {
                     root = node.left;
@@ -107,7 +107,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
                 child = node.right;
             }
 
-            BinaryNode<T> parent = node.parent;
+            BinaryNodeData<T, U> parent = node.parent;
             if (parent.left == node) {
                 parent.left = child;
             } else {
@@ -119,19 +119,19 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 
     // traverse
 
-    public List<BinaryNode<T>> preOrder() {
+    public List<BinaryNodeData<T, U>> preOrder() {
         return (root == null) ? Collections.emptyList() : root.preOrder();
     }
 
-    public List<BinaryNode<T>> inOrder() {
+    public List<BinaryNodeData<T, U>> inOrder() {
         return (root == null) ? Collections.emptyList() : root.inOrder();
     }
 
-    public List<BinaryNode<T>> postOrder() {
+    public List<BinaryNodeData<T, U>> postOrder() {
         return (root == null) ? Collections.emptyList() : root.postOrder();
     }
 
-    public List<BinaryNode<T>> reverseLevelOrder() {
+    public List<BinaryNodeData<T, U>> reverseLevelOrder() {
         return (root == null) ? Collections.emptyList() : root.reverseLevelOrder();
     }
 
