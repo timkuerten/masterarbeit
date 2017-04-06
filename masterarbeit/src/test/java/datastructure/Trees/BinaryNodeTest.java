@@ -1,13 +1,9 @@
-package datastructure;
+package datastructure.Trees;
 
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static java.util.function.Predicate.isEqual;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -38,17 +34,17 @@ public class BinaryNodeTest {
 
     @Test
     public void data() {
-        assertThat(rootInteger.getData(), is(0));
-        assertThat(rootString.getData(), is("a"));
+        assertThat(rootInteger.getKey(), is(0));
+        assertThat(rootString.getKey(), is("a"));
     }
 
     @Test
     public void children() {
-        assertThat(rootInteger.getLeftChild().getData(), is(1));
-        assertThat(rootInteger.getRightChild().getData(), is(2));
+        assertThat(rootInteger.getLeftChild().getKey(), is(1));
+        assertThat(rootInteger.getRightChild().getKey(), is(2));
 
-        assertThat(rootString.getLeftChild().getData(), is("b"));
-        assertThat(rootString.getRightChild().getData(), is("c"));
+        assertThat(rootString.getLeftChild().getKey(), is("b"));
+        assertThat(rootString.getRightChild().getKey(), is("c"));
     }
 
     @Test
@@ -67,7 +63,7 @@ public class BinaryNodeTest {
     public void addChild() {
         assertThat(rootInteger.getLeftChild().getLeftChild(), is(nullValue()));
         rootInteger.getLeftChild().addLeftChild(3);
-        assertThat(rootInteger.getLeftChild().getLeftChild().getData(), is(3));
+        assertThat(rootInteger.getLeftChild().getLeftChild().getKey(), is(3));
     }
 
     @Test
@@ -75,8 +71,8 @@ public class BinaryNodeTest {
         assertThat(rootInteger.getLeftChild().getChildren(),
                 is(new Pair<BinaryNode<Integer>, BinaryNode<Integer>>(null, null)));
         rootInteger.getLeftChild().addChildren(3, 4);
-        assertThat(rootInteger.getLeftChild().getLeftChild().getData(), is(3));
-        assertThat(rootInteger.getLeftChild().getRightChild().getData(), is(4));
+        assertThat(rootInteger.getLeftChild().getLeftChild().getKey(), is(3));
+        assertThat(rootInteger.getLeftChild().getRightChild().getKey(), is(4));
     }
 
     @Test

@@ -6,7 +6,7 @@ import datastructure.Schema;
 import java.util.*;
 
 /**
- * Abstract class to create a scenario which used data structure
+ * Abstract class to create a scenario which used key structure
  */
 public abstract class AbstractScenario {
     protected Set<String> schema;
@@ -25,17 +25,17 @@ public abstract class AbstractScenario {
     }
 
     /**
-     * Do something with data structure
+     * Do something with key structure
      */
     public abstract void run();
 
     /**
-     * Do something with data structure
+     * Do something with key structure
      */
     public abstract void run(int profiles, int iterations);
 
     /**
-     * Searches for profile with given uuid in data structure
+     * Searches for profile with given uuid in key structure
      *
      * @param uuid uuid of profile
      * @return profile with given uuid
@@ -93,16 +93,16 @@ public abstract class AbstractScenario {
     }
 
     /**
-     * Add one profile to data structure
+     * Add one profile to key structure
      *
-     * @return uuid of new profile in data structure
+     * @return uuid of new profile in key structure
      */
     public UUID insertProfile() {
         return clientWriter.insertProfile(generatorOld.generateNewProfileData());
     }
 
     /**
-     * Adds count numbers of profiles to data structure
+     * Adds count numbers of profiles to key structure
      */
     public Set<UUID> insertProfiles(int counter) {
         Set<UUID> uuids = new HashSet<>();

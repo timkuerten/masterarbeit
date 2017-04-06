@@ -1,4 +1,8 @@
-package datastructure;
+package datastructure.Trees;
+
+import exception.Trees.DataNullPointerException;
+import exception.Trees.NoParentException;
+import exception.Trees.NodeNullPointerException;
 
 import java.util.*;
 import java.util.Collection;
@@ -7,16 +11,16 @@ import java.util.stream.Collectors;
 
 public class Node<T> {
 
-    private Collection<Node<T>> children = new HashSet<>();
+    private T key;
     private Node<T> parent = null;
-    private T data;
+    private Collection<Node<T>> children = new HashSet<>();
 
-    public Node(T data) {
-        setData(data);
+    public Node(T key) {
+        setKey(key);
     }
 
-    public Node(T data, Node<T> parent) {
-        this(data);
+    public Node(T key, Node<T> parent) {
+        this(key);
         setParent(parent);
     }
 
@@ -44,13 +48,9 @@ public class Node<T> {
         return Collections.unmodifiableCollection(children);
     }
 
-    public int getChildrenCount() {
-        return children.size();
-    }
-
     public void removeChild(Node<T> child) {
         if (child == null) {
-            throw new NullPointerException("Child cannot be null");
+            throw new NodeNullPointerException();
         }
 
         if (!this.children.contains(child)) {
@@ -60,9 +60,15 @@ public class Node<T> {
         children.remove(child);
     }
 
+    public void removeAllChildren() {
+        while (!children.isEmpty()) {
+            removeChild(children.iterator().next());
+        }
+    }
+
     public void removeChildren(Collection<Node<T>> children) {
         if (children == null) {
-            throw new NullPointerException("Children cannot be null");
+            throw new NodeNullPointerException();
         }
         if (!children.isEmpty()) {
             children.forEach(this::removeChild);
@@ -71,7 +77,7 @@ public class Node<T> {
 
     private void setParent(Node<T> parent) {
         if (parent == null) {
-            throw new NullPointerException("Parent cannot be null");
+            throw new NodeNullPointerException();
         }
         parent.addChild(this);
     }
@@ -82,20 +88,20 @@ public class Node<T> {
 
     public void removeParent() {
         if (this.parent == null) {
-            throw new NullPointerException("Node " + this + " has no parent");
+            throw new NoParentException(this);
         }
         parent.removeChild(this);
     }
 
-    private void setData(T data) {
-        if (data == null) {
-            throw new NullPointerException("Data cannot be null");
+    private void setKey(T key) {
+        if (key == null) {
+            throw new DataNullPointerException();
         }
-        this.data = data;
+        this.key = key;
     }
 
-    public T getData() {
-        return data;
+    public T getKey() {
+        return key;
     }
 
     public boolean isRoot() {
@@ -107,12 +113,15 @@ public class Node<T> {
     }
 
     public boolean hasChild(Node<T> node) {
-        return node != null && children.contains(node);
+        if (node == null) {
+            throw new NodeNullPointerException();
+        }
+        return children.contains(node);
     }
 
     @Override
     public String toString() {
-        return "<node " + this.data + ">";
+        return "<node " + this.key + ">";
     }
 
 }

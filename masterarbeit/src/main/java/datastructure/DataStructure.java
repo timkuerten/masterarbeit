@@ -40,18 +40,18 @@ public interface DataStructure {
     Set<Profile> get(String thirdPartyID, String minValue, String maxValue);
 
     /**
-     * Creates a new profile with given data, saves it in data structure and returns uuid.
+     * Creates a new profile with given key, saves it in key structure and returns uuid.
      *
-     * @param profileData data of new profile
+     * @param profileData key of new profile
      * @return uuid of new profile
      */
     UUID insert(Map<String, String> profileData);
 
     /**
-     * Searching for profile with uuid and add data to it. If profile can not be found return false, otherwise true.
+     * Searching for profile with uuid and add key to it. If profile can not be found return false, otherwise true.
      *
      * @param uuid        uuid of profile
-     * @param profileData data of profile
+     * @param profileData key of profile
      * @return if profile with uuid can be found
      */
     boolean update(UUID uuid, Map<String, String> profileData);

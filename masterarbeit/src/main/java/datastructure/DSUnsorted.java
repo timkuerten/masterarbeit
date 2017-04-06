@@ -13,7 +13,7 @@ public class DSUnsorted implements DataStructure {
     private Map<UUID, Profile> profiles = new HashMap<>();
 
     /**
-     * Constructor. Give a schema and third-party-IDs to data structure.
+     * Constructor. Give a schema and third-party-IDs to key structure.
      * It throws an exception if third-party-IDs are not contained in schema.
      *
      * @param schema        schema for profiles
@@ -116,9 +116,9 @@ public class DSUnsorted implements DataStructure {
     }
 
     /**
-     * Creates a new profile with given data, saves it in data structure and returns uuid.
+     * Creates a new profile with given key, saves it in key structure and returns uuid.
      *
-     * @param profileData data of new profile
+     * @param profileData key of new profile
      * @return uuid of new profile
      */
     public UUID insert(Map<String, String> profileData) {
@@ -138,10 +138,10 @@ public class DSUnsorted implements DataStructure {
     }
 
     /**
-     * Searching for profile with uuid and add data. If profile can not be found return false, otherwise true.
+     * Searching for profile with uuid and add key. If profile can not be found return false, otherwise true.
      *
      * @param uuid        uuid of profile
-     * @param profileData data that should be added to profile
+     * @param profileData key that should be added to profile
      * @return if profile with uuid can be found
      */
     public boolean update(UUID uuid, Map<String, String> profileData) {

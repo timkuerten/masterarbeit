@@ -1,7 +1,7 @@
 package client;
 
 /**
- * Class to log estimated time by using interface mathods of data structure.
+ * Class to log estimated time by using interface mathods of key structure.
  */
 public class TimeLogger extends AbstractLogger {
 

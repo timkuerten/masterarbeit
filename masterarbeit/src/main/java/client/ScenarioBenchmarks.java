@@ -12,7 +12,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
     private TimeSaverManager timeSaverManager;
 
     /**
-     * @param dataStructure what data structure is used? Needed to use data structure with this name.
+     * @param dataStructure what key structure is used? Needed to use key structure with this name.
      */
     public ScenarioBenchmarks(String dataStructure) {
         super();
@@ -44,7 +44,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
     }
 
     /**
-     * Add 10000 profiles to data structure, get a profile by its UUID and get profiles by third-party-ID
+     * Add 10000 profiles to key structure, get a profile by its UUID and get profiles by third-party-ID
      */
     @Override
     public void run() {

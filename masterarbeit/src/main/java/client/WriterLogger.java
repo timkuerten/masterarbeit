@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Class to log every writing access in data structure.
+ * Class to log every writing access in key structure.
  */
 public class WriterLogger extends AbstractLogger {
 
@@ -23,7 +23,7 @@ public class WriterLogger extends AbstractLogger {
      * Creates an entry for insertProfile with given values of uuid and profileData
      *
      * @param uuid uuid of new profile
-     * @param profileData profile data of new profile
+     * @param profileData profile key of new profile
      */
     public void insertProfile(UUID uuid, Map<String, String> profileData) {
         logger.info("insertProfile(" + uuid + ", " + profileData + ")");
@@ -32,8 +32,8 @@ public class WriterLogger extends AbstractLogger {
     /**
      * Creates an entry for updateProfile with given values of uuid and profileData
      *
-     * @param uuid uuid of existent profile that should get additional profile data
-     * @param profileData profile data that should be add to profile with uuid
+     * @param uuid uuid of existent profile that should get additional profile key
+     * @param profileData profile key that should be add to profile with uuid
      */
     public void updateProfile(UUID uuid, Map<String, String> profileData) {
         logger.info("updateProfile(" + uuid + ", " + profileData + ")");

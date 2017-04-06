@@ -13,7 +13,7 @@ public interface Constants {
     // schema
     public static final int COUNT_NEW_SCHEMA = 3; // > 0
 
-    // profile data
+    // profile key
     public static final double PROBABILITY_OF_SCHEMA_USAGE = 0.8; // >= 0 && <= 1
     public static final double PROBABILITYOF_THIRD_PARTY_ID_USAGE = 0.8; // >= 0 && <= 1
 

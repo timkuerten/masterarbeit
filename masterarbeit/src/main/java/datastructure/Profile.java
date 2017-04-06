@@ -21,10 +21,10 @@ public class Profile {
     }
 
     /**
-     * Constructor to create profile with uuid and other data
+     * Constructor to create profile with uuid and other key
      *
      * @param uuid        universually unique identifier
-     * @param profileData contain other data of profile
+     * @param profileData contain other key of profile
      */
     public Profile(UUID uuid, Map<String, String> profileData) {
         this.uuid = uuid;
@@ -63,10 +63,10 @@ public class Profile {
     }
 
     /**
-     * Checks if profile data corresponds to given schema.
+     * Checks if profile key corresponds to given schema.
      *
      * @param schema given schema
-     * @return if profile data corresponds to given schema
+     * @return if profile key corresponds to given schema
      */
     protected boolean correspondToSchema(Set<String> schema) {
         return (schema.containsAll(profileData.keySet()));
