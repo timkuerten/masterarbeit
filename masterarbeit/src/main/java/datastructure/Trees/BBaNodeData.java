@@ -1,20 +1,27 @@
 package datastructure.Trees;
 
-public class BBaNode<T extends Comparable<? super T>> {
+import java.util.HashSet;
+import java.util.Set;
+
+public class BBaNodeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
 
     public T key;
-    public BBaNode<T> left;
-    public BBaNode<T> right;
-    public BBaNode<T> parent;
+    public Set<U> database;
+    public BBaNodeData<T, U> left;
+    public BBaNodeData<T, U> right;
+    public BBaNodeData<T, U> parent;
     public int weight;
 
-    public BBaNode(T key) {
+    public BBaNodeData(T key, U data) {
         this.key = key;
+
         weight = 1;
     }
 
-    public BBaNode(T key, BBaNode<T> parent) {
-        this(key);
+    public BBaNodeData(T key, U data, BBaNodeData<T, U> parent) {
+        this.key = key;
+        database = new HashSet<>();
+        database.add(data);
         this.parent = parent;
     }
 
@@ -22,12 +29,12 @@ public class BBaNode<T extends Comparable<? super T>> {
         return right == null;
     }
 
-    public void addLeft(BBaNode<T> node) {
+    public void addLeft(BBaNodeData<T, U> node) {
         left = node;
         node.parent = this;
     }
 
-    public void addRight(BBaNode<T> node) {
+    public void addRight(BBaNodeData<T, U> node) {
         right = node;
         node.parent = this;
     }
