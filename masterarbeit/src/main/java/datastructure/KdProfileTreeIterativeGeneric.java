@@ -7,7 +7,7 @@ import java.util.*;
 public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
 
     private String[] coordinates;
-    private KdNodeGeneric<String> root;
+    private KdNodeGeneric<String, Profile> root;
 
     public KdProfileTreeIterativeGeneric(Set<String> coordinates) {
         this.coordinates = new String[coordinates.size()];
@@ -22,32 +22,40 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         return (cd + 1) % coordinates.length;
     }
 
-    public KdNodeGeneric<String> insert(Profile profile) {
+    private List<String> createInputKey(Profile profile) {
+        ArrayList<String> coordinateValues = new ArrayList<>();
+        for (String coordinate : coordinates) {
+            coordinateValues.add(profile.getProfileData().get(coordinate));
+        }
+        return coordinateValues;
+    }
+
+    public KdNodeGeneric<String, Profile> insert(Profile profile) {
         if (root == null) {
-            root = new KdNodeGeneric<>(profile, coordinates, null);
+            root = new KdNodeGeneric<>(profile, createInputKey(profile), null);
             return root;
         }
 
-        Set<KdNodeGeneric<String>> kdNodes = new HashSet<>();
+        Set<KdNodeGeneric<String, Profile>> kdNodes = new HashSet<>();
         kdNodes.add(root);
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            Set<KdNodeGeneric<String>> tempKdNodes = new HashSet<>();
-            for (KdNodeGeneric<String> kdNode : kdNodes) {
+            Set<KdNodeGeneric<String, Profile>> tempKdNodes = new HashSet<>();
+            for (KdNodeGeneric<String, Profile> kdNode : kdNodes) {
                 if (sameData(profile, kdNode)) {
-                    kdNode.profiles.add(profile);
-                } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+                    kdNode.database.add(profile);
+                } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     } else {
-                        kdNode.left = new KdNodeGeneric<>(profile, coordinates, kdNode);
+                        kdNode.left = new KdNodeGeneric<>(profile, createInputKey(profile), kdNode);
                         return kdNode.left;
                     }
                 } else {
                     if (kdNode.right != null) {
                         tempKdNodes.add(kdNode.right);
                     } else {
-                        kdNode.right = new KdNodeGeneric<>(profile, coordinates, kdNode);
+                        kdNode.right = new KdNodeGeneric<>(profile, createInputKey(profile), kdNode);
                         return kdNode.right;
                     }
                 }
@@ -71,8 +79,8 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
     }
 
     public boolean contains(Profile profile) {
-        KdNodeGeneric<String> kdNode = findNode(profile.getProfileData());
-        return kdNode != null && kdNode.profiles.contains(profile);
+        KdNodeGeneric<String, Profile> kdNode = findNode(profile.getProfileData());
+        return kdNode != null && kdNode.database.contains(profile);
     }
 
     public Profile get(UUID uuid) {
@@ -80,12 +88,12 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             return null;
         }
 
-        List<KdNodeGeneric<String>> kdNodes = new ArrayList<>();
+        List<KdNodeGeneric<String, Profile>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
-        KdNodeGeneric<String> kdNode;
+        KdNodeGeneric<String, Profile> kdNode;
         while (!kdNodes.isEmpty()) {
             kdNode = kdNodes.get(0);
-            for (Profile profile : kdNode.profiles) {
+            for (Profile profile : kdNode.database) {
                 if (profile.getUuid() == uuid) {
                     return profile;
                 }
@@ -114,15 +122,15 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             return Collections.emptySet();
         }
 
-        List<KdNodeGeneric<String>> kdNodes = new ArrayList<>();
+        List<KdNodeGeneric<String, Profile>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<Profile> profiles = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<String>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<String> kdNode : kdNodes) {
+            List<KdNodeGeneric<String, Profile>> tempKdNodes = new ArrayList<>();
+            for (KdNodeGeneric<String, Profile> kdNode : kdNodes) {
                 if (cd == dim) {
-                    int comparison = value.compareTo(kdNode.coordinateValues[dim]);
+                    int comparison = value.compareTo(kdNode.coordinateValues.get(dim));
                     if (comparison < 0) {
                         if (kdNode.left != null) {
                             tempKdNodes.add(kdNode.left);
@@ -133,12 +141,12 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                         }
 
                         if (comparison == 0) {
-                            profiles.addAll(kdNode.profiles);
+                            profiles.addAll(kdNode.database);
                         }
                     }
                 } else {
-                    if (value.compareTo(kdNode.coordinateValues[dim]) == 0) {
-                        profiles.addAll(kdNode.profiles);
+                    if (value.compareTo(kdNode.coordinateValues.get(dim)) == 0) {
+                        profiles.addAll(kdNode.database);
                     }
 
                     if (kdNode.left != null) {
@@ -176,13 +184,13 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             return Collections.emptySet();
         }
 
-        List<KdNodeGeneric<String>> kdNodes = new ArrayList<>();
+        List<KdNodeGeneric<String, Profile>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<Profile> profiles = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<String>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<String> kdNode : kdNodes) {
+            List<KdNodeGeneric<String, Profile>> tempKdNodes = new ArrayList<>();
+            for (KdNodeGeneric<String, Profile> kdNode : kdNodes) {
                 if (cd == dim) {
                     int comparison = compareToRange(minValue, maxValue, kdNode.getValue(dim));
                     if (comparison < 0) {
@@ -194,7 +202,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                             tempKdNodes.add(kdNode.left);
                         }
                     } else {
-                        profiles.addAll(kdNode.profiles);
+                        profiles.addAll(kdNode.database);
                         if (kdNode.left != null) {
                             tempKdNodes.add(kdNode.left);
                         }
@@ -205,7 +213,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                     }
                 } else {
                     if (compareToRange(minValue, maxValue, kdNode.getValue(dim)) == 0) {
-                        profiles.addAll(kdNode.profiles);
+                        profiles.addAll(kdNode.database);
                     }
 
                     if (kdNode.left != null) {
@@ -238,13 +246,13 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             searchValues.add(new Triple<>(dim, searchValue.getSecond(), searchValue.getThird()));
         }
 
-        List<KdNodeGeneric<String>> kdNodes = new ArrayList<>();
+        List<KdNodeGeneric<String, Profile>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<Profile> profiles = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<String>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<String> kdNode : kdNodes) {
+            List<KdNodeGeneric<String, Profile>> tempKdNodes = new ArrayList<>();
+            for (KdNodeGeneric<String, Profile> kdNode : kdNodes) {
                 Triple<Integer, String, String> cdTriple = null;
                 for (Triple<Integer, String, String> searchValue : searchValues) {
                     if (searchValue.getFirst().equals(cd)) {
@@ -266,7 +274,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                         }
                     } else {
                         if (isInMultiRange(searchValues, kdNode)) {
-                            profiles.addAll(kdNode.profiles);
+                            profiles.addAll(kdNode.database);
                         }
 
                         if (kdNode.left != null) {
@@ -279,7 +287,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                     }
                 } else {
                     if (isInMultiRange(searchValues, kdNode)) {
-                        profiles.addAll(kdNode.profiles);
+                        profiles.addAll(kdNode.database);
                     }
 
                     if (kdNode.left != null) {
@@ -308,7 +316,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         }
     }
 
-    private boolean isInMultiRange(Set<Triple<Integer, String, String>> searchValues, KdNodeGeneric<String> kdNode) {
+    private boolean isInMultiRange(Set<Triple<Integer, String, String>> searchValues, KdNodeGeneric<String, Profile> kdNode) {
         return searchValues.stream()
                 .noneMatch(
                         t -> ((t.getSecond() != null && kdNode.getValue(t.getFirst()).compareTo(t.getSecond()) < 0) || (
@@ -316,7 +324,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
     }
 
     // old
-    private boolean isInMultiRange2(Set<Triple<Integer, String, String>> searchValues, KdNodeGeneric<String> kdNode) {
+    private boolean isInMultiRange2(Set<Triple<Integer, String, String>> searchValues, KdNodeGeneric<String, Profile> kdNode) {
         boolean returnValue = true;
         for (Triple<Integer, String, String> t : searchValues) {
             if (t.getSecond() != null && kdNode.getValue(t.getFirst()).compareTo(t.getSecond()) < 0) {
@@ -329,13 +337,13 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         return returnValue;
     }
 
-    private boolean sameData(Profile profile, KdNodeGeneric<String> t) {
-        return sameData(profile.getProfileData(), t);
+    private boolean sameData(Profile profile, KdNodeGeneric<String, Profile> kdNode) {
+        return sameData(profile.getProfileData(), kdNode);
     }
 
-    private boolean sameData(Map<String, String> profileData, KdNodeGeneric<String> t) {
+    private boolean sameData(Map<String, String> profileData, KdNodeGeneric<String, Profile> kdNode) {
         for (int i = 0; i < coordinates.length; i++) {
-            if (!profileData.get(coordinates[i]).equals(t.coordinateValues[i])) {
+            if (!profileData.get(coordinates[i]).equals(kdNode.coordinateValues.get(i))) {
                 return false;
             }
         }
@@ -348,16 +356,16 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             return false;
         }
 
-        KdNodeGeneric<String> kdNode = root;
+        KdNodeGeneric<String, Profile> kdNode = root;
         int cd = 0;
         while (true) {
             if (sameData(profile, kdNode)) {
-                kdNode.profiles.remove(profile);
-                if (kdNode.profiles.isEmpty()) {
+                kdNode.database.remove(profile);
+                if (kdNode.database.isEmpty()) {
                     deleteNode(kdNode, cd);
                 }
                 return true;
-            } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+            } else if (profile.getProfileData().get(coordinates[cd]).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
                 if (kdNode.left == null) {
                     return false;
                 } else {
@@ -375,17 +383,17 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         }
     }
 
-    public KdNodeGeneric<String> findNode(Map<String, String> profileData) {
+    public KdNodeGeneric<String, Profile> findNode(Map<String, String> profileData) {
         if (profileData.size() != coordinates.length || root == null) {
             return null;
         }
 
-        KdNodeGeneric<String> kdNode = root;
+        KdNodeGeneric<String, Profile> kdNode = root;
         int cd = 0;
         while (true) {
             if (sameData(profileData, kdNode)) {
                 return kdNode;
-            } else if (profileData.get(coordinates[cd]).compareTo(kdNode.coordinateValues[cd]) < 0) {
+            } else if (profileData.get(coordinates[cd]).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
                 if (kdNode.left != null) {
                     kdNode = kdNode.left;
                 } else {
@@ -409,18 +417,18 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
             return null;
         }
 
-        return findMin(root, dim, 0).getKey().coordinateValues[dim];
+        return findMin(root, dim, 0).getKey().coordinateValues.get(dim);
     }
 
-    private Pair<KdNodeGeneric<String>, Integer> findMin(KdNodeGeneric<String> t, int dim, int cd) {
+    private Pair<KdNodeGeneric<String, Profile>, Integer> findMin(KdNodeGeneric<String, Profile> t, int dim, int cd) {
         if (t == null) {
             return null;
         }
 
-        Pair<KdNodeGeneric<String>, Integer> minPair = new Pair<>(t, cd);
-        Stack<Pair<KdNodeGeneric<String>, Integer>> pairStack = new Stack<>();
+        Pair<KdNodeGeneric<String, Profile>, Integer> minPair = new Pair<>(t, cd);
+        Stack<Pair<KdNodeGeneric<String, Profile>, Integer>> pairStack = new Stack<>();
         pairStack.add(minPair);
-        Pair<KdNodeGeneric<String>, Integer> pair;
+        Pair<KdNodeGeneric<String, Profile>, Integer> pair;
 
         while (!pairStack.isEmpty()) {
             pair = pairStack.pop();
@@ -473,17 +481,17 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         return minPair;
     }
 
-    private boolean deleteNode(KdNodeGeneric<String> t, int cd) {
+    private boolean deleteNode(KdNodeGeneric<String, Profile> t, int cd) {
         if (t == null) {
             throw new NullPointerException("Node cannot be null");
         }
 
-        KdNodeGeneric<String> kdNode = t;
+        KdNodeGeneric<String, Profile> kdNode = t;
         int newCd = cd;
         while (true) {
             if (kdNode.right != null) {
                 // find
-                Pair<KdNodeGeneric<String>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
+                Pair<KdNodeGeneric<String, Profile>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
                 // copy
                 kdNode.copyData(tempKdNode.getKey());
                 // delete
@@ -491,7 +499,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
                 cd = tempKdNode.getValue();
             } else if (kdNode.left != null) {
                 // find
-                Pair<KdNodeGeneric<String>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
+                Pair<KdNodeGeneric<String, Profile>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
                 // copy
                 kdNode.copyData(tempKdNode.getKey());
                 // delete
@@ -513,7 +521,7 @@ public class KdProfileTreeIterativeGeneric implements KdProfileTreeGeneric {
         }
     }
 
-    public KdNodeGeneric<String> updateProfile(Profile profile, Map<String, String> profileData) {
+    public KdNodeGeneric<String, Profile> updateProfile(Profile profile, Map<String, String> profileData) {
         delete(profile);
         profile.profileData = profileData;
         return insert(profile);

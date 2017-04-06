@@ -1,58 +1,44 @@
 package datastructure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class KdNodeGeneric <T extends Comparable<? super T>> {
+public class KdNodeGeneric <T extends Comparable<? super T>, U> {
 
-    protected String[] coordinateValues;
+    protected List<T> coordinateValues;
 
     public KdNodeGeneric left;
     public KdNodeGeneric right;
     public KdNodeGeneric parent;
-    public Set<Profile> profiles;
+    public Set<U> database;
 
-    public KdNodeGeneric(Profile profile, String[] coordinates, KdNodeGeneric parent) {
-        // add profile
-        profiles = new HashSet<>();
-        profiles.add(profile);
+    public KdNodeGeneric(U data, List<T> coordinateValues, KdNodeGeneric<T, U> parent) {
+        // add data
+        database = new HashSet<>();
+        database.add(data);
         // set coordinate values
-        coordinateValues = new String[coordinates.length];
-        for (int i = 0; i < coordinates.length; i++) {
-            coordinateValues[i] = profile.getProfileData().get(coordinates[i]);
-        }
+        this.coordinateValues = new ArrayList<>(coordinateValues);
         this.parent = parent;
     }
 
-    public String getValue(int i) {
-        if (i < coordinateValues.length) {
-            return coordinateValues[i];
+    public T getValue(int i) {
+        if (i < coordinateValues.size()) {
+            return coordinateValues.get(i);
         } else {
             throw new ArrayIndexOutOfBoundsException("Index for coordinateValues is out of bounds");
         }
     }
 
-    public void copyData(KdNodeGeneric<T> t) {
-        coordinateValues = t.coordinateValues;
-        profiles = t.profiles;
-    }
-
-    public String coordinateValuesAsString() {
-        String returnString = "(" + coordinateValues[0];
-        for (int i = 1; i < coordinateValues.length; i++) {
-            returnString += "," + coordinateValues[i];
-        }
-        returnString += ")";
-        return returnString;
+    public void copyData(KdNodeGeneric<T, U> kdNode) {
+        coordinateValues = kdNode.coordinateValues;
+        database = kdNode.database;
     }
 
     @Override
     public String toString() {
-        String returnString = "v: (" + coordinateValues[0];
-        for (int i = 1; i < coordinateValues.length; i++) {
-            returnString += "," + coordinateValues[i];
-        }
-        returnString += "), #: " + profiles.size();
+        String returnString = "v: " + coordinateValues + ", #: " + database.size();
         if (left != null) {
             returnString += ", l: (" + left.toString() + ")";
             returnString += ")";

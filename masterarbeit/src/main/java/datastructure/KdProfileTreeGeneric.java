@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface KdProfileTreeGeneric {
 
-    KdNodeGeneric<String> insert(Profile profile);
+    KdNodeGeneric<String, Profile> insert(Profile profile);
 
     void insert(Set<Profile> profiles);
 
@@ -22,9 +22,9 @@ public interface KdProfileTreeGeneric {
 
     boolean delete(Profile profile);
 
-    KdNodeGeneric<String> findNode(Map<String, String> profileData);
+    KdNodeGeneric<String, Profile> findNode(Map<String, String> profileData);
 
     String findMin(String thirdPartyID);
 
-    KdNodeGeneric<String> updateProfile(Profile profile, Map<String, String> profileData);
+    KdNodeGeneric<String, Profile> updateProfile(Profile profile, Map<String, String> profileData);
 }
