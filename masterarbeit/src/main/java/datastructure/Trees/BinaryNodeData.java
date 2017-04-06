@@ -7,7 +7,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class BinaryNodeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
+public class BinaryNodeData<T extends Comparable<? super T>, U> {
 
     public BinaryNodeData<T, U> left;
     public BinaryNodeData<T, U> right;

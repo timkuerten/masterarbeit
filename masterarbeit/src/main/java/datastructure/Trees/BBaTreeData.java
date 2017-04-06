@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class BBaTreeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
+public class BBaTreeData<T extends Comparable<? super T>, U> {
 
     public BBaNodeData<T, U> root;
     private double alpha;

@@ -5,7 +5,7 @@ import exception.Trees.KeyAlreadyExistsException;
 import java.util.Collections;
 import java.util.List;
 
-public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
+public class BinarySearchTreeData<T extends Comparable<? super T>, U> {
 
     private BinaryNodeData<T, U> root;
 

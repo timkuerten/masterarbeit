@@ -5,7 +5,7 @@ import exception.Trees.DataNullPointerException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BBaNodeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
+public class BBaNodeData<T extends Comparable<? super T>, U> {
 
     protected T key;
     protected Set<U> database;
