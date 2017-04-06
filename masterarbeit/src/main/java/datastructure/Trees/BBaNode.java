@@ -1,19 +1,19 @@
-package datastructure;
+package datastructure.Trees;
 
-public class BBaNode {
+public class BBaNode<T extends Comparable<? super T>> {
 
-    int key;
-    BBaNode left;
-    BBaNode right;
-    BBaNode parent;
-    int weight;
+    public T key;
+    public BBaNode<T> left;
+    public BBaNode<T> right;
+    public BBaNode<T> parent;
+    public int weight;
 
-    public BBaNode(int key) {
+    public BBaNode(T key) {
         this.key = key;
         weight = 1;
     }
 
-    public BBaNode(int key, BBaNode parent) {
+    public BBaNode(T key, BBaNode parent) {
         this(key);
         this.parent = parent;
     }

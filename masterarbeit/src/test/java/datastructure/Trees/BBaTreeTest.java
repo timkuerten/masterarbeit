@@ -1,5 +1,6 @@
-package datastructure;
+package datastructure.Trees;
 
+import datastructure.Trees.BBaTree;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,11 +10,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class BBaTreeTest {
 
-    private BBaTree bBaTree;
+    private BBaTree<Integer> bBaTree;
 
     @Before
     public void SetUp() {
-        bBaTree = new BBaTree();
+        bBaTree = new BBaTree<>();
     }
 
     private void printTree() {

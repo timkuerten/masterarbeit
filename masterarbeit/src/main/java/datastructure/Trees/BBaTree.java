@@ -1,12 +1,12 @@
-package datastructure;
+package datastructure.Trees;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class BBaTree {
+public class BBaTree<T extends Comparable<? super T>> {
 
-    BBaNode root;
+    public BBaNode<T> root;
     private double alpha;
     private double epsilon;
 
@@ -33,24 +33,24 @@ public class BBaTree {
         this.epsilon = epsilon;
     }
 
-    public void insert(int key) {
+    public void insert(T key) {
         if (root == null) {
-            root = new BBaNode(key);
+            root = new BBaNode<T>(key);
         } else {
             insert(root, key);
         }
     }
 
-    private void insert(BBaNode node, int key) {
+    private void insert(BBaNode<T> node, T key) {
         if (node == null) {
             throw new NullPointerException("node cannot be null");
         }
 
-        Stack<BBaNode> bBaNodeStack = new Stack<>();
-        BBaNode tmpNode = node;
+        Stack<BBaNode<T>> bBaNodeStack = new Stack<>();
+        BBaNode<T> tmpNode = node;
         while (!tmpNode.isLeaf()) {
             bBaNodeStack.push(tmpNode);
-            if (key < tmpNode.key) {
+            if (key.compareTo(tmpNode.key) < 0) {
                 tmpNode = tmpNode.left;
             } else {
                 tmpNode = tmpNode.right;
@@ -58,18 +58,18 @@ public class BBaTree {
         }
         // found the candidate leaf. Test whether key distinct
 
-        if (tmpNode.key == key) {
+        if (tmpNode.key.compareTo(key) == 0) {
             throw new RuntimeException("Inserted key '" + key + "' already exists.");
         }
 
         // key is distinct, now perform the insert
-        if (tmpNode.key < key) {
-            tmpNode.addLeft(new BBaNode(tmpNode.key));
-            tmpNode.addRight(new BBaNode(key));
+        if (tmpNode.key.compareTo(key) < 0) {
+            tmpNode.addLeft(new BBaNode<T>(tmpNode.key));
+            tmpNode.addRight(new BBaNode<T>(key));
             tmpNode.key = key;
         } else {
-            tmpNode.addLeft(new BBaNode(key));
-            tmpNode.addRight(new BBaNode(tmpNode.key));
+            tmpNode.addLeft(new BBaNode<T>(key));
+            tmpNode.addRight(new BBaNode<T>(tmpNode.key));
         }
         //tmpNode.weight = 2;
         updateWeight(tmpNode);
@@ -78,14 +78,14 @@ public class BBaTree {
 
     }
 
-    public void insertKeys(List<Integer> keys) {
-        for (Integer key : keys) {
+    public void insertKeys(List<T> keys) {
+        for (T key : keys) {
             insert(key);
         }
     }
 
-    private void rebalance(Stack<BBaNode> bBaNodeStack) {
-        BBaNode tmpNode;
+    private void rebalance(Stack<BBaNode<T>> bBaNodeStack) {
+        BBaNode<T> tmpNode;
         /* rebalance */
         while (!bBaNodeStack.isEmpty()) {
             tmpNode = bBaNodeStack.pop();
@@ -120,9 +120,9 @@ public class BBaTree {
         /* end rebalance */
     }
 
-    private BBaNode rightRotation(BBaNode node) {
+    private BBaNode<T> rightRotation(BBaNode<T> node) {
         //System.out.println("rightRotation: " + node.key);
-        BBaNode oldNode = node;
+        BBaNode<T> oldNode = node;
         node = oldNode.left;
         if (oldNode.parent == null) {
             root = node;
@@ -130,7 +130,7 @@ public class BBaTree {
             oldNode.addLeft(node.right);
             node.addRight(oldNode);
         } else {
-            BBaNode parent = oldNode.parent;
+            BBaNode<T> parent = oldNode.parent;
             if (parent.left == oldNode) {
                 parent.addLeft(node);
                 oldNode.addLeft(node.right);
@@ -144,9 +144,9 @@ public class BBaTree {
         return node;
     }
 
-    private BBaNode leftRotation(BBaNode node) {
+    private BBaNode<T> leftRotation(BBaNode<T> node) {
         //System.out.println("leftRotation: " + node.key);
-        BBaNode oldNode = node;
+        BBaNode<T> oldNode = node;
         node = oldNode.right;
         if (oldNode.parent == null) {
             root = node;
@@ -154,7 +154,7 @@ public class BBaTree {
             oldNode.addRight(node.left);
             node.addLeft(oldNode);
         } else {
-            BBaNode parent = oldNode.parent;
+            BBaNode<T> parent = oldNode.parent;
             if (parent.left == oldNode) {
                 parent.addLeft(node);
                 oldNode.addRight(node.left);
@@ -168,12 +168,12 @@ public class BBaTree {
         return node;
     }
 
-    public boolean find(int key) {
-        BBaNode node = root;
+    public boolean find(T key) {
+        BBaNode<T> node = root;
         while (node != null) {
-            if (key < node.key) {
+            if (key.compareTo(node.key) < 0) {
                 node = node.left;
-            } else if (key > node.key) {
+            } else if (key.compareTo(node.key) > 0) {
                 node = node.right;
             } else {
                 return true;
@@ -182,39 +182,39 @@ public class BBaTree {
         return false;
     }
 
-    public BBaNode getLeaf(int key) {
-        BBaNode node = root;
+    public BBaNode<T> getLeaf(T key) {
+        BBaNode<T> node = root;
         while (!node.isLeaf()) {
-            if (key < node.key) {
+            if (key.compareTo(node.key) < 0) {
                 node = node.left;
             } else {
                 node = node.right;
             }
         }
-        if (node.key == key) {
+        if (node.key.compareTo(key) == 0) {
             return node;
         } else {
             return null;
         }
     }
 
-    public boolean delete(int key) {
+    public boolean delete(T key) {
         if (root == null) {
             return false;
         }
 
-        Stack<BBaNode> bBaNodeStack = new Stack<>();
-        BBaNode tmpNode = root;
+        Stack<BBaNode<T>> bBaNodeStack = new Stack<>();
+        BBaNode<T> tmpNode = root;
         while (!tmpNode.isLeaf()) {
             bBaNodeStack.push(tmpNode);
-            if (key < tmpNode.key) {
+            if (key.compareTo(tmpNode.key) < 0) {
                 tmpNode = tmpNode.left;
             } else {
                 tmpNode = tmpNode.right;
             }
         }
         // found the candidate leaf. Test whether key is same
-        if (tmpNode.key != key) {
+        if (tmpNode.key.compareTo(key) != 0) {
             return false;
         }
 
@@ -225,7 +225,7 @@ public class BBaTree {
             return true;
 
         } else {
-            BBaNode parent = tmpNode.parent;
+            BBaNode<T> parent = tmpNode.parent;
             if (parent.left == tmpNode) {
                 if (parent.right.isLeaf()) {
                     parent.left = null;
@@ -251,7 +251,7 @@ public class BBaTree {
         return true;
     }
 
-    private void updateWeight(BBaNode node) {
+    private void updateWeight(BBaNode<T> node) {
         if (node.isLeaf()) {
             //System.out.println("Leaf new :" + node);
             node.weight = 1;
@@ -264,30 +264,30 @@ public class BBaTree {
         }
     }
 
-    private void updateKey(BBaNode node) {
+    private void updateKey(BBaNode<T> node) {
         if (node.isLeaf()) {
             return;
         }
         while (node != null) {
-            node.key = Math.max(node.left.key, node.right.key);
+            node.key = (node.left.key.compareTo(node.right.key) > 0) ? node.left.key : node.right.key;
             //System.out.println("new :" + node);
             node = node.parent;
         }
     }
 
-    public List<BBaNode> inOrder() {
+    public List<BBaNode<T>> inOrder() {
         return inOrder(root);
     }
 
-    private List<BBaNode> inOrder(BBaNode node) {
-        Stack<BBaNode> integerStack = new Stack<>();
-        List<BBaNode> nodes = new ArrayList<>();
-        while (!integerStack.isEmpty() || node != null) {
+    private List<BBaNode<T>> inOrder(BBaNode<T> node) {
+        Stack<BBaNode<T>> nodeStack = new Stack<>();
+        List<BBaNode<T>> nodes = new ArrayList<>();
+        while (!nodeStack.isEmpty() || node != null) {
             if (node != null) {
-                integerStack.push(node);
+                nodeStack.push(node);
                 node = node.left;
             } else {
-                node = integerStack.pop();
+                node = nodeStack.pop();
                 nodes.add(node);
                 node = node.right;
             }
