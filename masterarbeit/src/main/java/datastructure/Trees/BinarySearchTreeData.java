@@ -25,7 +25,8 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Com
         BinaryNodeData<T, U> node = root;
         while (true) {
             if (node.key.compareTo(key) == 0) {
-                throw new KeyAlreadyExistsException(key.toString());
+                node.database.add(data);
+                return node;
             } else if (key.compareTo(node.key) > 0) {
                 if (node.right == null) {
                     return node.addRightChild(new BinaryNodeData<>(key, data));
@@ -60,12 +61,20 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Com
         return (get(key) != null);
     }
 
-    public boolean delete(T key) {
+    public void delete(T key, U data) {
         BinaryNodeData<T, U> node = get(key);
-        if (node == null || root == null) {
-            return false;
+        if (node != null && root != null && data != null && node.database != null && node.database.contains(data)) {
+            // remove data
+            node.database.remove(data);
+            if (node.database.isEmpty()) {
+                // delete node
+                delete(node);
+            }
         }
 
+    }
+
+    private void delete(BinaryNodeData<T, U> node) {
         // node to be removed has two children
         if (node.right != null && node.left != null) {
             BinaryNodeData<T, U> node2 = node.right.inOrder().get(0);
@@ -77,7 +86,7 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Com
         if (node.isLeaf()) {
             if (node == root) {
                 root = null;
-                return true;
+                return;
             }
             BinaryNodeData<T, U> parent = node.parent;
 
@@ -86,22 +95,20 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Com
             } else {
                 parent.right = null;
             }
-            return true;
-
         } else {
             // node to be removed has one child
             BinaryNodeData<T, U> child;
             if (node.left != null) {
                 if (node == root) {
                     root = node.left;
-                    return true;
+                    return;
                 }
 
                 child = node.left;
             } else {
                 if (node == root) {
                     root = node.right;
-                    return true;
+                    return;
                 }
 
                 child = node.right;
@@ -113,7 +120,6 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U extends Com
             } else {
                 parent.right = child;
             }
-            return true;
         }
     }
 

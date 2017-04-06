@@ -1,28 +1,61 @@
 package datastructure.Trees;
 
+import exception.Trees.DataNullPointerException;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class BBaNodeData<T extends Comparable<? super T>, U extends Comparable<? super U>> {
 
-    public T key;
-    public Set<U> database;
-    public BBaNodeData<T, U> left;
-    public BBaNodeData<T, U> right;
-    public BBaNodeData<T, U> parent;
-    public int weight;
+    protected T key;
+    protected Set<U> database;
+    protected BBaNodeData<T, U> left;
+    protected BBaNodeData<T, U> right;
+    protected BBaNodeData<T, U> parent;
+    protected int weight;
 
     public BBaNodeData(T key, U data) {
         this.key = key;
+        database = new HashSet<>();
+        insertData(data);
+        weight = 1;
+    }
 
+    public BBaNodeData(T key, Set<U> database) {
+        this.key = key;
+        this.database = database;
         weight = 1;
     }
 
     public BBaNodeData(T key, U data, BBaNodeData<T, U> parent) {
         this.key = key;
         database = new HashSet<>();
-        database.add(data);
+        insertData(data);
         this.parent = parent;
+    }
+
+    public void insertData(U data) {
+        if (data == null) {
+            throw new DataNullPointerException();
+        }
+        database.add(data);
+    }
+
+    public boolean removeData(U data) {
+        if (data == null) {
+            throw new DataNullPointerException();
+        }
+
+        if (database.contains(data)) {
+            database.remove(data);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hasEmptyDatabase() {
+        return database.isEmpty();
     }
 
     public boolean isLeaf() {
@@ -41,7 +74,7 @@ public class BBaNodeData<T extends Comparable<? super T>, U extends Comparable<?
 
     @Override
     public String toString() {
-        String returnString = "key: (" + key +"), w: " + weight;
+        String returnString = "key: (" + key + "), w: " + weight;
         if (left != null) {
             returnString += ", l: (" + left.toString() + ")";
             returnString += ")";
