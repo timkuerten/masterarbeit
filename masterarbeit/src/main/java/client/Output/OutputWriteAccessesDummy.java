@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class DummyOutputWriteAccesses implements OutputWriteAccesses {
+public class OutputWriteAccessesDummy implements OutputWriteAccesses {
 
     public void start() {
 

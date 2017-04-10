@@ -7,7 +7,7 @@ import datastructure.Triple;
 import java.util.Set;
 import java.util.UUID;
 
-public class DummyOutputReadAccesses implements OutputReadAccesses {
+public class OutputReadAccessesDummy implements OutputReadAccesses {
 
     public void start() {
 
