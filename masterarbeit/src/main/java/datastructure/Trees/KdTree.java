@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface KdTree<T extends Comparable<? super T>, U> {
 
-    KdNodeGeneric<T, U> insert(List<T> key, U data);
+    KdNode<T, U> insert(List<T> key, U data);
 
     boolean contains(List<T> key, U data);
 
@@ -19,7 +19,7 @@ public interface KdTree<T extends Comparable<? super T>, U> {
 
     boolean delete(List<T> key, U data);
 
-    KdNodeGeneric<T, U> findNode(List<T> key);
+    KdNode<T, U> findNode(List<T> key);
 
     T findMin(int dim);
 

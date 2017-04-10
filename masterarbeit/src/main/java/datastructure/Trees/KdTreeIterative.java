@@ -6,7 +6,7 @@ import java.util.*;
 
 public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTree<T, U> {
 
-    private KdNodeGeneric<T, U> root;
+    private KdNode<T, U> root;
     private int dimensions;
 
     public KdTreeIterative(int dimensions) {
@@ -20,32 +20,32 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         return (cd + 1) % dimensions;
     }
 
-    public KdNodeGeneric<T, U> insert(List<T> key, U data) {
+    public KdNode<T, U> insert(List<T> key, U data) {
         if (root == null) {
-            root = new KdNodeGeneric<>(data, key, null);
+            root = new KdNode<>(data, key, null);
             return root;
         }
 
-        Set<KdNodeGeneric<T, U>> kdNodes = new HashSet<>();
+        Set<KdNode<T, U>> kdNodes = new HashSet<>();
         kdNodes.add(root);
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            Set<KdNodeGeneric<T, U>> tempKdNodes = new HashSet<>();
-            for (KdNodeGeneric<T, U> kdNode : kdNodes) {
+            Set<KdNode<T, U>> tempKdNodes = new HashSet<>();
+            for (KdNode<T, U> kdNode : kdNodes) {
                 if (sameData(key, kdNode)) {
                     kdNode.database.add(data);
                 } else if (key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     } else {
-                        kdNode.left = new KdNodeGeneric<>(data, key, kdNode);
+                        kdNode.left = new KdNode<>(data, key, kdNode);
                         return kdNode.left;
                     }
                 } else {
                     if (kdNode.right != null) {
                         tempKdNodes.add(kdNode.right);
                     } else {
-                        kdNode.right = new KdNodeGeneric<>(data, key, kdNode);
+                        kdNode.right = new KdNode<>(data, key, kdNode);
                         return kdNode.right;
                     }
                 }
@@ -70,13 +70,13 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             return Collections.emptySet();
         }
 
-        List<KdNodeGeneric<T, U>> kdNodes = new ArrayList<>();
+        List<KdNode<T, U>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<U> database = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<T, U>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<T, U> kdNode : kdNodes) {
+            List<KdNode<T, U>> tempKdNodes = new ArrayList<>();
+            for (KdNode<T, U> kdNode : kdNodes) {
                 if (cd == dim) {
                     int comparison = value.compareTo(kdNode.coordinateValues.get(dim));
                     if (comparison < 0) {
@@ -122,13 +122,13 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             return Collections.emptySet();
         }
 
-        List<KdNodeGeneric<T, U>> kdNodes = new ArrayList<>();
+        List<KdNode<T, U>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<U> database = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<T, U>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<T, U> kdNode : kdNodes) {
+            List<KdNode<T, U>> tempKdNodes = new ArrayList<>();
+            for (KdNode<T, U> kdNode : kdNodes) {
                 if (cd == dim) {
                     int comparison = compareToRange(minValue, maxValue, kdNode.getValue(dim));
                     if (comparison < 0) {
@@ -175,13 +175,13 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             return Collections.emptySet();
         }
 
-        List<KdNodeGeneric<T, U>> kdNodes = new ArrayList<>();
+        List<KdNode<T, U>> kdNodes = new ArrayList<>();
         kdNodes.add(root);
         Set<U> database = new HashSet<>();
         int cd = 0;
         while (!kdNodes.isEmpty()) {
-            List<KdNodeGeneric<T, U>> tempKdNodes = new ArrayList<>();
-            for (KdNodeGeneric<T, U> kdNode : kdNodes) {
+            List<KdNode<T, U>> tempKdNodes = new ArrayList<>();
+            for (KdNode<T, U> kdNode : kdNodes) {
                 for (Pair<T, T> searchValue : searchValues) {
                     int comparison = compareToRange(searchValue.getFirst(), searchValue.getSecond(), kdNode.getValue(cd));
                     if (comparison < 0) {
@@ -225,7 +225,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNodeGeneric<T, U> kdNode) {
+    private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNode<T, U> kdNode) {
         for (int i = 0; i < searchValues.size(); i++) {
             if ((searchValues.get(i).getFirst() != null && kdNode.getValue(i).compareTo(searchValues.get(i).getFirst()) < 0) || searchValues.get(i).getSecond() != null && kdNode.getValue(i).compareTo(searchValues.get(i).getSecond()) > 0) {
                 return false;
@@ -235,7 +235,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         return true;
     }
 
-    private boolean sameData(List<T> key, KdNodeGeneric<T, U> kdNode) {
+    private boolean sameData(List<T> key, KdNode<T, U> kdNode) {
         if (key == null || kdNode == null || kdNode.database == null) {
             return false;
         }
@@ -252,7 +252,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             return false;
         }
 
-        KdNodeGeneric<T, U> kdNode = root;
+        KdNode<T, U> kdNode = root;
         int cd = 0;
         while (true) {
             if (sameData(key, kdNode)) {
@@ -279,17 +279,17 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private boolean deleteNode(KdNodeGeneric<T, U> t, int cd) {
+    private boolean deleteNode(KdNode<T, U> t, int cd) {
         if (t == null) {
             throw new NullPointerException("Node cannot be null");
         }
 
-        KdNodeGeneric<T, U> kdNode = t;
+        KdNode<T, U> kdNode = t;
         int newCd = cd;
         while (true) {
             if (kdNode.right != null) {
                 // find
-                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
+                Pair<KdNode<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
                 // copy
                 kdNode.copyData(tempKdNode.getFirst());
                 // delete
@@ -297,7 +297,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
                 cd = tempKdNode.getSecond();
             } else if (kdNode.left != null) {
                 // find
-                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
+                Pair<KdNode<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
                 // copy
                 kdNode.copyData(tempKdNode.getFirst());
                 // delete
@@ -319,12 +319,12 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    public KdNodeGeneric<T, U> findNode(List<T> key) {
+    public KdNode<T, U> findNode(List<T> key) {
         if (key.size() != dimensions || root == null) {
             return null;
         }
 
-        KdNodeGeneric<T, U> kdNode = root;
+        KdNode<T, U> kdNode = root;
         int cd = 0;
         while (true) {
             if (sameData(key, kdNode)) {
@@ -355,15 +355,15 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         return findMin(root, dim, 0).getFirst().coordinateValues.get(dim);
     }
 
-    private Pair<KdNodeGeneric<T, U>, Integer> findMin(KdNodeGeneric<T, U> t, int dim, int cd) {
+    private Pair<KdNode<T, U>, Integer> findMin(KdNode<T, U> t, int dim, int cd) {
         if (t == null) {
             return null;
         }
 
-        Pair<KdNodeGeneric<T, U>, Integer> minPair = new Pair<>(t, cd);
-        Stack<Pair<KdNodeGeneric<T, U>, Integer>> pairStack = new Stack<>();
+        Pair<KdNode<T, U>, Integer> minPair = new Pair<>(t, cd);
+        Stack<Pair<KdNode<T, U>, Integer>> pairStack = new Stack<>();
         pairStack.add(minPair);
-        Pair<KdNodeGeneric<T, U>, Integer> pair;
+        Pair<KdNode<T, U>, Integer> pair;
 
         while (!pairStack.isEmpty()) {
             pair = pairStack.pop();

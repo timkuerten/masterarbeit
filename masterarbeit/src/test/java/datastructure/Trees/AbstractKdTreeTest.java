@@ -17,7 +17,7 @@ abstract public class AbstractKdTreeTest {
     protected Set<String> thirdPartyIDs;
     private List<Map<String, String>> profilesData = new ArrayList<>();
     private List<Profile> profiles = new ArrayList<>();
-    private List<KdNodeGeneric<String, Profile>> kdNodes = new ArrayList<>();
+    private List<KdNode<String, Profile>> kdNodes = new ArrayList<>();
 
     @Before
     public void setUpSchema() {

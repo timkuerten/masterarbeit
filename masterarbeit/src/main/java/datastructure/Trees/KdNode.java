@@ -5,16 +5,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class KdNodeGeneric <T extends Comparable<? super T>, U> {
+public class KdNode<T extends Comparable<? super T>, U> {
 
     protected List<T> coordinateValues;
 
-    public KdNodeGeneric<T, U> left;
-    public KdNodeGeneric<T, U> right;
-    public KdNodeGeneric<T, U> parent;
+    public KdNode<T, U> left;
+    public KdNode<T, U> right;
+    public KdNode<T, U> parent;
     public Set<U> database;
 
-    public KdNodeGeneric(U data, List<T> coordinateValues, KdNodeGeneric<T, U> parent) {
+    public KdNode(U data, List<T> coordinateValues, KdNode<T, U> parent) {
         // add data
         database = new HashSet<>();
         database.add(data);
@@ -31,7 +31,7 @@ public class KdNodeGeneric <T extends Comparable<? super T>, U> {
         }
     }
 
-    public void copyData(KdNodeGeneric<T, U> kdNode) {
+    public void copyData(KdNode<T, U> kdNode) {
         coordinateValues = kdNode.coordinateValues;
         database = kdNode.database;
     }

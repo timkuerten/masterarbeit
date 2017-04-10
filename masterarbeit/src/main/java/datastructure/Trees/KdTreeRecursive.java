@@ -1,15 +1,12 @@
 package datastructure.Trees;
 
-import datastructure.KdNode;
 import datastructure.Pair;
-import datastructure.Profile;
-import datastructure.Triple;
 
 import java.util.*;
 
 public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTree<T, U> {
 
-    private KdNodeGeneric<T, U> root;
+    private KdNode<T, U> root;
     private int dimensions;
 
     public KdTreeRecursive(int dimensions) {
@@ -23,16 +20,16 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return (cd + 1) % dimensions;
     }
 
-    public KdNodeGeneric<T, U> insert(List<T> key, U data) {
+    public KdNode<T, U> insert(List<T> key, U data) {
         if (root != null) {
             return insert(key, data, root, 0);
         } else {
-            root = new KdNodeGeneric<>(data, key, null);
+            root = new KdNode<>(data, key, null);
             return root;
         }
     }
 
-    private KdNodeGeneric<T, U> insert(List<T> key, U data, KdNodeGeneric<T, U> kdNode, int cd) {
+    private KdNode<T, U> insert(List<T> key, U data, KdNode<T, U> kdNode, int cd) {
         if (kdNode == null) {
             throw new NullPointerException("Node cannot be null");
         } else if (sameData(key, kdNode)) {
@@ -42,14 +39,14 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
             if (kdNode.left != null) {
                 return insert(key, data, kdNode.left, incrementCd(cd));
             } else {
-                kdNode.left = new KdNodeGeneric<>(data, key, kdNode);
+                kdNode.left = new KdNode<>(data, key, kdNode);
                 return kdNode.left;
             }
         } else {
             if (kdNode.right != null) {
                 return insert(key, data, kdNode.right, incrementCd(cd));
             } else {
-                kdNode.right = new KdNodeGeneric<>(data, key, kdNode);
+                kdNode.right = new KdNode<>(data, key, kdNode);
                 return kdNode.right;
             }
         }
@@ -71,7 +68,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return get(root, dim, value, 0);
     }
 
-    private Set<U> get(KdNodeGeneric<T, U> kdNode, int dim, T value, int cd) {
+    private Set<U> get(KdNode<T, U> kdNode, int dim, T value, int cd) {
         if (kdNode == null) {
             return new HashSet<>();
         } else if (cd == dim) {
@@ -109,7 +106,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return get(root, dim, minValue, maxValue, 0);
     }
 
-    private Set<U> get(KdNodeGeneric<T, U> kdNode, int dim, T minValue, T maxValue, int cd) {
+    private Set<U> get(KdNode<T, U> kdNode, int dim, T minValue, T maxValue, int cd) {
         if (kdNode == null) {
             return new HashSet<>();
         } else if (cd == dim) {
@@ -143,7 +140,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return get(root, searchValues, 0);
     }
 
-    private Set<U> get(KdNodeGeneric<T, U> kdNode, List<Pair<T, T>> searchValues, int cd) {
+    private Set<U> get(KdNode<T, U> kdNode, List<Pair<T, T>> searchValues, int cd) {
         if (kdNode == null) {
             return new HashSet<>();
         }
@@ -184,7 +181,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNodeGeneric<T, U> kdNode) {
+    private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNode<T, U> kdNode) {
         for (int i = 0; i < searchValues.size(); i++) {
             if ((searchValues.get(i).getFirst() != null
                     && kdNode.getValue(i).compareTo(searchValues.get(i).getFirst()) < 0)
@@ -197,7 +194,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return true;
     }
 
-    private boolean sameData(List<T> key, KdNodeGeneric<T, U> kdNode) {
+    private boolean sameData(List<T> key, KdNode<T, U> kdNode) {
         if (key == null || kdNode == null || kdNode.database == null) {
             return false;
         }
@@ -213,7 +210,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return deleteProfile(key, data, root, 0);
     }
 
-    private boolean deleteProfile(List<T> key, U data, KdNodeGeneric<T, U> kdNode, int cd) {
+    private boolean deleteProfile(List<T> key, U data, KdNode<T, U> kdNode, int cd) {
         if (kdNode == null) {
             return false;
         }
@@ -232,7 +229,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private boolean deleteNode(KdNodeGeneric<T, U> kdNode, int cd) {
+    private boolean deleteNode(KdNode<T, U> kdNode, int cd) {
         if (kdNode == null) {
             throw new NullPointerException("Node cannot be null");
         }
@@ -240,14 +237,14 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         int nextCd = incrementCd(cd);
         if (kdNode.right != null) {
             // find
-            Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(cd));
+            Pair<KdNode<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(cd));
             // copy
             kdNode.copyData(tempKdNode.getFirst());
             // delete
             return deleteNode(tempKdNode.getFirst(), tempKdNode.getSecond());
         } else if (kdNode.left != null) {
             // find
-            Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(cd));
+            Pair<KdNode<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(cd));
             // copy
             kdNode.copyData(tempKdNode.getFirst());
             // delete
@@ -267,7 +264,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    public KdNodeGeneric<T, U> findNode(List<T> key) {
+    public KdNode<T, U> findNode(List<T> key) {
         if (key.size() != dimensions || root == null) {
             return null;
         }
@@ -275,7 +272,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return findNode(key, root, 0);
     }
 
-    private KdNodeGeneric<T, U> findNode(List<T> key, KdNodeGeneric<T, U> kdNode, int cd) {
+    private KdNode<T, U> findNode(List<T> key, KdNode<T, U> kdNode, int cd) {
         if (kdNode == null) {
             return null;
         } else if (sameData(key, kdNode)) {
@@ -295,7 +292,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return findMin(root, dim, 0).getFirst().coordinateValues.get(dim);
     }
 
-    private Pair<KdNodeGeneric<T, U>, Integer> findMin(KdNodeGeneric<T, U> kdNode, int dim, int cd) {
+    private Pair<KdNode<T, U>, Integer> findMin(KdNode<T, U> kdNode, int dim, int cd) {
         if (kdNode == null) {
             return null;
         } else if (cd == dim) {
@@ -322,7 +319,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private Pair<KdNodeGeneric<T, U>, Integer> min(Pair<KdNodeGeneric<T, U>, Integer> p1, Pair<KdNodeGeneric<T, U>, Integer> p2, KdNodeGeneric<T, U> t, int dim, int cd) {
+    private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, Pair<KdNode<T, U>, Integer> p2, KdNode<T, U> t, int dim, int cd) {
         if (p1.getFirst().coordinateValues.get(dim).compareTo(p2.getFirst().coordinateValues.get(dim)) < 0) {
             if (p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
                 return p1;
@@ -334,7 +331,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         return new Pair<>(t, cd);
     }
 
-    private Pair<KdNodeGeneric<T, U>, Integer> min(Pair<KdNodeGeneric<T, U>, Integer> p1, KdNodeGeneric<T, U> t, int dim, int cd) {
+    private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, KdNode<T, U> t, int dim, int cd) {
         if (p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
             return p1;
         }
