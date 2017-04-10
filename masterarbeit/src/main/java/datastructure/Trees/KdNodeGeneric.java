@@ -1,4 +1,4 @@
-package datastructure;
+package datastructure.Trees;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ public class KdNodeGeneric <T extends Comparable<? super T>, U> {
 
     protected List<T> coordinateValues;
 
-    public KdNodeGeneric left;
-    public KdNodeGeneric right;
-    public KdNodeGeneric parent;
+    public KdNodeGeneric<T, U> left;
+    public KdNodeGeneric<T, U> right;
+    public KdNodeGeneric<T, U> parent;
     public Set<U> database;
 
     public KdNodeGeneric(U data, List<T> coordinateValues, KdNodeGeneric<T, U> parent) {
