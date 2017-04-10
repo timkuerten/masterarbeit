@@ -244,6 +244,10 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
     }
 
     public boolean delete(List<T> key, U data) {
+      if (key == null) {
+            return false;
+        }
+
         if (data == null) {
             return false;
         }
@@ -272,6 +276,46 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             }
 
             cd = incrementCd(cd);
+        }
+    }
+
+    private boolean deleteNode(KdNodeGeneric<T, U> t, int cd) {
+        if (t == null) {
+            throw new NullPointerException("Node cannot be null");
+        }
+
+        KdNodeGeneric<T, U> kdNode = t;
+        int newCd = cd;
+        while (true) {
+            if (kdNode.right != null) {
+                // find
+                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
+                // copy
+                kdNode.copyData(tempKdNode.getFirst());
+                // delete
+                kdNode = tempKdNode.getFirst();
+                cd = tempKdNode.getSecond();
+            } else if (kdNode.left != null) {
+                // find
+                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
+                // copy
+                kdNode.copyData(tempKdNode.getFirst());
+                // delete
+                kdNode = tempKdNode.getFirst();
+                cd = tempKdNode.getSecond();
+            } else {
+                if (kdNode == root) {
+                    root = null;
+                } else {
+                    if (kdNode.parent.left == kdNode) {
+                        kdNode.parent.left = null;
+                    } else {
+                        kdNode.parent.right = null;
+                    }
+                }
+
+                return true;
+            }
         }
     }
 
@@ -370,46 +414,6 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             }
         }
         return minPair;
-    }
-
-    private boolean deleteNode(KdNodeGeneric<T, U> t, int cd) {
-        if (t == null) {
-            throw new NullPointerException("Node cannot be null");
-        }
-
-        KdNodeGeneric<T, U> kdNode = t;
-        int newCd = cd;
-        while (true) {
-            if (kdNode.right != null) {
-                // find
-                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.right, cd, incrementCd(newCd));
-                // copy
-                kdNode.copyData(tempKdNode.getFirst());
-                // delete
-                kdNode = tempKdNode.getFirst();
-                cd = tempKdNode.getSecond();
-            } else if (kdNode.left != null) {
-                // find
-                Pair<KdNodeGeneric<T, U>, Integer> tempKdNode = findMin(kdNode.left, cd, incrementCd(newCd));
-                // copy
-                kdNode.copyData(tempKdNode.getFirst());
-                // delete
-                kdNode = tempKdNode.getFirst();
-                cd = tempKdNode.getSecond();
-            } else {
-                if (kdNode == root) {
-                    root = null;
-                } else {
-                    if (kdNode.parent.left == kdNode) {
-                        kdNode.parent.left = null;
-                    } else {
-                        kdNode.parent.right = null;
-                    }
-                }
-
-                return true;
-            }
-        }
     }
 
     // recursive
