@@ -11,7 +11,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
 
     public KdTreeIterative(int dimensions) {
         if (dimensions < 1) {
-            throw new RuntimeException("dimensions can not be less than 1");
+            throw new RuntimeException("dimension of KdTree can not be less than 1");
         }
         this.dimensions = dimensions;
     }
@@ -26,6 +26,10 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             return root;
         }
 
+        if (key.size() != dimensions) {
+            throw new RuntimeException("dimension of the key does not match the dimension of KdTree");
+        }
+
         Set<KdNode<T, U>> kdNodes = new HashSet<>();
         kdNodes.add(root);
         int cd = 0;
@@ -34,7 +38,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             for (KdNode<T, U> kdNode : kdNodes) {
                 if (sameData(key, kdNode)) {
                     kdNode.database.add(data);
-                } else if (key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
+                } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     } else {
@@ -183,7 +187,8 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             List<KdNode<T, U>> tempKdNodes = new ArrayList<>();
             for (KdNode<T, U> kdNode : kdNodes) {
                 for (Pair<T, T> searchValue : searchValues) {
-                    int comparison = compareToRange(searchValue.getFirst(), searchValue.getSecond(), kdNode.getValue(cd));
+                    int comparison =
+                            compareToRange(searchValue.getFirst(), searchValue.getSecond(), kdNode.getValue(cd));
                     if (comparison < 0) {
                         if (kdNode.right != null) {
                             tempKdNodes.add(kdNode.right);
@@ -216,6 +221,14 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
     }
 
     private int compareToRange(T minValue, T maxValue, T input) {
+        if (input == null) {
+            if (minValue == null && maxValue == null) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+
         if (minValue != null && input.compareTo(minValue) < 0) {
             return -1;
         } else if (maxValue != null && input.compareTo(maxValue) > 0) {
@@ -227,7 +240,16 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
 
     private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNode<T, U> kdNode) {
         for (int i = 0; i < searchValues.size(); i++) {
-            if ((searchValues.get(i).getFirst() != null && kdNode.getValue(i).compareTo(searchValues.get(i).getFirst()) < 0) || searchValues.get(i).getSecond() != null && kdNode.getValue(i).compareTo(searchValues.get(i).getSecond()) > 0) {
+            if (kdNode.getValue(i) == null && (searchValues.get(i).getFirst() != null ||
+                    searchValues.get(i).getSecond() != null)) {
+                return false;
+
+            }
+
+            if ((searchValues.get(i).getFirst() != null
+                    && kdNode.getValue(i).compareTo(searchValues.get(i).getFirst()) < 0)
+                    || searchValues.get(i).getSecond() != null
+                    && kdNode.getValue(i).compareTo(searchValues.get(i).getSecond()) > 0) {
                 return false;
             }
         }
@@ -244,7 +266,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
     }
 
     public boolean delete(List<T> key, U data) {
-      if (key == null) {
+        if (key == null) {
             return false;
         }
 

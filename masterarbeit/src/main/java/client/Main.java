@@ -7,7 +7,7 @@ public class Main {
     }
 
     private static void startScenario() {
-        int i = 2;
+        int i = 3;
         ScenarioBenchmarks scenario;
 
         switch (i) {
@@ -20,11 +20,14 @@ public class Main {
             case 2:
                 scenario = new ScenarioBenchmarks("DSSortedArray");
                 break;
+            case 3:
+                scenario = new ScenarioBenchmarks("DSKdTree");
+                break;
             default:
                 scenario = new ScenarioBenchmarks("DSUnsorted");
                 break;
         }
-        scenario.run(100000, 100);
+        scenario.run(1000000, 100);
     }
 
 }

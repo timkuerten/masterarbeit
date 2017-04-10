@@ -1,11 +1,9 @@
 package client;
 
-import datastructure.DSHashMap;
-import datastructure.DSSortedArray;
-import datastructure.DSUnsorted;
-import datastructure.DataStructure;
+import datastructure.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ScenarioBenchmarks extends AbstractScenario {
 
@@ -29,6 +27,9 @@ public class ScenarioBenchmarks extends AbstractScenario {
                 break;
             case "DSSortedArray":
                 ds = new DSSortedArray(schema, thirdPartyIDs);
+                break;
+            case "DSKdTree":
+                ds = new DSKdTree(schema, thirdPartyIDs);
                 break;
             default:
                 ds = new DSUnsorted(schema, thirdPartyIDs);
@@ -79,7 +80,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
         schema.addAll(Arrays.asList("a", "b", "c", "d"));
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("b");
-        addSchema(schema, thirdPartyIDs, iterations);
+        //addSchema(schema, thirdPartyIDs, iterations);
         System.out.println(timeSaverManager.printOutTimeSavers());
     }
 

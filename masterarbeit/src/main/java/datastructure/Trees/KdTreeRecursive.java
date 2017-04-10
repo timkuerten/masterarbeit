@@ -35,7 +35,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         } else if (sameData(key, kdNode)) {
             kdNode.database.add(data);
             return kdNode;
-        } else if (key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
+        } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
             if (kdNode.left != null) {
                 return insert(key, data, kdNode.left, incrementCd(cd));
             } else {
@@ -172,6 +172,14 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
     }
 
     private int compareToRange(T minValue, T maxValue, T input) {
+        if (input == null) {
+            if (minValue == null && maxValue == null) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+
         if (minValue != null && input.compareTo(minValue) < 0) {
             return -1;
         } else if (maxValue != null && input.compareTo(maxValue) > 0) {
@@ -183,6 +191,12 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
 
     private boolean isInMultiRange(List<Pair<T, T>> searchValues, KdNode<T, U> kdNode) {
         for (int i = 0; i < searchValues.size(); i++) {
+            if (kdNode.getValue(i) == null && (searchValues.get(i).getFirst() != null ||
+                    searchValues.get(i).getSecond() != null)) {
+                return false;
+
+            }
+
             if ((searchValues.get(i).getFirst() != null
                     && kdNode.getValue(i).compareTo(searchValues.get(i).getFirst()) < 0)
                     || searchValues.get(i).getSecond() != null
