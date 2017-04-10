@@ -6,15 +6,23 @@ import java.util.UUID;
 
 public class DummyOutputWriteAccesses implements OutputWriteAccesses {
 
-    public void insert(Map<String, String> profileData, UUID returnValue) {
+    public void start() {
 
     }
 
-    public void update(UUID uuid, Map<String, String> profileData, boolean returnValue) {
+    public void insert(Map<String, String> profileData, UUID returnValue, long estimatedTime) {
 
     }
 
-    public void addSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue) {
+    public void update(UUID uuid, Map<String, String> profileData, boolean returnValue, long estimatedTime) {
+
+    }
+
+    public void addSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue, long estimatedTime) {
+
+    }
+
+    public void close() {
 
     }
 }

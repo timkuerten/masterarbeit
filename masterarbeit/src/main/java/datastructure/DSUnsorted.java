@@ -115,17 +115,21 @@ public class DSUnsorted implements DataStructure {
         return returnProfiles;
     }
 
-    public Set<Profile> get(List<Triple<String, String, String>> searchValues) {
+    public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
         if (searchValues.isEmpty()) {
             return Collections.emptySet();
         }
-        
-        Set<Profile> returnProfiles = get(searchValues.get(0));
+
+        Set<Profile> returnProfiles = null;
         Set<Profile> tempProfiles;
 
-        for (int i = 1; i < searchValues.size(); i++) {
-            tempProfiles = get(searchValues.get(i));
-            returnProfiles.retainAll(tempProfiles);
+        for (Triple<String, String, String> searchValue : searchValues) {
+            if (returnProfiles == null) {
+                returnProfiles = get(searchValue);
+            } else {
+                tempProfiles = get(searchValue);
+                returnProfiles.retainAll(tempProfiles);
+            }
         }
 
         return returnProfiles;

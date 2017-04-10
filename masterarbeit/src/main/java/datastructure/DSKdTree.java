@@ -99,7 +99,7 @@ public class DSKdTree implements DataStructure {
         return kdProfileTree.get(thirdPartyID.indexOf(thirdPartyID), minValue, maxValue);
     }
 
-    public Set<Profile> get(List<Triple<String, String, String>> searchValues) {
+    public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
         if (searchValues.isEmpty()) {
             return Collections.emptySet();
         }

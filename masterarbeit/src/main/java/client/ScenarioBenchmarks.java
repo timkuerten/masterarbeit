@@ -1,9 +1,10 @@
 package client;
 
+import client.Input.Generator;
+import client.Output.OutputTerminal;
 import datastructure.*;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class ScenarioBenchmarks extends AbstractScenario {
 
@@ -13,7 +14,12 @@ public class ScenarioBenchmarks extends AbstractScenario {
      * @param dataStructure what key structure is used? Needed to use key structure with this name.
      */
     public ScenarioBenchmarks(String dataStructure) {
-        super();
+        super(new Generator(), new OutputTerminal());
+
+        if (dataStructure == null) {
+            throw new NullPointerException("dataStructure can not be null");
+        }
+
         //create schema
         schema.addAll(Arrays.asList("Name", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
         thirdPartyIDs.add("Alter");
@@ -38,10 +44,8 @@ public class ScenarioBenchmarks extends AbstractScenario {
 
         timeSaverManager = new TimeSaverManager();
 
-        //String timeLoggerName = dataStructure + "." + TimeLogger.class.getName();
-        //TimeLogger timeLogger = new TimeLogger(timeLoggerName, false);
-        clientReader = new ClientReader(ds, null, timeSaverManager);
-        clientWriter = new ClientWriter(ds, null, false, timeSaverManager);
+        clientReader = new ClientReader(ds, timeSaverManager, outputReadAccesses);
+        clientWriter = new ClientWriter(ds, timeSaverManager, outputWriteAccesses);
     }
 
     /**
@@ -64,11 +68,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
     public void run(int profiles, int iterations) {
         List<UUID> uuids = new ArrayList<>(insertProfiles(profiles));
         getProfileByUuid(uuids, iterations);
-        //getProfilesByThirdPartyID("Name", "Runfried Mühlberger", iterations);
         getProfilesByThirdPartyID("Alter", "20", iterations);
-        //getProfilesByRange("Name", "Olaf John", "Stilla Gille", iterations);
-        //System.out.println("--------------------------");
-        //getProfilesByRange("Name", "Raa", "Rzz", iterations);
         getProfilesByRange("Alter", "20", "22", iterations);
         Map<String, String> profileData = new HashMap<>();
         profileData.put("Name", "Ralf Schmidt");
@@ -80,8 +80,8 @@ public class ScenarioBenchmarks extends AbstractScenario {
         schema.addAll(Arrays.asList("a", "b", "c", "d"));
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("b");
-        //addSchema(schema, thirdPartyIDs, iterations);
-        System.out.println(timeSaverManager.printOutTimeSavers());
+        addSchema(schema, thirdPartyIDs, iterations);
+        //System.out.println(timeSaverManager.printOutTimeSavers());
     }
 
 }

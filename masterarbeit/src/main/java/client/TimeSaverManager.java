@@ -5,21 +5,21 @@ public class TimeSaverManager {
     public final TimeSaver getProfileByUuidTimeSaver;
     public final TimeSaver getProfileByThirdPartyIDTimeSaver;
     public final TimeSaver getProfileByRangeTimeSaver;
+    public final TimeSaver getProfileByMultiRangeTimeSaver;
     public final TimeSaver insertProfileTimeSaver;
     public final TimeSaver updateProfileTimeSaver;
     public final TimeSaver getSchemaTimeSaver;
     public final TimeSaver addSchemaTimeSaver;
-    public final TimeSaver changeSchemaTimeSaver;
 
     public TimeSaverManager() {
         getProfileByUuidTimeSaver = new TimeSaver();
         getProfileByThirdPartyIDTimeSaver = new TimeSaver();
         getProfileByRangeTimeSaver = new TimeSaver();
+        getProfileByMultiRangeTimeSaver = new TimeSaver();
         insertProfileTimeSaver = new TimeSaver();
         updateProfileTimeSaver = new TimeSaver();
         getSchemaTimeSaver = new TimeSaver();
         addSchemaTimeSaver = new TimeSaver();
-        changeSchemaTimeSaver = new TimeSaver();
     }
 
     public void getProfileByUuid(long estimatedTime) {
@@ -32,6 +32,10 @@ public class TimeSaverManager {
 
     public void getProfileByRange(long estimatedTime) {
         getProfileByRangeTimeSaver.addTime(estimatedTime);
+    }
+
+    public void getProfileByMultiRange(long estimatedTime) {
+        getProfileByMultiRangeTimeSaver.addTime(estimatedTime);
     }
 
     public void insertProfile(long estimatedTime) {
@@ -48,10 +52,6 @@ public class TimeSaverManager {
 
     public void addSchema(long estimatedTime) {
         addSchemaTimeSaver.addTime(estimatedTime);
-    }
-
-    public void changeSchema(long estimatedTime) {
-        changeSchemaTimeSaver.addTime(estimatedTime);
     }
 
     public String printOutTimeSavers() {
@@ -75,6 +75,12 @@ public class TimeSaverManager {
         returnString += "\tmax: " + getProfileByRangeTimeSaver.getMaxAsString() + "\n";
         returnString += "\tavg: " + getProfileByRangeTimeSaver.getAverageAsString() + "\n";
 
+        returnString += "getProfilesByMultiRange:\n";
+        returnString += "\t#:   " + getProfileByMultiRangeTimeSaver.getNumberOfTimesAsString() + "\n";
+        returnString += "\tmin: " + getProfileByMultiRangeTimeSaver.getMinAsString() + "\n";
+        returnString += "\tmax: " + getProfileByMultiRangeTimeSaver.getMaxAsString() + "\n";
+        returnString += "\tavg: " + getProfileByMultiRangeTimeSaver.getAverageAsString() + "\n";
+
         returnString += "insertProfile:\n";
         returnString += "\t#:   " + insertProfileTimeSaver.getNumberOfTimesAsString() + "\n";
         returnString += "\tmin: " + insertProfileTimeSaver.getMinAsString() + "\n";
@@ -97,13 +103,7 @@ public class TimeSaverManager {
         returnString += "\t#:   " + addSchemaTimeSaver.getNumberOfTimesAsString() + "\n";
         returnString += "\tmin: " + addSchemaTimeSaver.getMinAsString() + "\n";
         returnString += "\tmax: " + addSchemaTimeSaver.getMaxAsString() + "\n";
-        returnString += "\tavg: " + addSchemaTimeSaver.getAverageAsString() + "\n";
-
-        returnString += "changeSchema:\n";
-        returnString += "\t#:   " + changeSchemaTimeSaver.getNumberOfTimesAsString() + "\n";
-        returnString += "\tmin: " + changeSchemaTimeSaver.getMinAsString() + "\n";
-        returnString += "\tmax: " + changeSchemaTimeSaver.getMaxAsString() + "\n";
-        returnString += "\tavg: " + changeSchemaTimeSaver.getAverageAsString();
+        returnString += "\tavg: " + addSchemaTimeSaver.getAverageAsString();
 
         return returnString;
     }

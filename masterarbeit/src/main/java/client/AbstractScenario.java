@@ -1,5 +1,9 @@
 package client;
 
+import client.Input.Input;
+import client.Output.Output;
+import client.Output.OutputReadAccesses;
+import client.Output.OutputWriteAccesses;
 import datastructure.Profile;
 import datastructure.Schema;
 
@@ -11,17 +15,52 @@ import java.util.*;
 public abstract class AbstractScenario {
     protected Set<String> schema;
     protected Set<String> thirdPartyIDs;
+    private Set<UUID> uuids;
     protected ClientReader clientReader;
     protected ClientWriter clientWriter;
-    private GeneratorOld generatorOld;
+    private Input input;
+    protected OutputReadAccesses outputReadAccesses;
+    protected OutputWriteAccesses outputWriteAccesses;
+
+    public AbstractScenario(Input input, Output output) {
+        if (input == null) {
+            throw new NullPointerException("Input can not be null");
+        }
+
+        if (output == null) {
+            throw new NullPointerException("Output can not be null");
+        }
+
+        thirdPartyIDs = new HashSet<>();
+        schema = new HashSet<>();
+        uuids = new HashSet<>();
+        this.input = input;
+        this.outputReadAccesses = output;
+        this.outputWriteAccesses = output;
+    }
 
     /**
      * Creates thirdPartyIDs, generatorOld and schema
      */
-    public AbstractScenario() {
+    public AbstractScenario(Input input, OutputReadAccesses outputReadAccesses, OutputWriteAccesses outputWriteAccesses) {
+        if (input == null) {
+            throw new NullPointerException("Input can not be null");
+        }
+
+        if (outputReadAccesses == null) {
+            throw new NullPointerException("OutputReadAccesses can not be null");
+        }
+
+        if (outputWriteAccesses == null) {
+            throw new NullPointerException("OutputWriteAccesses can not be null");
+        }
+
         thirdPartyIDs = new HashSet<>();
-        generatorOld = new GeneratorOld(Long.MAX_VALUE);
         schema = new HashSet<>();
+        uuids = new HashSet<>();
+        this.input = input;
+        this.outputReadAccesses = outputReadAccesses;
+        this.outputWriteAccesses = outputWriteAccesses;
     }
 
     /**
@@ -98,7 +137,7 @@ public abstract class AbstractScenario {
      * @return uuid of new profile in key structure
      */
     public UUID insertProfile() {
-        return clientWriter.insertProfile(generatorOld.generateNewProfileData());
+        return clientWriter.insertProfile(input.getNewProfileData(schema));
     }
 
     /**

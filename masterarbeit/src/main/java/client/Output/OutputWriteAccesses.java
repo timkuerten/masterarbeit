@@ -10,10 +10,14 @@ import java.util.UUID;
 
 public interface OutputWriteAccesses {
 
-    void insert(Map<String, String> profileData, UUID returnValue);
+    void start();
 
-    void update(UUID uuid, Map<String, String> profileData, boolean returnValue);
+    void insert(Map<String, String> profileData, UUID returnValue, long estimatedTime);
 
-    void addSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue);
+    void update(UUID uuid, Map<String, String> profileData, boolean returnValue, long estimatedTime);
+
+    void addSchema(Set<String> schema, Set<String> thirdPartyIDs, boolean returnValue, long estimatedTime);
+
+    void close();
 
 }

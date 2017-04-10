@@ -91,7 +91,7 @@ abstract public class AbstractDataStructureTest {
     public void getProfilesByMultiRange() {
         Triple<String, String, String> searchValue1 = new Triple<>("Stadt", "Aachen", "Werl");
         Triple<String, String, String> searchValue2 = new Triple<>("Name", "Aron", "Maren");
-        List<Triple<String, String, String>> searchValues = new ArrayList<>(Arrays.asList(searchValue1, searchValue2));
+        Set<Triple<String, String, String>> searchValues = new HashSet<>(Arrays.asList(searchValue1, searchValue2));
 
         Set<UUID> uuidSet1 = new HashSet<>();
         uuidSet1.add(uuid2);
