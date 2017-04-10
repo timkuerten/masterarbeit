@@ -355,12 +355,12 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
         return findMin(root, dim, 0).getFirst().coordinateValues.get(dim);
     }
 
-    private Pair<KdNode<T, U>, Integer> findMin(KdNode<T, U> t, int dim, int cd) {
-        if (t == null) {
+    private Pair<KdNode<T, U>, Integer> findMin(KdNode<T, U> kdNode, int dim, int cd) {
+        if (kdNode == null) {
             return null;
         }
 
-        Pair<KdNode<T, U>, Integer> minPair = new Pair<>(t, cd);
+        Pair<KdNode<T, U>, Integer> minPair = new Pair<>(kdNode, cd);
         Stack<Pair<KdNode<T, U>, Integer>> pairStack = new Stack<>();
         pairStack.add(minPair);
         Pair<KdNode<T, U>, Integer> pair;
