@@ -1,9 +1,6 @@
 package datastructure;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Abstract class to save and manage profiles.
@@ -38,6 +35,13 @@ public interface DataStructure {
      * @return profiles which contain the given third-party-ID and range of value
      */
     Set<Profile> get(String thirdPartyID, String minValue, String maxValue);
+
+    /**
+     *
+     * @param searchValues List that contains a triple. Each triple contains a third-party-ID, a minimal value of third-party-ID and a maximal value of third-party-ID.
+     * @return profiles which contain the given third-party-IDs and range of value
+     */
+    Set<Profile> get(List<Triple<String, String, String>> searchValues);
 
     /**
      * Creates a new profile with given key, saves it in key structure and returns uuid.

@@ -27,6 +27,7 @@ abstract public class AbstractDataStructureTest {
         schema.addAll(Arrays.asList("Name", "Adresse", "Stadt", "Alter"));
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("Stadt");
+        thirdPartyIDs.add("Name");
     }
 
     protected void createExampleProfilesAndAddThem() {
@@ -87,8 +88,22 @@ abstract public class AbstractDataStructureTest {
     }
 
     @Test
+    public void getProfilesByMultiRange() {
+        Triple<String, String, String> searchValue1 = new Triple<>("Stadt", "Aachen", "Werl");
+        Triple<String, String, String> searchValue2 = new Triple<>("Name", "Aron", "Maren");
+        List<Triple<String, String, String>> searchValues = new ArrayList<>(Arrays.asList(searchValue1, searchValue2));
+
+        Set<UUID> uuidSet1 = new HashSet<>();
+        uuidSet1.add(uuid2);
+        Set<UUID> uuidSet2 = new HashSet<>();
+
+        ds.get(searchValues).forEach(x -> uuidSet2.add(x.getUuid()));
+        assertThat(uuidSet2.equals(uuidSet1), is(true));
+    }
+
+    @Test
     public void getProfileByNonThirdPartyID() {
-        assertThat(ds.get("Name", "Tim"), is(nullValue(null)));
+        assertThat(ds.get("Adresse", "Finkenweg 30"), is(nullValue(null)));
     }
 
     @Test
@@ -176,11 +191,13 @@ abstract public class AbstractDataStructureTest {
 
     // null variables
 
+    /*
     @Test
     public void getProfileByIDWithNullUUID() {
         thrown.expect(UuidNullPointerException.class);
         ds.get(null);
     }
+    */
 
     @Test
     public void getProfileByThirdPartyIDWithNullThirdPartyID() {

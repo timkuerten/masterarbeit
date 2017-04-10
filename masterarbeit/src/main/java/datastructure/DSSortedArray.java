@@ -122,6 +122,26 @@ public class DSSortedArray implements DataStructure {
         return returnProfiles;
     }
 
+    public Set<Profile> get(List<Triple<String, String, String>> searchValues) {
+        if (searchValues.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        Set<Profile> returnProfiles = get(searchValues.get(0));
+        Set<Profile> tempProfiles;
+
+        for (int i = 1; i < searchValues.size(); i++) {
+            tempProfiles = get(searchValues.get(i));
+            returnProfiles.retainAll(tempProfiles);
+        }
+
+        return returnProfiles;
+    }
+
+    private Set<Profile> get(Triple<String, String, String> searchValue) {
+        return get(searchValue.getFirst(), searchValue.getSecond(), searchValue.getThird());
+    }
+
     /**
      * Creates a new profile with given key, saves it in key structure and returns uuid.
      *
