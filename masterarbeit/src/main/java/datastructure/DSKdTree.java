@@ -34,7 +34,7 @@ public class DSKdTree implements DataStructure {
         this.schema = new Schema(schema, thirdPartyIDs);
         this.thirdPartyIDs = new ArrayList<>(thirdPartyIDs);
         if (thirdPartyIDs.size() > 0) {
-            kdProfileTree = new KdTreeRecursive<>(thirdPartyIDs.size());
+            kdProfileTree = new KdTreeIterative<>(thirdPartyIDs.size());
         }
     }
 
@@ -73,7 +73,7 @@ public class DSKdTree implements DataStructure {
             return null;
         }
 
-        return kdProfileTree.get(this.thirdPartyIDs.indexOf(thirdPartyID), value);
+        return kdProfileTree.get(thirdPartyIDs.indexOf(thirdPartyID), value);
     }
 
     /**

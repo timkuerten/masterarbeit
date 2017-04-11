@@ -35,7 +35,8 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         } else if (sameData(key, kdNode)) {
             kdNode.database.add(data);
             return kdNode;
-        } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
+        } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null
+                || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
             if (kdNode.left != null) {
                 return insert(key, data, kdNode.left, incrementCd(cd));
             } else {
@@ -72,6 +73,9 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         if (kdNode == null) {
             return new HashSet<>();
         } else if (cd == dim) {
+            if (kdNode.getValue(dim) == null) {
+                return new HashSet<>();
+            }
             int comparison = value.compareTo(kdNode.getValue(dim));
             if (comparison < 0) {
                 return get(kdNode.left, dim, value, incrementCd(cd));
@@ -309,7 +313,9 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
     private Pair<KdNode<T, U>, Integer> findMin(KdNode<T, U> kdNode, int dim, int cd) {
         if (kdNode == null) {
             return null;
-        } else if (cd == dim) {
+        }
+
+        if (cd == dim) {
             if (kdNode.left == null) {
                 return new Pair<>(kdNode, cd);
             } else {
@@ -333,7 +339,8 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         }
     }
 
-    private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, Pair<KdNode<T, U>, Integer> p2, KdNode<T, U> t, int dim, int cd) {
+    private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, Pair<KdNode<T, U>, Integer> p2,
+            KdNode<T, U> t, int dim, int cd) {
         if (p1.getFirst().coordinateValues.get(dim).compareTo(p2.getFirst().coordinateValues.get(dim)) < 0) {
             if (p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
                 return p1;

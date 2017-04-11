@@ -82,6 +82,9 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             List<KdNode<T, U>> tempKdNodes = new ArrayList<>();
             for (KdNode<T, U> kdNode : kdNodes) {
                 if (cd == dim) {
+                    if (kdNode.getValue(dim) == null) {
+                        return new HashSet<>();
+                    }
                     int comparison = value.compareTo(kdNode.coordinateValues.get(dim));
                     if (comparison < 0) {
                         if (kdNode.left != null) {
@@ -392,7 +395,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
 
             if (pair.getSecond() == dim) {
                 if (pair.getFirst().left == null) {
-                    if (pair.getFirst().getValue(dim).compareTo(minPair.getFirst().getValue(dim)) < 0) {
+                    if (pair.getFirst().getValue(dim) == null || pair.getFirst().getValue(dim).compareTo(minPair.getFirst().getValue(dim)) < 0) {
                         minPair = new Pair<>(pair.getFirst(), pair.getSecond());
                     }
                 } else {

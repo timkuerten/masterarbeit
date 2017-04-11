@@ -188,4 +188,13 @@ abstract public class AbstractKdTreeTest {
         searchValues.add(new Pair<>(null, null));
         assertThat(kdProfileTree.get(searchValues).containsAll(ps), is(true));
     }
+
+    @Test
+    public void deleteAndGetProfile() {
+        Profile profile = profiles.get(1);
+        assertThat(kdProfileTree.contains(new ArrayList<>(Arrays.asList(profile.getProfileData().get("a"), profile.getProfileData().get("b"))), profile), is(true));
+        kdProfileTree.delete(new ArrayList<>(Arrays.asList(profile.getProfileData().get("a"), profile.getProfileData().get("b"))), profile);
+        assertThat(kdProfileTree.contains(new ArrayList<>(Arrays.asList(profile.getProfileData().get("a"), profile.getProfileData().get("b"))), profile), is(false));
+        assertThat(kdProfileTree.get(0, "3").isEmpty(), is(true));
+    }
 }
