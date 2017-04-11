@@ -38,7 +38,8 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             for (KdNode<T, U> kdNode : kdNodes) {
                 if (sameData(key, kdNode)) {
                     kdNode.database.add(data);
-                } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
+                } else if (kdNode.coordinateValues.get(cd) != null && (key.get(cd) == null
+                        || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
                     if (kdNode.left != null) {
                         tempKdNodes.add(kdNode.left);
                     } else {
@@ -83,7 +84,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             for (KdNode<T, U> kdNode : kdNodes) {
                 if (cd == dim) {
                     if (kdNode.getValue(dim) == null) {
-                        return new HashSet<>();
+                        break;
                     }
                     int comparison = value.compareTo(kdNode.coordinateValues.get(dim));
                     if (comparison < 0) {
@@ -286,6 +287,14 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
                     deleteNode(kdNode, cd);
                 }
                 return true;
+            } else if (key.get(cd) == null) {
+                if (kdNode.right == null) {
+                    return false;
+                } else {
+                    kdNode = kdNode.right;
+                }
+            } else if (kdNode.coordinateValues.get(cd) == null) {
+                return false;
             } else if (key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
                 if (kdNode.left == null) {
                     return false;
@@ -395,7 +404,8 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
 
             if (pair.getSecond() == dim) {
                 if (pair.getFirst().left == null) {
-                    if (pair.getFirst().getValue(dim) == null || pair.getFirst().getValue(dim).compareTo(minPair.getFirst().getValue(dim)) < 0) {
+                    if (pair.getFirst().getValue(dim) == null
+                            || pair.getFirst().getValue(dim).compareTo(minPair.getFirst().getValue(dim)) < 0) {
                         minPair = new Pair<>(pair.getFirst(), pair.getSecond());
                     }
                 } else {

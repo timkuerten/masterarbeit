@@ -35,7 +35,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         } else if (sameData(key, kdNode)) {
             kdNode.database.add(data);
             return kdNode;
-        } else if (key.get(cd) != null && (kdNode.coordinateValues.get(cd) == null
+        } else if (kdNode.coordinateValues.get(cd) != null && (key.get(cd) == null
                 || key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0)) {
             if (kdNode.left != null) {
                 return insert(key, data, kdNode.left, incrementCd(cd));
@@ -240,6 +240,10 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
             }
 
             return true;
+        } else if (key.get(cd) == null) {
+            return kdNode.right != null && deleteProfile(key, data, kdNode.right, incrementCd(cd));
+        } else if (kdNode.coordinateValues.get(cd) == null) {
+            return false;
         } else if (key.get(cd).compareTo(kdNode.coordinateValues.get(cd)) < 0) {
             return deleteProfile(key, data, kdNode.left, incrementCd(cd));
         } else {
@@ -341,11 +345,13 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
 
     private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, Pair<KdNode<T, U>, Integer> p2,
             KdNode<T, U> t, int dim, int cd) {
-        if (p1.getFirst().coordinateValues.get(dim).compareTo(p2.getFirst().coordinateValues.get(dim)) < 0) {
-            if (p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
+        if (p1.getFirst().coordinateValues.get(dim) != null && p2.getFirst().coordinateValues.get(dim) != null
+                && p1.getFirst().coordinateValues.get(dim).compareTo(p2.getFirst().coordinateValues.get(dim)) < 0) {
+            if (t.getValue(dim) != null && p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
                 return p1;
             }
-        } else if (p2.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
+        } else if (p2.getFirst().coordinateValues.get(dim) != null && t.getValue(dim) != null
+                && p2.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
             return p2;
         }
 
@@ -353,7 +359,8 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
     }
 
     private Pair<KdNode<T, U>, Integer> min(Pair<KdNode<T, U>, Integer> p1, KdNode<T, U> t, int dim, int cd) {
-        if (p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
+        if (p1.getFirst().coordinateValues.get(dim) != null
+                && p1.getFirst().coordinateValues.get(dim).compareTo(t.getValue(dim)) < 0) {
             return p1;
         }
 
