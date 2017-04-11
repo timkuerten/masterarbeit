@@ -5,7 +5,7 @@ import java.util.Set;
 
 public interface Input {
 
-    Map<String, String> getNewProfileData(Set<String> schema);
+    Map<String, String> getNewValuesToSchema(Set<String> schema);
 
     Set<String> getNewSchema();
 

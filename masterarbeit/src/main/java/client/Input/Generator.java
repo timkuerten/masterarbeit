@@ -26,7 +26,7 @@ public class Generator implements Input {
         }
     }
 
-    public Map<String, String> getNewProfileData(Set<String> schema) {
+    public Map<String, String> getNewValuesToSchema(Set<String> schema) {
         Map<String, String> returnValue = new HashMap<>();
         for (String string : schema) {
             if (random.nextFloat() <= PROBABILITY_OF_SCHEMA_USAGE) {

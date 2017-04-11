@@ -31,7 +31,7 @@ abstract public class AbstractLogger {
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
             // first message
-            logger.info("start");
+            //logger.info("start");
         } catch (Exception e) {
             e.printStackTrace();
         }

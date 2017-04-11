@@ -37,6 +37,14 @@ public abstract class AbstractScenario {
         this.input = input;
         this.outputReadAccesses = output;
         this.outputWriteAccesses = output;
+        start();
+    }
+
+    private void start() {
+        outputReadAccesses.start();
+        if (outputReadAccesses != outputWriteAccesses) {
+            outputWriteAccesses.start();
+        }
     }
 
     /**
@@ -61,6 +69,7 @@ public abstract class AbstractScenario {
         this.input = input;
         this.outputReadAccesses = outputReadAccesses;
         this.outputWriteAccesses = outputWriteAccesses;
+        start();
     }
 
     /**
@@ -137,7 +146,7 @@ public abstract class AbstractScenario {
      * @return uuid of new profile in key structure
      */
     public UUID insertProfile() {
-        return clientWriter.insertProfile(input.getNewProfileData(schema));
+        return clientWriter.insertProfile(input.getNewValuesToSchema(schema));
     }
 
     /**
@@ -185,6 +194,13 @@ public abstract class AbstractScenario {
             returnValue = addSchema(schema, thirdPartyIDs);
         }
         return returnValue;
+    }
+
+    public void close() {
+        outputReadAccesses.close();
+        if (outputReadAccesses != outputWriteAccesses) {
+            outputWriteAccesses.close();
+        }
     }
 
 }

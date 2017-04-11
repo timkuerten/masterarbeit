@@ -1,30 +1,23 @@
 package client;
 
 import client.Input.Generator;
-import client.Output.OutputTerminal;
+import client.Output.OutputBenchmarksInLog;
 import datastructure.*;
 
 import java.util.*;
 
+import static client.Constants.DS;
+
 public class ScenarioBenchmarks extends AbstractScenario {
 
-    private TimeSaverManager timeSaverManager;
-
-    /**
-     * @param dataStructure what key structure is used? Needed to use key structure with this name.
-     */
-    public ScenarioBenchmarks(String dataStructure) {
-        super(new Generator(), new OutputTerminal());
-
-        if (dataStructure == null) {
-            throw new NullPointerException("dataStructure can not be null");
-        }
+    public ScenarioBenchmarks() {
+        super(new Generator(), new OutputBenchmarksInLog());
 
         //create schema
         schema.addAll(Arrays.asList("Name", "Geschlecht", "Stadt", "Straße", "Hausnummer", "Alter"));
         thirdPartyIDs.add("Alter");
         DataStructure ds;
-        switch (dataStructure) {
+        switch (DS) {
             case "DSUnsorted":
                 ds = new DSUnsorted(schema, thirdPartyIDs);
                 break;
@@ -38,14 +31,11 @@ public class ScenarioBenchmarks extends AbstractScenario {
                 ds = new DSKdTree(schema, thirdPartyIDs);
                 break;
             default:
-                ds = new DSUnsorted(schema, thirdPartyIDs);
-                break;
+                throw new RuntimeException("datastructure '" + DS + "' unknown");
         }
 
-        timeSaverManager = new TimeSaverManager();
-
-        clientReader = new ClientReader(ds, timeSaverManager, outputReadAccesses);
-        clientWriter = new ClientWriter(ds, timeSaverManager, outputWriteAccesses);
+        clientReader = new ClientReader(ds, outputReadAccesses);
+        clientWriter = new ClientWriter(ds, outputWriteAccesses);
     }
 
     /**
@@ -58,7 +48,7 @@ public class ScenarioBenchmarks extends AbstractScenario {
         getProfileByUuid(uuid);
         getProfilesByThirdPartyID("Name", "Runfried Mühlberger");
         getProfilesByRange("Name", "Ralf", "Roland");
-        System.out.println(timeSaverManager.printOutTimeSavers());
+
     }
 
     /**
@@ -81,7 +71,6 @@ public class ScenarioBenchmarks extends AbstractScenario {
         thirdPartyIDs = new HashSet<>();
         thirdPartyIDs.add("b");
         addSchema(schema, thirdPartyIDs, iterations);
-        //System.out.println(timeSaverManager.printOutTimeSavers());
     }
 
 }

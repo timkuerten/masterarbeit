@@ -1,4 +1,4 @@
-package client;
+package client.Output;
 
 import java.lang.reflect.Array;
 import java.text.NumberFormat;

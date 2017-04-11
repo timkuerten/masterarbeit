@@ -1,4 +1,4 @@
-package client;
+package client.Output;
 
 import org.junit.Before;
 import org.junit.Test;

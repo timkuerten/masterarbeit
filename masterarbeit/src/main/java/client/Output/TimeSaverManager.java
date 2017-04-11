@@ -1,15 +1,15 @@
-package client;
+package client.Output;
 
 public class TimeSaverManager {
 
-    public final TimeSaver getProfileByUuidTimeSaver;
-    public final TimeSaver getProfileByThirdPartyIDTimeSaver;
-    public final TimeSaver getProfileByRangeTimeSaver;
-    public final TimeSaver getProfileByMultiRangeTimeSaver;
-    public final TimeSaver insertProfileTimeSaver;
-    public final TimeSaver updateProfileTimeSaver;
-    public final TimeSaver getSchemaTimeSaver;
-    public final TimeSaver addSchemaTimeSaver;
+    private final TimeSaver getProfileByUuidTimeSaver;
+    protected final TimeSaver getProfileByThirdPartyIDTimeSaver;
+    private final TimeSaver getProfileByRangeTimeSaver;
+    private final TimeSaver getProfileByMultiRangeTimeSaver;
+    private final TimeSaver insertProfileTimeSaver;
+    private final TimeSaver updateProfileTimeSaver;
+    private final TimeSaver getSchemaTimeSaver;
+    private final TimeSaver addSchemaTimeSaver;
 
     public TimeSaverManager() {
         getProfileByUuidTimeSaver = new TimeSaver();

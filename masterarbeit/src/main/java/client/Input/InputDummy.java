@@ -9,7 +9,7 @@ public class InputDummy implements Input {
 
     private Integer i = 0;
 
-    public Map<String, String> getNewProfileData(Set<String> schema) {
+    public Map<String, String> getNewValuesToSchema(Set<String> schema) {
         Map<String, String> map = new HashMap<>();
         Integer j = 0;
         for (String string : schema) {
