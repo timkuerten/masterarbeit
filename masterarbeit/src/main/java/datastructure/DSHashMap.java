@@ -206,30 +206,6 @@ public class DSHashMap implements DataStructure {
         return this.schema;
     }
 
-    /**
-     * Change current schema and third-party-IDs to given schema nd third-party-IDs if third-party-IDs contained in schema and returns true. Otherwise returns false.
-     *
-     * @param schema        new schema
-     * @param thirdPartyIDs new third-party-IDs
-     * @return if schema and third third-party-IDs are changed
-     */
-    public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        if (this.schema.change(schema, thirdPartyIDs)) {
-            // change profileData of every profile that they correlate to new schema
-            profiles.values().forEach(profile ->
-                    profile.update(this.schema)
-            );
-            // change HashMap of thirdPartyIDs
-            this.thirdPartyIDs.clear();
-            profiles.forEach((u, p) ->
-                    addProfileToThirdPartyIDs(p)
-            );
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         return this.schema.add(schema, thirdPartyIDs);
     }

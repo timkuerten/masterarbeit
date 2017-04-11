@@ -3,7 +3,7 @@ package client;
 public interface Constants {
 
     //DS
-    public static final String DS = "DSKdTree"; // "DSUnsorted" || "DSSortedArray" || "DSHashMap" || "DSKdTree"
+    public static final String DS = "DSKdTree"; // "DSUnsorted" || "DSSortedArray" || "DSHashMap" || "DSKdTreeNull" || "DSKdTree"
 
     // strings
     public static final long RANDOM_START_VALUE = Long.MAX_VALUE;

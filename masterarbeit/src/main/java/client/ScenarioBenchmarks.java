@@ -27,6 +27,9 @@ public class ScenarioBenchmarks extends AbstractScenario {
             case "DSSortedArray":
                 ds = new DSSortedArray(schema, thirdPartyIDs);
                 break;
+            case "DSKdTreeNull":
+                ds = new DSKdTreeNull(schema, thirdPartyIDs);
+                break;
             case "DSKdTree":
                 ds = new DSKdTree(schema, thirdPartyIDs);
                 break;
