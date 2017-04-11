@@ -1,0 +1,41 @@
+Apr 11, 2017 12:00:24 PM client.SimpleLogger log
+INFO: getProfileByUuid:
+	#:   100
+	min: 231
+	max: 12.583
+	avg: 545
+getProfilesByThirdPartyID:
+	#:   100
+	min: 242
+	max: 16.824
+	avg: 431
+getProfilesByRange:
+	#:   100
+	min: 3.134.680
+	max: 21.449.922
+	avg: 4.400.469
+getProfilesByMultiRange:
+	#:   0
+	min: not available
+	max: not available
+	avg: not available
+insertProfile:
+	#:   100.000
+	min: 322
+	max: 49.241.436
+	avg: 4.250
+updateProfile:
+	#:   100
+	min: 1.738
+	max: 86.181
+	avg: 2.907
+getSchema:
+	#:   100
+	min: 99
+	max: 2.949
+	avg: 156
+addSchema:
+	#:   100
+	min: 1.220
+	max: 19.841
+	avg: 2.024
