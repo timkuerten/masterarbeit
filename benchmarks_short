@@ -1,0 +1,8 @@
+                                 USA          HM       SA          KdTI          KdTR       KdTIN       KdTRN
+getProfileByUuid:                508         545      754           554           473         445         522
+getProfilesByThirdPartyID: 9.011.941         431      709       378.029       515.459       7.602       8.330
+getProfilesByRange:        9.509.154   4.400.469   12.975        39.360        74.268      23.182      62.332
+insertProfile:                 2.605       4.250    7.132         7.739         7.398       8.796       7.697
+updateProfile:                 1.643       2.907    3.445        23.200        13.296      13.417      18.799
+getSchema:                       131         156      226           142           125         159         175
+addSchema:                     2.991       2.024    2.650   329.532.936   200.025.523 474.795.161 249.643.601
