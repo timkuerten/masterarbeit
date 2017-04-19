@@ -1,0 +1,45 @@
+\chapter{Introduction} 
+
+\label{cha:introduction}
+%==============================================================================
+
+%\blindtext
+
+%\section{Motivation}
+\label{sec:motivation}
+%==============================================================================
+
+\blindtext \cite{Loepmeier:2015TR} \label{example:reference}
+
+%http://get-software.net/macros/latex/contrib/caption/subcaption.pdf
+\begin{figure}	
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth}
+		\caption{Logo des Institut für Informatik}
+		\includegraphics[width=1.0\textwidth]{graphics/cs_logo_nl_blue.pdf}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\textwidth}
+		\caption{Logo der Uni}
+		\includegraphics[width=1.0\textwidth]{graphics/wwu-logo-neu.pdf}
+	\end{subfigure}
+
+	\begin{subfigure}[t]{0.45\textwidth}		
+		\phantomsubcaption\label{fig:inner}
+		\missingfigure[figwidth=\textwidth]{Logo des FB10}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\textwidth}
+		\phantomsubcaption
+		\missingfigure[figwidth=\textwidth]{Logo der Numerik}		
+	\end{subfigure}
+\caption[Logos der Uni]{Logos der Uni. Dabei kann man auch wieder referenzieren wie auf \subref{fig:inner}. Dabei muss noch nicht einmal eine Unterüberschrift existieren. Dies ist besonders praktisch, falls die Buchstaben schon in den Bildern vorhanden sind. Details \href{http://get-software.net/macros/latex/contrib/caption/subcaption.pdf}{hier}
+}
+\label{fig:meth:bgsub:whole}
+\end{figure}
+%
+%\Blindtext
+%
+%\section{Thesis Structure}
+%\label{secStruktur}
+%%==============================================================================
+%
+%\Blindtext

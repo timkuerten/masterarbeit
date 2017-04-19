@@ -1,0 +1,69 @@
+\chapter{The FB10 Template}
+Auch hier sollte ein Text stehen. Jedes Kapitel braucht ein paar einleitende Sätze. Niemals beginnt ein Kapitel mit einem neuen Abschnitt (\textit{Sektion})!
+\section{Anleitung zum Template}
+\label{secHowTo}
+%==============================================================================
+Für die  Benutzung des \gls{FB10}-Templates gibt es einige wichtige Regeln:
+\begin{enumerate}
+    \item Benutze \gls{pdflatex} oder \texttt{latexmk} zum kompilieren des  Latex Quellcodes. Für Linux liegt eine Makefile bei.
+
+	\item Wir versuchen immer Vektorgrafiken zu verwenden (\texttt{svg}, \texttt{ai}, \texttt{pdf}) und vermeiden gerasterte Grafiken (\texttt{jpg}, \texttt{png}, \texttt{tiff}, \texttt{gif}, \texttt{bmp}). Als Programme bieten sich dabei \href{http://www.inkscape.org/}{Inkscape} (OpenSource), Adobe Illustrator (z.B. auf dem IVV5-Terminalserver) oder CorelDraw (Gibt es beim ZIV) an. 
+	\item Bevor du das aussehen dieses Templates veränderst, sprich mit deinem Betreuer
+	\item Füge gelesenen Paper und ähnliche in die \texttt{bibliography.bib} ein; Benutze dabei \href{http://jabref.sourceforge.net/}{JabRef} als Editor.
+	\item Floating Umgebungen (Tabellen, Abbildungen, etc) machen sich oft oben auf der Seite ganz gut.
+	\item Jede Floating-Umgebung hat immer eine kurze, als auf eine lange Beschreibung! 
+	\item Quellcode sollte in einer Extra-Datei gespeichert werden und mittels entsprechenden Befehl in das Dokument eingebunden werden. Sehr kurze Abschnitte kann man auch direkt in die Tex-File schreiben.
+	\item In einer Abschlussarbeit findet sich in der Regel nicht sehr viel Quellcode....
+\end{enumerate}
+
+\section{\LaTeX Examples}
+
+Zu den folgenden Elementen finden sich Beispiele in dieser Vorlage
+\begin{itemize}
+    \item Aufzählungen, also das hier
+	\item Aufzählungen auf Seite \pageref{example:enumeration}
+	\item Beschreibungen auf Seite \pageref{example:description}
+	\item Tabellen auf Seite \pageref{tab:table}
+	\item Quellcode auf Seite \pageref{lst:useless}
+	\item abgesetzte Mathematische Formeln Seite \pageref{eqn:formula}
+	\item Quellenverweise Seite \pageref{example:reference}
+	\item Acronyme, siehe das Paket \texttt{glossaries} 
+	\item Glossar, siehe die Datei \texttt{glossary.tex}
+	\item Bytefelder, siehe Seite \pageref{fig:bytefield}
+	\item Referenzierung von Abschnitten, Abbildungen, Quellcode, Tabellen und vielen anderen Sachen finden sich im gesamten Dokument
+	\item Abbildung auf Seite \pageref{fig:smiley}
+	\item Theoreme, Satz, Beweis, Definition, inklusive einer Umgebung für Formeln die über mehrere Zeilen gehen auf Seite \pageref{example:theorem.multiline}
+	\item Mathematische Diagramme auf Seite \pageref{example:diagram}
+	\item Unterabbildungen auf Seite \pageref{fig:meth:bgsub:whole}
+	\item Den Mathemodus innerhalb einer Zeile, z.B. $\exists x \in \{1,\frac{3}{2},2,\ldots,9\}$
+	\item Anmerkungen mittels des Todo-Paketes \pageref{example:todo} und auch für fehlende Bilder \pageref{fig:meth:bgsub:whole}
+\end{itemize}
+
+Zur Verwendung des Glossars muss der Befehl \texttt{makeindex} wie folgt benutzt werden:
+\begin{verbatim}
+makeindex -s main.ist -t main.glg -o main.gls main.glo
+\end{verbatim}
+Für die Liste der Akronyme
+\begin{verbatim}
+makeindex -s main.ist -t main.alg -o main.acr main.acn
+\end{verbatim}
+Unter Linux kann auch die MakeFile benutzt werden. Dazu einfach auf der Konsole im jeweiligen Ordner \texttt{make} eingeben. 
+Alle temporären Dateien lassen sich mit \texttt{make clean} löschen.
+
+\newpage
+\section{Weitere Dokumentation}
+Wir haben auf unserer Homepage einige praktische Dokumente für die Arbeit mit Latex gesammelt, siehe \href{http://www.uni-muenster.de/Comsys/en/teaching/technical_writing.html}{hier}.
+Latex-Pakete und deren Doumentation finden sich in der Regel im \href{http://www.ctan.org/}{Comprehensive TeX Archive Network}.
+
+Einige Links zu den wichtigsten Paketen:
+\begin{itemize}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=bytefield}{bytefield - Create illustrations for network protocol specifications}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=colortbl}{colortbl - Add colour to LaTeX tables}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=eqnarray}{eqnarray - More generalised equation arrays with numbering}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=glossaries}{glossaries - Create glossaries and lists of acronyms}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=graphicx}{graphicx - Enhanced support for graphics}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=listings}{listings - Typeset source code listings using LaTeX}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=pdflscape}{pdflscape - Make landscape pages display as landscape}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=supertabular}{supertabular - A multi-page tables package}
+	\item \href{http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=xcolor}{xcolor - Driver-independent color extensions for LaTeX and pdfLaTeX}
+\end{itemize}

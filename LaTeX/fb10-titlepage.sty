@@ -1,0 +1,84 @@
+%Tim Loepmeier, loepmeier@wwu.de
+%% fb10-titlepage
+\ProvidesPackage{fb10-titlepage}
+    [2015/01/01 v1.0 FB10 style for titlepages]
+
+\ProcessOptions\relax
+
+\RequirePackage{ifthen}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage{color}
+
+
+\newcommand{\logoleft}[1]{\def\@logoleft{#1}}
+\def\@logoleft{./graphics/wwu-logo-neu.pdf}
+\newcommand{\aglogo}[1]{\def\@logoright{#1}}
+\def\@logoright{./graphics/fb10logo.pdf}
+
+
+\newcommand{\matrikelno}[1]{\def\@matrikelno{#1}}
+\def\@matrikelno{123456}
+
+\newcommand{\thesis}[1]{\def\@thesis{#1}}
+\def\@thesis{Diplomarbeit}
+
+\newcommand{\profName}[1]{\def\@profName{#1}}
+\def\@profName{Prof. Dr. rer. nat. Mesut G\"une\c{s}}
+
+\newcommand{\assistentName}[1]{\def\@assistentName{#1}}
+\def\@assistentName{Name of Assistent}
+
+\newcommand{\institutName}[1]{\def\@instituteName{#1}}
+\def\@instituteName{Institute of Computer Science}
+
+\newcommand{\arbeitsgruppenName}[1]{\def\@agName{#1}}
+\def\@agName{Communication and Networked Systems}
+
+\renewcommand*{\maketitle}{
+\begin{titlepage}
+    \def\@foot@er{}
+    \iflanguage{ngerman}{
+        \def\@trans@supervisor{Betreuer}
+        \def\@trans@assistent{Betreuender Assistent}
+        \def\@foot@er{\@instituteName, Universit\"at M\"unster, Deutschland}
+    }
+    {
+        \def\@trans@supervisor{Supervisor}
+        \def\@trans@assistent{Assisting Supervisor}
+        \def\@foot@er{\@instituteName, University of M\"unster, Germany}
+    }
+    \thispagestyle{empty}
+    \enlargethispage{3cm}
+    \vspace*{-1.5cm}
+    \setlength\oddsidemargin{7mm}
+    \begin{center}
+    {
+        \includegraphics[width=0.45\textwidth]{\@logoleft}
+        \hfill
+        \includegraphics[width=0.45\textwidth]{\@logoright}
+    } \par
+    \hrulefill \par
+    \bigskip
+    {\huge \@agName \par}
+    \vspace{3cm}
+    {\Large \@thesis~\par}
+    \vspace{1.5cm}
+    {\huge \@title \par}
+    \vspace{2cm}
+    {\@author \par \smallskip Matr. \@matrikelno \par}
+    \vfill
+    {\mbox{
+        \begin{tabular}{rl}
+            \@trans@supervisor: & \@profName \\
+            \@trans@assistent: & \@assistentName
+        \end{tabular}}
+    }\par
+    \vspace{.6em}
+    \hrulefill\par
+    \vspace{.6em}
+    {\small \@foot@er \par \smallskip \@date}
+    \end{center}
+\end{titlepage}}
+
+\endinput

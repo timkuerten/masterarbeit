@@ -1,0 +1,109 @@
+%%% alternativ: english, ngerman
+\documentclass[ngerman,
+ paper=a4, 11pt,  twoside, openright, BCOR=7mm, DIV12, headinclude=false, listof=totoc, index=totoc,bibliography=totoc,headinclude=false,chapterprefix=on]{scrreprt}
+
+% Einseitige Variante:
+%\documentclass[ngerman, paper=a4, 11pt, cleardoubleempty, fancyheaders, oneside, openright, BCOR=7mm, DIV12, listof=totoc, index=totoc,bibliography=totoc, headinclude=false]{scrreprt}
+
+
+%Falls man Biber anstatt bibtex verwendet und nicht die Makefile nutzt, die nächste Zeile auskommentieren
+%\def\usebusybiber{1}
+
+\usepackage[
+fancyheaders %hübsche Kapitelüberschriften
+]{fb10-format}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Daten für Deckblatt und eid. Erklärung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Implementation of a LaTeX Style for Diploma, Bachelor, and Master Theses}
+\author{Erika Dürstefrau}
+\matrikelno{123456}
+\thesis{Diplömchenarbeit}
+\profName{Prof. Dr. Trestermind}
+\assistentName{MSc. Mini Humpen}
+\date{02. Februar 2222}
+%\aglogo{./graphics/cs_logo_nl_blue.pdf}
+%\aglogo{./graphics/comsys_logo.pdf}
+\institutName{Institut für Brauereiwesen}
+\arbeitsgruppenName{Arbeitsgruppe Topologische Gläser}
+
+
+
+\automark[section]{chapter}
+%Neue Mathematische Operationen definieren
+\DeclareMathOperator{\dom}{dom}
+%Latex bei Worttrennung helfen
+\hyphenation{Staats-ver-trag Stau-be-cken ge-sam-melt}
+%Theorem, Satz..
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{satz}{Satz}
+
+\begin{document}
+	%===================================	
+	% Deaktiviere "a für ä, wir nutzen eh UTF8
+	%===================================	
+	\iflanguage{ngerman}{
+	\shorthandoff{"}}
+	%===================================	
+	%Druck die Todo-Liste
+	%===================================
+	\listoftodos
+
+	%===================================
+	% Titlepage
+	%===================================
+	\pagenumbering{roman}
+
+	% Titelblatt
+	\maketitle
+	\cleardoublepage
+	
+	%===================================
+	% Erzeuge divere Listen (Tabelle,Quellcode)
+	%===================================
+	\input{text/abstract}
+	\cleardoublepage
+	
+	\tableofcontents
+	\listoffigures
+	\listoftables
+	\lstlistoflistings	
+	\printglossary[type=acronym]
+	\printglossary
+
+    \cleardoublepage
+    \pagenumbering{arabic}
+	\StartMainpart %Fuer die Fancy-Headers
+	%===================================
+	% Die eigentliche Arbeit
+	%===================================	
+    \input{text/0-Template} %%% read this!!!
+	\input{text/1-motivation}
+    \input{text/2-related-work}
+    \input{text/3-implementation}
+    \input{text/4-experiments}
+    \input{text/5-evaluation}
+    \input{text/6-conclusion}
+
+	%Literaturverzeichnis
+	\appendix		
+	\ifdefined\usebusybiber
+
+		\printbibliography 
+	\else
+		\bibliographystyle{unsrt}
+		\bibliography{bibliography}
+	\fi
+	%Anhang
+    \input{text/A-Appendix}    
+    
+    %===================================
+    % Offizieller Teil
+    %===================================
+    \cleardoublepage
+    \pagestyle{empty}
+   	\affirmation
+\end{document}

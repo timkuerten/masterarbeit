@@ -1,0 +1,43 @@
+\chapter{Thesis Contribution} 
+\label{cha:thesis_contribution}
+%==============================================================================
+\blindtext
+\section{Implementation}
+\label{sec:implementation}
+%==============================================================================
+\Blindtext
+
+\begin{figure}[t]
+    \centering
+    \begin{bytefield}{32}
+        \bitheader{0-31}\\
+        \begin{rightwordgroup}{Header}
+            \bitbox{16}{Source}\bitbox{16}{Destination}\\
+            \wordbox{1}{Acknowledgement}\\
+            \wordbox{1}{Sequencenumber}
+        \end{rightwordgroup} \\
+        \wordbox[lrt]{1}{Data} \\
+        \skippedwords \\
+        \wordbox[lrb]{1}{} \\
+    \end{bytefield}
+    \caption[Packet Format]{Packet Format of the protocol specified in this section}
+    \label{fig:bytefield}
+\end{figure}
+\Blindtext
+
+%%% listings with same name share a linecounter %%%
+%%% include source code from external file: \lstinputlisting[<Options>]{path/file.php} %%%
+\begin{lstlisting}[caption=Useless code,label=lst:useless, name=useless, language=C++]
+int main(int argc, char** argv) {
+    int i;
+    //Kommentar
+    for(i=0; i<10; i++) { %*\label{lstref:loop}%*
+        printf("I will graduate!\n");
+    }
+    return 0;
+}
+\end{lstlisting}
+\Blindtext
+\label{example:todo}
+\todo{was heisst das hier eigentlich?}
+\Blindtext

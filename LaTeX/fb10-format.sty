@@ -1,0 +1,200 @@
+%Tim Loepmeier, loepmeier@wwu.de
+\ProvidesPackage{fb10-format}
+    [2015/01/01 v1.0 FB10 Abschlussarbeiten-Style]
+
+\DeclareOption{fancyheaders}{
+	\def\usefanyheaders{1}
+}
+\ProcessOptions\relax
+%=============================================================================
+% Packages
+%=============================================================================
+\RequirePackage{iftex}
+\ifXeTeX %Falls wir Xetex verwenden brauchen wir keine Schriften
+\else
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\fi
+\PassOptionsToPackage{babel}{csquotes} 
+\PassOptionsToPackage{hyphens}{url} %Linebrak in urls after '-'
+\RequirePackage{babel}
+\RequirePackage{csquotes}%Anführungsstriche in Deutsch und Englisch
+\RequirePackage{scrhack}%Ein paar Hacks für die Koma Scripte
+\RequirePackage[usenames,dvipsnames]{xcolor} % Colors
+\RequirePackage[breaklinks=true,linkbordercolor=blue]{hyperref}%Links innerhalb der PDF, werden NICHT mitgedruckt
+\RequirePackage{graphicx}%Grafiken
+\RequirePackage{pdfsync}%Backlinks in PDF auf tex-Code
+\RequirePackage{tikz-cd}%kommutative Diagramme
+\RequirePackage{fb10-titlepage, fb10-affirmation}
+\RequirePackage[headsepline,autooneside,olines]{scrpage2}%Überschriften, Kopfzeilen
+\RequirePackage{listings}%Sourcode formatieren
+\RequirePackage[acronym, toc]{glossaries}
+\RequirePackage{booktabs}
+\RequirePackage{bytefield}%Bitdiagramme
+\RequirePackage{blindtext}%Lore Ipsum
+\RequirePackage{IEEEtrantools}%Schöne Formeln
+\RequirePackage[small]{caption}%Bildunterschriften in klein
+\RequirePackage[ngerman]{todonotes} % Brauchen wir zum hervorheben des Todo-Befehls
+\RequirePackage{subcaption} % Ermöglicht zusätzlichen Bildunterschriften
+\RequirePackage{ amsmath} % Mathesymbole
+\usepackage{amsmath} % if desired
+\ifXeTeX
+\usepackage{unicode-math}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\else
+\usepackage{amsfonts}
+\fi
+\RequirePackage{verbatim} % Um Quellcode in das Dokument einzufügen.
+\RequirePackage{url} % Bessere Darstellung von URLs
+\RequirePackage{longtable} % Für Tabellen über mehrere Seiten
+\captionsetup[subfigure]{labelformat=brace} % Einstellungen für Subfigure
+
+
+\input{glossary}
+%%%%%%%%%
+% Falls wir Biber benutzen möchten (UTF8 Quellenverzeichnis) lade die Pakete passend
+%%%%%%%%%
+\ifdefined\usebusybiber	\usepackage[backend=biber,style=numeric,natbib=true,isbn=false,sorting=none,doi=false,]{biblatex}
+	\addbibresource{bibliography.bib}
+	\setcounter{biburllcpenalty}{7000}
+	\setcounter{biburlucpenalty}{8000}
+\else
+	\PassOptionsToPackage{toc=bib}{biblatex}
+\fi
+
+%Glossar
+\makeglossary
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\parindent 0pt
+\parskip 1ex
+
+
+%Umbenennen von Sourceodebeispielen
+\iflanguage{ngerman}{
+\def\@trans@lstlistlistingname{Quellcodeverzeichnis}
+\def\@trans@lstlistingname{Quellcode}
+\let\lstlistlistingname\@trans@lstlistlistingname
+\let\lstlistingname\@trans@lstlistingname
+}{}
+
+%Behebt ein Problem mit Hyperref
+\makeatletter
+\patchcmd{\@decl@short}{\bbl@info}{\@gobble}{}{}
+\patchcmd{\@decl@short}{\bbl@info}{\@gobble}{}{}
+\makeatother
+
+%=============================================================================
+% Kopfzeile und Fusszeile definieren
+%=============================================================================
+\ifdefined\usefanyheaders
+\pagestyle{scrheadings} % the fancy headers of koma script
+\if@twoside
+\rehead{\leftmark} % chapter number and name on the inner edge of all left pages
+\lohead{\rightmark} % section number and name on the inner edge of all right pages
+\fi
+\ohead[\pagemark]{\pagemark} % page number at the outer edge
+\automark[section]{chapter}
+% 
+% empty footer
+\ifoot{}
+\cfoot[]{}
+\ofoot{}
+\fi
+%=============================================================================
+% Makro definitions
+%=============================================================================
+\newcommand{\rem}[1]{}
+\renewcommand{\subsectionautorefname}{Abschnitt}
+\renewcommand{\sectionautorefname}{Abschnitt}
+\renewcommand{\subsubsectionautorefname}{Abschnitt}
+\providecommand*{\lstnumberautorefname}{Zeile}
+\newcommand{\StartMainpart}[0]{\def\mainpart{1}}
+
+%=============================================================================
+% Hübsche Kapitelüberschriften
+%=============================================================================
+\ifdefined\usefanyheaders
+%Linien über die Überschrift malen, KAPIEL in Capitals
+\renewcommand*{\chapterformat}{%
+  \mbox{\MakeUppercase{\Large{\chapappifchapterprefix{\nobreakspace}\thechapter}}
+  \enskip\par
+  }\par
+  {% 
+    \setlength{\parskip}{0pt}% 
+    \noindent\rule[.3\baselineskip]{\linewidth}{1pt}\par 
+  }%   
+  }
+
+% Weitere Linien malen
+\newcommand*{\ORIGchapterheadstartvskip}{}% 
+% 2nd save the original definition to the new command 
+\let\ORIGchapterheadstartvskip=\chapterheadstartvskip 
+% 3rd redefine the command using the saved original command 
+\renewcommand*{\chapterheadstartvskip}{% 
+
+  %\ORIGchapterheadstartvskip 
+  \ifdefined\mainpart
+  {% 
+    \setlength{\parskip}{0pt}% 
+    \noindent\hrule width \hsize height 2pt \kern 1mm \hrule width \hsize height 1pt 
+    
+  }\vskip 12pt
+  \fi
+  
+} 
+\addtokomafont{chapter}{\let\raggedsection\normalfont\sffamily\centering}
+
+\fi
+%=============================================================================
+% maketitle leert die Variable thetitle, speichere die in eine andere, da wir diese am Ende des Dokuments noch brauchen
+%=============================================================================
+\makeatletter
+\def\title#1{\gdef\@title{#1}\gdef\THETITLE{#1}}
+\makeatother
+%Define a color for highlighting source code
+\definecolor{DarkBlue}{rgb}{0,0,.6}
+
+%=============================================================================
+%Hübscher Quellcode
+%=============================================================================
+
+\lstset {
+	language           = C++, 
+    backgroundcolor    = \color{gray!10},
+    aboveskip          = 20pt,
+    xleftmargin		   =.6cm,
+    belowskip          = 0pt,
+    literate={...}{{{\color{red}...}}}3,
+    basicstyle         = \ttfamily\scriptsize,
+    keywordstyle       = \bfseries\ttfamily\color{DarkBlue},
+    stringstyle        = \itshape\color{Black}\ttfamily,
+    commentstyle       = \color{Gray}\ttfamily,
+    identifierstyle    = \color{Black}\ttfamily,
+    captionpos         = b,
+    escapechar         = \%,
+	escapeinside={\%*}{\%*},
+	morekeywords={}, 
+    frame              = lines,
+	emph={...},
+	emphstyle=\color{red},
+    mathescape         = true,
+    numbers            = left,
+    numberfirstline    = false,
+    firstnumber        = 1,
+    stepnumber         = 1,
+    showstringspaces   = false,
+    tabsize            = 2,    
+	showspaces=false,   
+	showstringspaces=false,
+	showtabs=false, 
+	breaklines=true, 
+	numbers=left,             	
+	caption={\protect\filename@parse{\lstname}\protect\filename@base\text{.}\protect\filename@ext},	
+	numberstyle=\scriptsize,  
+} 
+
+\makeatletter
+\providecommand{\toclevel@lstlisting}{0}
+\makeatother
