@@ -51,7 +51,8 @@ public class DSUnsorted implements DataStructure {
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
         }
-        else if (value == null) {
+
+        if (value == null) {
             throw new ValueNullPointerException();
         }
 
@@ -59,6 +60,7 @@ public class DSUnsorted implements DataStructure {
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
         }
+
         Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
@@ -67,6 +69,7 @@ public class DSUnsorted implements DataStructure {
                 returnProfiles.add(v);
             }
         });
+
         return returnProfiles;
     }
 
@@ -83,13 +86,15 @@ public class DSUnsorted implements DataStructure {
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
         }
-        else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+
+        if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return Collections.emptySet();
         }
+
         Set<Profile> returnProfiles = new HashSet<>();
         this.profiles.forEach((k, v) -> {
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
@@ -112,6 +117,7 @@ public class DSUnsorted implements DataStructure {
                 }
             }
         });
+
         return returnProfiles;
     }
 
@@ -151,14 +157,14 @@ public class DSUnsorted implements DataStructure {
             throw new ProfileDataNullPointerException();
         }
 
-        if (schema.getSchema().containsAll(profileData.keySet())) {
-            Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
-            // add new profile to profiles
-            profiles.put(newProfile.uuid, newProfile);
-            return newProfile.uuid;
-        } else {
+        if (!schema.getSchema().containsAll(profileData.keySet())) {
             return null;
         }
+
+        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+        // add new profile to profiles
+        profiles.put(newProfile.uuid, newProfile);
+        return newProfile.uuid;
     }
 
     /**
@@ -173,16 +179,18 @@ public class DSUnsorted implements DataStructure {
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
-        else if (profileData == null) {
+
+        if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }
 
-        if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
-            profiles.get(uuid).profileData.putAll(profileData);
-            return true;
-        } else {
+        if (profiles.get(uuid) == null || !schema.getSchema().containsAll(profileData.keySet())) {
             return false;
         }
+
+            profiles.get(uuid).profileData.putAll(profileData);
+            return true;
+
     }
 
     /**
@@ -191,30 +199,11 @@ public class DSUnsorted implements DataStructure {
      * @return current schema.
      */
     public Schema getSchema() {
-        return this.schema;
+        return schema;
     }
 
     public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         return this.schema.add(schema, thirdPartyIDs);
-    }
-
-    /**
-     * Change current schema and third-party-IDs to given schema nd third-party-IDs if third-party-IDs contained in schema and returns true. Otherwise returns false.
-     *
-     * @param schema        new schema
-     * @param thirdPartyIDs new third-party-IDs
-     * @return if schema and third third-party-IDs are changed
-     */
-    public boolean changeSchema(Set<String> schema, Set<String> thirdPartyIDs) {
-        if (this.schema.change(schema, thirdPartyIDs)) {
-            // update profileData of every profile to given schema
-            profiles.values().forEach(profile ->
-                    profile.update(this.schema)
-            );
-            return true;
-        } else {
-            return false;
-        }
     }
 
 }

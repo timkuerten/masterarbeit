@@ -56,6 +56,7 @@ public class Node<T> {
         if (!this.children.contains(child)) {
             throw new RuntimeException("Node " + child + " is not a child of " + this);
         }
+
         child.parent = null;
         children.remove(child);
     }
@@ -79,6 +80,7 @@ public class Node<T> {
         if (parent == null) {
             throw new NodeNullPointerException();
         }
+
         parent.addChild(this);
     }
 
@@ -90,6 +92,7 @@ public class Node<T> {
         if (this.parent == null) {
             throw new NoParentException(this);
         }
+
         parent.removeChild(this);
     }
 
@@ -97,6 +100,7 @@ public class Node<T> {
         if (key == null) {
             throw new DataNullPointerException();
         }
+
         this.key = key;
     }
 

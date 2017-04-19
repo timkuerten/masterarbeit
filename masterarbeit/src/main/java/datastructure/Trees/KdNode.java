@@ -43,10 +43,12 @@ public class KdNode<T extends Comparable<? super T>, U> {
             returnString += ", l: (" + left.toString() + ")";
             returnString += ")";
         }
+
         if (right != null) {
             returnString += ", r: (" + right.toString() + ")";
             returnString += ")";
         }
+
         return returnString;
     }
 

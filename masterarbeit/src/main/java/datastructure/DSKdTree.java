@@ -60,7 +60,9 @@ public class DSKdTree implements DataStructure {
         // null checks
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (value == null) {
+        }
+
+        if (value == null) {
             throw new ValueNullPointerException();
         }
 
@@ -76,6 +78,7 @@ public class DSKdTree implements DataStructure {
                 returnProfiles.addAll(tree.get(coordinates.indexOf(thirdPartyID), value));
             }
         });
+
         return returnProfiles;
     }
 
@@ -91,7 +94,9 @@ public class DSKdTree implements DataStructure {
         // null check
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+        }
+
+        if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
@@ -106,6 +111,7 @@ public class DSKdTree implements DataStructure {
                 returnProfiles.addAll(tree.get(coordinates.indexOf(thirdPartyID), minValue, maxValue));
             }
         });
+
         return returnProfiles;
     }
 
@@ -117,12 +123,10 @@ public class DSKdTree implements DataStructure {
         Set<Profile> returnProfiles = new HashSet<>();
         List<Pair<String, String>> kdSearchValues = new ArrayList<>();
         Triple<String, String, String> values;
-        boolean first = true;
         for (Map.Entry<List<String>, KdTree<String, Profile>> entry : kdProfileTrees.entrySet()) {
             for (String thirdPartyID : entry.getKey()) {
-
-                values = searchValues.stream().filter(t -> t.getFirst().contains(thirdPartyID)).findFirst().orElse(null);
-
+                values =
+                        searchValues.stream().filter(t -> t.getFirst().contains(thirdPartyID)).findFirst().orElse(null);
                 if (values != null) {
                     kdSearchValues.add(new Pair<>(values.getSecond(), values.getThird()));
                 } else {
@@ -130,13 +134,7 @@ public class DSKdTree implements DataStructure {
                 }
             }
 
-            if (first) {
-                returnProfiles = entry.getValue().get(kdSearchValues);
-                first = false;
-            } else {
-                returnProfiles.retainAll(entry.getValue().get(kdSearchValues));
-            }
-
+            returnProfiles.addAll(entry.getValue().get(kdSearchValues));
             kdSearchValues.clear();
         }
 
@@ -155,15 +153,15 @@ public class DSKdTree implements DataStructure {
             throw new ProfileDataNullPointerException();
         }
 
-        if (schema.getSchema().containsAll(profileData.keySet())) {
-            Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
-            // add new profile to profiles
-            profiles.put(newProfile.uuid, newProfile);
-            insertInKdTree(newProfile);
-            return newProfile.uuid;
-        } else {
+        if (!schema.getSchema().containsAll(profileData.keySet())) {
             return null;
         }
+
+        Profile newProfile = new Profile(UUID.randomUUID(), new HashMap<>(profileData));
+        // add new profile to profiles
+        profiles.put(newProfile.uuid, newProfile);
+        insertInKdTree(newProfile);
+        return newProfile.uuid;
     }
 
     private void insertInKdTree(Profile profile) {
@@ -171,11 +169,12 @@ public class DSKdTree implements DataStructure {
         if (treeKey.size() == 0) {
             return;
         }
-        List<String> insertKey = createInsertKey(treeKey, profile);
 
+        List<String> insertKey = createInsertKey(treeKey, profile);
         if (!kdProfileTrees.containsKey(treeKey)) {
             kdProfileTrees.put(treeKey, new KdTreeRecursive<>(treeKey.size()));
         }
+
         kdProfileTrees.get(treeKey).insert(insertKey, profile);
     }
 
@@ -184,6 +183,7 @@ public class DSKdTree implements DataStructure {
         for (String k : treeKey) {
             insertKey.add(profile.getProfileData().get(k));
         }
+
         return insertKey;
     }
 
@@ -216,25 +216,29 @@ public class DSKdTree implements DataStructure {
         // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();
-        } else if (profileData == null) {
+        }
+
+        if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }
 
         Profile profile = profiles.get(uuid);
-        if (profile != null && this.schema.getSchema().containsAll(profileData.keySet())) {
-            List<String> treeKey = createTreeKey(profile);
-            if (kdProfileTrees.containsKey(treeKey) && kdProfileTrees.get(treeKey) != null) {
-                List<String> insertKey = createInsertKey(treeKey, profile);
-                kdProfileTrees.get(treeKey).delete(insertKey, profile);
-                profile.profileData.putAll(profileData);
-                treeKey = createTreeKey(profile);
-                insertKey = createInsertKey(treeKey, profile);
-                kdProfileTrees.get(treeKey).insert(insertKey, profile);
-                return true;
-            }
+        if (profile == null || !this.schema.getSchema().containsAll(profileData.keySet())) {
+            return false;
         }
 
-        return false;
+        List<String> treeKey = createTreeKey(profile);
+        if (!kdProfileTrees.containsKey(treeKey) || kdProfileTrees.get(treeKey) == null) {
+            return false;
+        }
+
+        List<String> insertKey = createInsertKey(treeKey, profile);
+        kdProfileTrees.get(treeKey).delete(insertKey, profile);
+        profile.profileData.putAll(profileData);
+        treeKey = createTreeKey(profile);
+        insertKey = createInsertKey(treeKey, profile);
+        kdProfileTrees.get(treeKey).insert(insertKey, profile);
+        return true;
     }
 
     /**

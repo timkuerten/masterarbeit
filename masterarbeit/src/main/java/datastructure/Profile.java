@@ -17,7 +17,7 @@ public class Profile {
      */
     public Profile(UUID uuid) {
         this.uuid = uuid;
-        this.profileData = new HashMap<>();
+        profileData = new HashMap<>();
     }
 
     /**
@@ -93,9 +93,11 @@ public class Profile {
         if (this == other) {
             return true;
         }
+
         if (!(other instanceof Profile)) {
             return false;
         }
+
         final Profile that = (Profile) other;
         return this.uuid == that.uuid && Objects.equals(this.profileData, that.profileData);
     }

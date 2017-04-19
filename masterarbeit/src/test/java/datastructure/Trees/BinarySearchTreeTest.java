@@ -23,7 +23,6 @@ public class BinarySearchTreeTest {
         leftLeaf = binarySearchTree.insert(5);
         binarySearchTree.insert(8);
         rightLeaf = binarySearchTree.insert(9);
-
     }
 
     @Test
@@ -71,4 +70,5 @@ public class BinarySearchTreeTest {
         assertThat(binarySearchTree.delete(2), is(true));
         assertThat(binarySearchTree.root.left, is(binarySearchTree.get(3)));
     }
+
 }

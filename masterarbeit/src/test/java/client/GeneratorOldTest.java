@@ -17,7 +17,6 @@ public class GeneratorOldTest {
     @Before
     public void setUp() throws IOException {
         generatorOld = new GeneratorOld(Long.MAX_VALUE);
-
     }
 
     @Test
@@ -45,7 +44,6 @@ public class GeneratorOldTest {
         /* Maximum amount of memory the JVM will attempt to use */
         System.out.println("Maximum memory (bytes): " +
                 (maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory));
-
         /* Total memory currently in use by the JVM */
         System.out.println("Total memory (bytes):    " +
                 Runtime.getRuntime().totalMemory());

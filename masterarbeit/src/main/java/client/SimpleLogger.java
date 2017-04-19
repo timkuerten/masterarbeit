@@ -19,7 +19,6 @@ public class SimpleLogger extends AbstractLogger {
         super(fileName, append);
     }
 
-
     public void log(String string) {
         logger.info(string);
     }

@@ -56,21 +56,25 @@ public class DSSortedArray implements DataStructure {
         // null checks
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (value == null) {
+        }
+
+        if (value == null) {
             throw new ValueNullPointerException();
         }
 
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
-        } else if ((thirdPartyIDsMap.get(thirdPartyID) != null)
-                && thirdPartyIDsMap.get(thirdPartyID).get(value) != null) {
-            Set<Profile> returnProfiles = new HashSet<>();
-            // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
-            this.thirdPartyIDsMap.get(thirdPartyID).get(value).getValue().forEach(returnProfiles::add);
-            return returnProfiles;
-        } else {
+        }
+
+        if ((thirdPartyIDsMap.get(thirdPartyID) == null)
+                || thirdPartyIDsMap.get(thirdPartyID).get(value) == null) {
             return Collections.emptySet();
         }
+
+        Set<Profile> returnProfiles = new HashSet<>();
+        // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
+        this.thirdPartyIDsMap.get(thirdPartyID).get(value).getValue().forEach(returnProfiles::add);
+        return returnProfiles;
     }
 
     /**
@@ -85,7 +89,9 @@ public class DSSortedArray implements DataStructure {
         // null check
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+        }
+
+        if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
@@ -94,22 +100,21 @@ public class DSSortedArray implements DataStructure {
         }
 
         ArrayList<Pair<String, Set<Profile>>> values = this.thirdPartyIDsArray.get(thirdPartyID);
-
         if (values == null || values.size() == 0) {
             return Collections.emptySet();
         }
-        Set<Profile> returnProfiles = new HashSet<>();
 
+        Set<Profile> returnProfiles = new HashSet<>();
         int arraySize = values.size();
         int left = 0;
         int right = arraySize - 1;
-
         if (minValue != null) {
             left = indexOf(values, minValue);
             if (values.get(left).getKey().compareTo(minValue) < 0) {
                 left = left + 1;
             }
         }
+
         if (maxValue != null) {
             right = indexOf(values, maxValue, left, values.size() - 1);
         }
@@ -129,7 +134,6 @@ public class DSSortedArray implements DataStructure {
 
         Set<Profile> returnProfiles = null;
         Set<Profile> tempProfiles;
-
         for (Triple<String, String, String> searchValue : searchValues) {
             if (returnProfiles == null) {
                 returnProfiles = get(searchValue);
@@ -183,7 +187,9 @@ public class DSSortedArray implements DataStructure {
         // null checks
         if (uuid == null) {
             throw new UuidNullPointerException();
-        } else if (profileData == null) {
+        }
+
+        if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }
 
@@ -241,11 +247,6 @@ public class DSSortedArray implements DataStructure {
         Pair<String, Set<Profile>> pair = new Pair<>(value, profiles);
         ArrayList<Pair<String, Set<Profile>>> values =
                 thirdPartyIDsArray.computeIfAbsent(thirdPartyId, k -> new ArrayList<>());
-
-        // old
-        //values.add(pair);
-        //values.sort(Comparator.comparing(Pair::getKey));
-
         if (values.isEmpty()) {
             values.add(pair);
         } else {
@@ -255,12 +256,7 @@ public class DSSortedArray implements DataStructure {
             }
             values.add(index, pair);
         }
-        /*
-        System.out.println("Sortieren: ");
-        values.forEach(v -> {
-            System.out.println(v.getKey());
-        });
-        */
+
         return pair;
     }
 
@@ -283,6 +279,7 @@ public class DSSortedArray implements DataStructure {
                 return mid;
             }
         }
+
         return mid;
     }
 

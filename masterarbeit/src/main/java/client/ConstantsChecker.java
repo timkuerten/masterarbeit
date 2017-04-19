@@ -23,7 +23,7 @@ public class ConstantsChecker {
 
     private void checkSchemaCount() {
         if (COUNT_NEW_SCHEMA < 1) {
-            throw new RuntimeException("probability count check failed");
+            throw new RuntimeException("schema count check failed");
         }
     }
 

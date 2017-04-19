@@ -98,6 +98,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             profiles.add(getProfileByUuid(uuids.get(Math.abs(random.nextInt() % uuids.size()))));
         }
+
         return profiles;
     }
 
@@ -117,6 +118,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             returnValue = clientReader.get(thirdPartyId, value);
         }
+
         return returnValue;
     }
 
@@ -137,6 +139,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             returnValue = clientReader.get(thirdPartyId, minValue, maxValue);
         }
+
         return returnValue;
     }
 
@@ -157,6 +160,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             uuids.add(insertProfile());
         }
+
         return uuids;
     }
 
@@ -169,6 +173,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             returnValue = updateProfile(uuid, profileData);
         }
+
         return returnValue;
     }
 
@@ -181,6 +186,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             schema = getSchema();
         }
+
         return schema;
     }
 
@@ -193,6 +199,7 @@ public abstract class AbstractScenario {
         for (int i = 0; i < counter; i++) {
             returnValue = addSchema(schema, thirdPartyIDs);
         }
+
         return returnValue;
     }
 

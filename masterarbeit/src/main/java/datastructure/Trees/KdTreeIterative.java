@@ -74,6 +74,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
+
         return null;
     }
 
@@ -138,6 +139,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
+
         return database;
     }
 
@@ -195,6 +197,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
+
         return database;
     }
 
@@ -241,6 +244,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
             cd = incrementCd(cd);
             kdNodes = tempKdNodes;
         }
+
         return database;
     }
 
@@ -445,6 +449,7 @@ public class KdTreeIterative<T extends Comparable<? super T>, U> implements KdTr
                 }
             }
         }
+
         return minPair;
     }
 

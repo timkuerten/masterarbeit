@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class BBaTreeData<T extends Comparable<? super T>, U> {
 
-    public BBaNodeData<T, U> root;
+    private BBaNodeData<T, U> root;
     private double alpha;
     private double epsilon;
 
@@ -21,6 +21,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
         if (alpha >= 1.0 - 1.0 / Math.sqrt(2.0)) {
             throw new RuntimeException("alpha must be < 1 - (1/sqrt(2))");
         }
+
         this.alpha = alpha;
         epsilon = alpha * alpha - 2.0 * alpha + 0.5;
     }
@@ -31,6 +32,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
         } else if (epsilon > alpha * alpha - 2.0 * alpha + 0.5 || epsilon <= 0.0) {
             throw new RuntimeException("epsilon must be > 0 && <= alpha * alpha - 2.0 * alpha + 0.5");
         }
+
         this.alpha = alpha;
         this.epsilon = epsilon;
     }
@@ -58,13 +60,12 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 tmpNode = tmpNode.right;
             }
         }
-        // found the candidate leaf. Test whether key distinct
 
+        // found the candidate leaf. Test whether key distinct
         if (tmpNode.key.compareTo(key) == 0) {
             tmpNode.insertData(data);
             return;
         }
-
 
         // key is distinct, now perform the insert
         if (tmpNode.key.compareTo(key) < 0) {
@@ -75,10 +76,10 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
             tmpNode.addLeft(new BBaNodeData<>(key, data));
             tmpNode.addRight(new BBaNodeData<>(tmpNode.key, tmpNode.database));
         }
+
         tmpNode.database.clear();
         //tmpNode.weight = 2;
         updateWeight(tmpNode);
-        //System.out.println("set new tmpNode key: " + tmpNode.key + " , l: " + tmpNode.left.key + ", r:" + tmpNode.right.key);
         rebalance(bBaNodeStack);
 
     }
@@ -94,9 +95,6 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
         /* rebalance */
         while (!bBaNodeStack.isEmpty()) {
             tmpNode = bBaNodeStack.pop();
-
-            //System.out.println("tmpNode: " + tmpNode.key);
-
             // set new weight
             tmpNode.weight = tmpNode.left.weight + tmpNode.right.weight;
             // check alpha
@@ -146,6 +144,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 node.addRight(oldNode);
             }
         }
+
         return node;
     }
 
@@ -170,6 +169,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 node.addLeft(oldNode);
             }
         }
+
         return node;
     }
 
@@ -184,6 +184,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -196,6 +197,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 node = node.right;
             }
         }
+
         if (node.key.compareTo(key) == 0) {
             return node;
         } else {
@@ -218,6 +220,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 tmpNode = tmpNode.right;
             }
         }
+
         // found the candidate leaf. Test whether key is same
         if (tmpNode.key.compareTo(key) != 0 || tmpNode.hasEmptyDatabase()) {
             return false;
@@ -238,7 +241,6 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
             // root && leaf -> only this key in tree
             root = null;
             return true;
-
         } else {
             BBaNodeData<T, U> parent = node.parent;
             if (parent.left == node) {
@@ -258,9 +260,11 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                     parent.addRight(parent.left.right);
                 }
             }
+
             updateWeight(parent);
             updateKey(parent);
         }
+
         bBaNodeStack.pop();
         rebalance(bBaNodeStack);
         return true;
@@ -272,6 +276,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
             node.weight = 1;
             node = node.parent;
         }
+
         while (node != null) {
             node.weight = node.left.weight + node.right.weight;
             //System.out.println("new :" + node);
@@ -283,6 +288,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
         if (node.isLeaf()) {
             return;
         }
+
         while (node != null) {
             node.key = (node.left.key.compareTo(node.right.key) > 0) ? node.left.key : node.right.key;
             //System.out.println("new :" + node);
@@ -307,6 +313,7 @@ public class BBaTreeData<T extends Comparable<? super T>, U> {
                 node = node.right;
             }
         }
+
         return nodes;
     }
 

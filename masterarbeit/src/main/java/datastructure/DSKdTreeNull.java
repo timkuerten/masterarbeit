@@ -63,7 +63,9 @@ public class DSKdTreeNull implements DataStructure {
         // null checks
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (value == null) {
+        }
+
+        if (value == null) {
             throw new ValueNullPointerException();
         }
 
@@ -87,7 +89,9 @@ public class DSKdTreeNull implements DataStructure {
         // null check
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
-        } else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+        }
+
+        if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
@@ -106,10 +110,8 @@ public class DSKdTreeNull implements DataStructure {
         List<Pair<String, String>> kDSearchValues = new ArrayList<>();
         List<Triple<String, String, String>> filteredSearchValues;
         for (String thirdPartyID : thirdPartyIDs) {
-
             filteredSearchValues = searchValues.stream()
                     .filter((triple) -> triple.getFirst().compareTo(thirdPartyID) == 0).collect(Collectors.toList());
-
             if (filteredSearchValues.size() == 1) {
                 Triple<String, String, String> element = filteredSearchValues.get(0);
                 kDSearchValues.add(new Pair<>(element.getSecond(), element.getThird()));
@@ -160,7 +162,6 @@ public class DSKdTreeNull implements DataStructure {
         }
 
         List<String> key = new ArrayList<>();
-
         for (String thirdPartyID : thirdPartyIDs) {
             if (profile.getProfileData().containsKey(thirdPartyID)) {
                 key.add(profile.getProfileData().get(thirdPartyID));
@@ -168,6 +169,7 @@ public class DSKdTreeNull implements DataStructure {
                 key.add(null);
             }
         }
+
         return key;
     }
 
@@ -191,7 +193,6 @@ public class DSKdTreeNull implements DataStructure {
             kdProfileTree.delete(createKey(profile), profile);
             profiles.get(uuid).profileData.putAll(profileData);
             kdProfileTree.insert(createKey(profile), profile);
-
             return true;
         } else {
             return false;
@@ -210,7 +211,6 @@ public class DSKdTreeNull implements DataStructure {
     public boolean addSchema(Set<String> schema, Set<String> thirdPartyIDs) {
         boolean returnValue = this.schema.add(schema, thirdPartyIDs);
         if (returnValue) {
-
             createKdTree(this.schema.getSchema(), this.schema.getThirdPartyIDs());
             for (Map.Entry<UUID, Profile> entry : profiles.entrySet()) {
                 insertInKdTree(entry.getValue());

@@ -42,7 +42,6 @@ public class BinaryNodeTest {
     public void children() {
         assertThat(rootInteger.getLeftChild().getKey(), is(1));
         assertThat(rootInteger.getRightChild().getKey(), is(2));
-
         assertThat(rootString.getLeftChild().getKey(), is("b"));
         assertThat(rootString.getRightChild().getKey(), is("c"));
     }

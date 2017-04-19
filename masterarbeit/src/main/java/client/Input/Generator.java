@@ -18,9 +18,11 @@ public class Generator implements Input {
         if (LOWERCASE) {
             CHARS = "abcdefghijklmnopqrstuvwxyz";
         }
+
         if (UPPERCASE) {
             CHARS += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         }
+
         if (NUMBERS) {
             CHARS += "1234567890";
         }
@@ -33,6 +35,7 @@ public class Generator implements Input {
                 returnValue.put(string, createRandomString());
             }
         }
+
         return returnValue;
     }
 
@@ -41,6 +44,7 @@ public class Generator implements Input {
         for (int i = 0; i < COUNT_NEW_SCHEMA; i++) {
             returnValue.add(createRandomString());
         }
+
         return returnValue;
     }
 
@@ -51,6 +55,7 @@ public class Generator implements Input {
                 returnValue.add(string);
             }
         }
+
         return returnValue;
     }
 
@@ -65,6 +70,7 @@ public class Generator implements Input {
             int index = (int) (random.nextFloat() * CHARS.length());
             stringBuilder.append(CHARS.charAt(index));
         }
+
         return stringBuilder.toString();
     }
 

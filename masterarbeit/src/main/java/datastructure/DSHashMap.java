@@ -55,14 +55,17 @@ public class DSHashMap implements DataStructure {
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
         }
-        else if (value == null) {
+
+        if (value == null) {
             throw new ValueNullPointerException();
         }
 
         // do the third-party-IDs in schema contain the given third-party-ID?
         if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
             return null;
-        } else if ((thirdPartyIDs.get(thirdPartyID) != null) && thirdPartyIDs.get(thirdPartyID).get(value) != null) {
+        }
+
+        if ((thirdPartyIDs.get(thirdPartyID) != null) && thirdPartyIDs.get(thirdPartyID).get(value) != null) {
             Set<Profile> returnProfiles = new HashSet<>();
             // search for profiles that given ThirdPartyID is mapped to given value and add them to return value
             this.thirdPartyIDs.get(thirdPartyID).get(value).forEach(returnProfiles::add);
@@ -85,43 +88,44 @@ public class DSHashMap implements DataStructure {
         if (thirdPartyID == null) {
             throw new ThirdPartyIDNullPointerException();
         }
-        else if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
+
+        if (minValue != null && maxValue != null && minValue.compareTo(maxValue) > 0) {
             throw new RangeValueException(minValue, maxValue);
         }
 
-        if (!this.schema.getThirdPartyIDs().contains(thirdPartyID)) {
-            return Collections.emptySet();
-        } else if (thirdPartyIDs.get(thirdPartyID) != null) {
-            Set<Profile> returnProfiles = new HashSet<>();
-            if (minValue != null && maxValue != null) {
-                if (minValue.compareTo(maxValue) == 0) {
-                    return get(thirdPartyID, minValue);
-                } else {
-                    this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                        if (k.compareTo(minValue) >= 0 && k.compareTo(maxValue) <= 0) {
-                            returnProfiles.addAll(v);
-                        }
-                    });
-                }
-            } else if (minValue != null) {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                    if (k.compareTo(minValue) >= 0) {
-                        returnProfiles.addAll(v);
-                    }
-                });
-            } else if (maxValue != null) {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
-                    if (k.compareTo(maxValue) <= 0) {
-                        returnProfiles.addAll(v);
-                    }
-                });
-            } else {
-                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> returnProfiles.addAll(v));
-            }
-            return returnProfiles;
-        } else {
+        if (!this.schema.getThirdPartyIDs().contains(thirdPartyID) || thirdPartyIDs.get(thirdPartyID) == null) {
             return Collections.emptySet();
         }
+
+        Set<Profile> returnProfiles = new HashSet<>();
+        if (minValue != null && maxValue != null) {
+            if (minValue.compareTo(maxValue) == 0) {
+                return get(thirdPartyID, minValue);
+            } else {
+                this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
+                    if (k.compareTo(minValue) >= 0 && k.compareTo(maxValue) <= 0) {
+                        returnProfiles.addAll(v);
+                    }
+                });
+            }
+        } else if (minValue != null) {
+            this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
+                if (k.compareTo(minValue) >= 0) {
+                    returnProfiles.addAll(v);
+                }
+            });
+        } else if (maxValue != null) {
+            this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> {
+                if (k.compareTo(maxValue) <= 0) {
+                    returnProfiles.addAll(v);
+                }
+            });
+        } else {
+            this.thirdPartyIDs.get(thirdPartyID).forEach((k, v) -> returnProfiles.addAll(v));
+        }
+
+        return returnProfiles;
+
     }
 
     public Set<Profile> get(Set<Triple<String, String, String>> searchValues) {
@@ -184,17 +188,18 @@ public class DSHashMap implements DataStructure {
         if (uuid == null) {
             throw new UuidNullPointerException();
         }
-        else if (profileData == null) {
+
+        if (profileData == null) {
             throw new ProfileDataNullPointerException();
         }
 
-        if (profiles.get(uuid) != null && this.schema.getSchema().containsAll(profileData.keySet())) {
-            profiles.get(uuid).profileData.putAll(profileData);
-            addProfileToThirdPartyIDs(profiles.get(uuid));
-            return true;
-        } else {
+        if (profiles.get(uuid) == null || !schema.getSchema().containsAll(profileData.keySet())) {
             return false;
         }
+
+        profiles.get(uuid).profileData.putAll(profileData);
+        addProfileToThirdPartyIDs(profiles.get(uuid));
+        return true;
     }
 
     /**
@@ -217,7 +222,6 @@ public class DSHashMap implements DataStructure {
      * @param p profile p which should be add to thirdPartyIDs
      */
     private void addProfileToThirdPartyIDs(Profile p) {
-        //
         p.profileData.forEach((k, v) -> {
             if (schema.getThirdPartyIDs().contains(k)) {
                 Map<String, Set<Profile>> kList = this.thirdPartyIDs.get(k);

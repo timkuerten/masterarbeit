@@ -92,11 +92,9 @@ abstract public class AbstractDataStructureTest {
         Triple<String, String, String> searchValue1 = new Triple<>("Stadt", "Aachen", "Werl");
         Triple<String, String, String> searchValue2 = new Triple<>("Name", "Aron", "Maren");
         Set<Triple<String, String, String>> searchValues = new HashSet<>(Arrays.asList(searchValue1, searchValue2));
-
         Set<UUID> uuidSet1 = new HashSet<>();
         uuidSet1.add(uuid2);
         Set<UUID> uuidSet2 = new HashSet<>();
-
         ds.get(searchValues).forEach(x -> uuidSet2.add(x.getUuid()));
         assertThat(uuidSet2.equals(uuidSet1), is(true));
     }
@@ -190,14 +188,6 @@ abstract public class AbstractDataStructureTest {
     }
 
     // null variables
-
-    /*
-    @Test
-    public void getProfileByIDWithNullUUID() {
-        thrown.expect(UuidNullPointerException.class);
-        ds.get(null);
-    }
-    */
 
     @Test
     public void getProfileByThirdPartyIDWithNullThirdPartyID() {

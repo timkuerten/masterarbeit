@@ -33,9 +33,11 @@ public class BinaryNode<T extends Comparable<? super T>> {
         if (child == null) {
             throw new NodeNullPointerException();
         }
+
         if (left != null) {
             throw new RuntimeException("Left child cannot add because it exists already");
         }
+
         child.parent = this;
         left = child;
         return child;
@@ -45,9 +47,11 @@ public class BinaryNode<T extends Comparable<? super T>> {
         if (child == null) {
             throw new NodeNullPointerException();
         }
+
         if (right != null) {
             throw new RuntimeException("Right child cannot add because it exists already");
         }
+
         child.parent = this;
         right = child;
         return child;
@@ -116,6 +120,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
         if (key == null) {
             throw new KeyNullPointerException();
         }
+
         this.key = key;
     }
 
@@ -152,6 +157,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
                 integerStack.push(node.left);
             }
         }
+
         return nodes;
     }
 
@@ -169,6 +175,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
                 node = node.right;
             }
         }
+
         return nodes;
     }
 
@@ -192,6 +199,7 @@ public class BinaryNode<T extends Comparable<? super T>> {
                 }
             }
         }
+
         return nodes;
     }
 

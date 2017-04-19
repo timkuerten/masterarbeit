@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public class BBaTree<T extends Comparable<? super T>> {
 
-    public BBaNode<T> root;
+    protected BBaNode<T> root;
     private double alpha;
     private double epsilon;
 
@@ -19,6 +19,7 @@ public class BBaTree<T extends Comparable<? super T>> {
         if (alpha >= 1.0 - 1.0 / Math.sqrt(2.0)) {
             throw new RuntimeException("alpha must be < 1 - (1/sqrt(2))");
         }
+
         this.alpha = alpha;
         epsilon = alpha * alpha - 2.0 * alpha + 0.5;
     }
@@ -29,13 +30,14 @@ public class BBaTree<T extends Comparable<? super T>> {
         } else if (epsilon > alpha * alpha - 2.0 * alpha + 0.5 || epsilon <= 0.0) {
             throw new RuntimeException("epsilon must be > 0 && <= alpha * alpha - 2.0 * alpha + 0.5");
         }
+
         this.alpha = alpha;
         this.epsilon = epsilon;
     }
 
     public void insert(T key) {
         if (root == null) {
-            root = new BBaNode<T>(key);
+            root = new BBaNode<>(key);
         } else {
             insert(root, key);
         }
@@ -64,18 +66,17 @@ public class BBaTree<T extends Comparable<? super T>> {
 
         // key is distinct, now perform the insert
         if (tmpNode.key.compareTo(key) < 0) {
-            tmpNode.addLeft(new BBaNode<T>(tmpNode.key));
-            tmpNode.addRight(new BBaNode<T>(key));
+            tmpNode.addLeft(new BBaNode<>(tmpNode.key));
+            tmpNode.addRight(new BBaNode<>(key));
             tmpNode.key = key;
         } else {
-            tmpNode.addLeft(new BBaNode<T>(key));
-            tmpNode.addRight(new BBaNode<T>(tmpNode.key));
+            tmpNode.addLeft(new BBaNode<>(key));
+            tmpNode.addRight(new BBaNode<>(tmpNode.key));
         }
+
         //tmpNode.weight = 2;
         updateWeight(tmpNode);
-        //System.out.println("set new tmpNode key: " + tmpNode.key + " , l: " + tmpNode.left.key + ", r:" + tmpNode.right.key);
         rebalance(bBaNodeStack);
-
     }
 
     public void insertKeys(List<T> keys) {
@@ -89,8 +90,6 @@ public class BBaTree<T extends Comparable<? super T>> {
         /* rebalance */
         while (!bBaNodeStack.isEmpty()) {
             tmpNode = bBaNodeStack.pop();
-
-            //System.out.println("tmpNode: " + tmpNode.key);
 
             // set new weight
             tmpNode.weight = tmpNode.left.weight + tmpNode.right.weight;
@@ -179,6 +178,7 @@ public class BBaTree<T extends Comparable<? super T>> {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -191,6 +191,7 @@ public class BBaTree<T extends Comparable<? super T>> {
                 node = node.right;
             }
         }
+
         if (node.key.compareTo(key) == 0) {
             return node;
         } else {
@@ -213,6 +214,7 @@ public class BBaTree<T extends Comparable<? super T>> {
                 tmpNode = tmpNode.right;
             }
         }
+
         // found the candidate leaf. Test whether key is same
         if (tmpNode.key.compareTo(key) != 0) {
             return false;
@@ -243,9 +245,11 @@ public class BBaTree<T extends Comparable<? super T>> {
                     parent.addRight(parent.left.right);
                 }
             }
+
             updateWeight(parent);
             updateKey(parent);
         }
+
         bBaNodeStack.pop();
         rebalance(bBaNodeStack);
         return true;
@@ -257,6 +261,7 @@ public class BBaTree<T extends Comparable<? super T>> {
             node.weight = 1;
             node = node.parent;
         }
+
         while (node != null) {
             node.weight = node.left.weight + node.right.weight;
             //System.out.println("new :" + node);
@@ -268,6 +273,7 @@ public class BBaTree<T extends Comparable<? super T>> {
         if (node.isLeaf()) {
             return;
         }
+
         while (node != null) {
             node.key = (node.left.key.compareTo(node.right.key) > 0) ? node.left.key : node.right.key;
             //System.out.println("new :" + node);
@@ -292,6 +298,7 @@ public class BBaTree<T extends Comparable<? super T>> {
                 node = node.right;
             }
         }
+
         return nodes;
     }
 

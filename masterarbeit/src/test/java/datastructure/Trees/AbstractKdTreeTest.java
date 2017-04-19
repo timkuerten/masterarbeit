@@ -66,6 +66,7 @@ abstract public class AbstractKdTreeTest {
         for (String coordinate : thirdPartyIDs) {
             coordinateValues.add(profile.getProfileData().get(coordinate));
         }
+
         return coordinateValues;
     }
 
@@ -89,7 +90,6 @@ abstract public class AbstractKdTreeTest {
         Profile profile11 = createProfile(profilesData.get(11));
         kdProfileTree.insert(new ArrayList<>(Arrays.asList(profile10.getProfileData().get("a"), profile10.getProfileData().get("b"))), profile10);
         kdProfileTree.insert(new ArrayList<>(Arrays.asList(profile11.getProfileData().get("a"), profile11.getProfileData().get("b"))), profile11);
-
         assertThat(kdProfileTree.findMin(0).equals(profiles.get(2).getProfileData().get("a")), is(true));
     }
 
@@ -124,12 +124,6 @@ abstract public class AbstractKdTreeTest {
         kdProfileTree.delete(new ArrayList<>(Arrays.asList(profile.getProfileData().get("a"), profile.getProfileData().get("b"))), profile);
         assertThat(kdProfileTree.contains(new ArrayList<>(Arrays.asList(profile.getProfileData().get("a"), profile.getProfileData().get("b"))), profile), is(false));
     }
-
-    /*
-    @Test
-    public void findNode() {
-        assertThat(kdProfileTree.findNode(createProfileData("9", "9")).equals(kdNodes.get(5)), is(true));
-    }*/
 
     @Test
     public void containsProfile() {

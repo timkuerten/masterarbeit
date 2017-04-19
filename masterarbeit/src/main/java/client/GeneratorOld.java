@@ -23,6 +23,7 @@ public class GeneratorOld {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         // initialize random number generator which always generates same random numbers if startValue is same
         random = new Random(startValue);
     }
@@ -46,6 +47,7 @@ public class GeneratorOld {
             // gender
             profileData.put("Geschlecht", "weiblich");
         }
+
         // age (0, ..., 100)
         profileData.put("Alter", Integer.toString(Math.abs(random.nextInt() % 101)));
         // city

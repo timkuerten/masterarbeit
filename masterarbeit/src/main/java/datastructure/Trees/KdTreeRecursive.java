@@ -13,6 +13,7 @@ public class KdTreeRecursive<T extends Comparable<? super T>, U> implements KdTr
         if (dimensions < 1) {
             throw new RuntimeException("dimensions can not be less than 1");
         }
+
         this.dimensions = dimensions;
     }
 

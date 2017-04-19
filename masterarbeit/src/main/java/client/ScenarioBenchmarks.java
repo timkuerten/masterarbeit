@@ -51,7 +51,6 @@ public class ScenarioBenchmarks extends AbstractScenario {
         getProfileByUuid(uuid);
         getProfilesByThirdPartyID("Name", "Runfried Mühlberger");
         getProfilesByRange("Name", "Ralf", "Roland");
-
     }
 
     /**

@@ -39,10 +39,12 @@ public class BBaNode<T extends Comparable<? super T>> {
             returnString += ", l: (" + left.toString() + ")";
             returnString += ")";
         }
+
         if (right != null) {
             returnString += ", r: (" + right.toString() + ")";
             returnString += ")";
         }
+
         return returnString;
     }
 

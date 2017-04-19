@@ -26,6 +26,7 @@ public class NodeTest {
         if (root == null) {
             throw new NullPointerException("root is null");
         }
+
         childrenOfRoot.addAll(root.addChildren(
                 new ArrayList<String>(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"))));
     }
@@ -37,13 +38,13 @@ public class NodeTest {
 
     @Test
     public void createNodeWithData() {
-        Node<String> newNode = new Node("Hello World!");
+        Node<String> newNode = new Node<>("Hello World!");
         assertThat(newNode.getKey(), is("Hello World!"));
     }
 
     @Test
     public void createNodeWithDataAndParent() {
-        Node<String> newNode = new Node("Hello World!", root);
+        Node<String> newNode = new Node<>("Hello World!", root);
         assertThat(newNode.getKey(), is("Hello World!"));
         assertThat(newNode.getParent(), is(root));
     }
@@ -51,19 +52,19 @@ public class NodeTest {
     @Test
     public void createNodeWithNullData() {
         thrown.expect(NullPointerException.class);
-        Node<String> nullNode = new Node(null);
+        Node<String> nullNode = new Node<>(null);
     }
 
     @Test
     public void createNodeWithDataAndNullParent() {
         thrown.expect(NullPointerException.class);
-        Node<String> newNode = new Node("Hello World!", null);
+        Node<String> newNode = new Node<>("Hello World!", null);
     }
 
     @Test
     public void createNodeWithNullDataAndParent() {
         thrown.expect(NullPointerException.class);
-        Node<String> newNode = new Node(null, root);
+        Node<String> newNode = new Node<>(null, root);
     }
 
     @Test
@@ -123,7 +124,7 @@ public class NodeTest {
 
     @Test
     public void hasNotChild() {
-        Node<String> newNode = new Node("Hello World!");
+        Node<String> newNode = new Node<>("Hello World!");
         assertThat(root.hasChild(newNode), is(false));
     }
 
@@ -142,19 +143,11 @@ public class NodeTest {
 
     @Test
     public void addChildAsNode() {
-        Node<String> newNode = new Node("newNode");
+        Node<String> newNode = new Node<>("newNode");
         root.addChild(newNode);
         assertThat(newNode.getParent(), is(root));
         assertThat(root.getChildren().contains(newNode), is(true));
     }
-
-    /*
-    @Test
-    public void addNullChild() {
-        root.addChild(null);
-
-    }
-    */
 
     @Test
     public void addChildrenAsData() {
@@ -172,13 +165,6 @@ public class NodeTest {
         assertThat(newNodes.iterator().next().getParent(), is(root));
         assertThat(root.getChildren().containsAll(newNodes), is(true));
     }
-
-    /*
-    @Test
-    public void addNullChildren() {
-        root.addChildren(null);
-    }
-    */
 
     @Test
     public void removeExistentChild() {

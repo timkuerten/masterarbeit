@@ -54,6 +54,7 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U> {
                 node = node.left;
             }
         }
+
         return null;
     }
 
@@ -88,8 +89,8 @@ public class BinarySearchTreeData<T extends Comparable<? super T>, U> {
                 root = null;
                 return;
             }
-            BinaryNodeData<T, U> parent = node.parent;
 
+            BinaryNodeData<T, U> parent = node.parent;
             if (parent.left != null && parent.left == node) {
                 parent.left = null;
             } else {
