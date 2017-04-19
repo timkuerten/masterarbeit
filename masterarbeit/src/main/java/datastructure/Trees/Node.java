@@ -71,6 +71,7 @@ public class Node<T> {
         if (children == null) {
             throw new NodeNullPointerException();
         }
+
         if (!children.isEmpty()) {
             children.forEach(this::removeChild);
         }
