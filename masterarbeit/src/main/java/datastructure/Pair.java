@@ -1,5 +1,8 @@
 package datastructure;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Pair<T, U> {
 
     private final T first;
@@ -29,17 +32,23 @@ public class Pair<T, U> {
             return false;
         }
 
+        if (object == this) {
+            return true;
+        }
+
         Pair pairObject = (Pair) object;
-        return first.equals(pairObject.getFirst()) &&
-                second.equals(pairObject.getSecond());
+        return new EqualsBuilder().
+                append(first, pairObject.getFirst()).
+                append(second, pairObject.getSecond()).
+                isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        hash = 31 * hash + (first != null ? first.hashCode() : 0);
-        hash = 31 * hash + (second != null ? second.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder(17, 31).
+                append(first.hashCode()).
+                append(second.hashCode()).
+                toHashCode();
     }
 
 }

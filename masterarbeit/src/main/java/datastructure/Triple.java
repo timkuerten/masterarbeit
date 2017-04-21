@@ -1,5 +1,8 @@
 package datastructure;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Triple<T, U, V> {
 
     private final T first;
@@ -35,19 +38,25 @@ public class Triple<T, U, V> {
             return false;
         }
 
+        if (object == this) {
+            return true;
+        }
+
         Triple tripleObject = (Triple) object;
-        return first.equals(tripleObject.getFirst()) &&
-                second.equals(tripleObject.getSecond()) &&
-                third.equals(tripleObject.getThird());
+        return new EqualsBuilder().
+                append(first, tripleObject.getFirst()).
+                append(second, tripleObject.getSecond()).
+                append(third, tripleObject.getThird()).
+                isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = 13;
-        hash = 53 * hash + (first != null ? first.hashCode() : 0);
-        hash = 53 * hash + (second != null ? second.hashCode() : 0);
-        hash = 53 * hash + (third != null ? third.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder(17, 31).
+                append(first.hashCode()).
+                append(second.hashCode()).
+                append(third.hashCode()).
+                toHashCode();
     }
 
 }
