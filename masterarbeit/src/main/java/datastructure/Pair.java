@@ -22,4 +22,24 @@ public class Pair<T, U> {
     public String toString() {
         return "<tripple (" + getFirst() + ", " + getSecond() + ")>";
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Pair)) {
+            return false;
+        }
+
+        Pair pairObject = (Pair) object;
+        return first.equals(pairObject.getFirst()) &&
+                second.equals(pairObject.getSecond());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = 31 * hash + (first != null ? first.hashCode() : 0);
+        hash = 31 * hash + (second != null ? second.hashCode() : 0);
+        return hash;
+    }
+
 }

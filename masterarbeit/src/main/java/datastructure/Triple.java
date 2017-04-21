@@ -28,4 +28,26 @@ public class Triple<T, U, V> {
     public String toString() {
         return "<tripple (" + getFirst() + ", " + getSecond() + ", " + getThird() + ")>";
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Triple)) {
+            return false;
+        }
+
+        Triple tripleObject = (Triple) object;
+        return first.equals(tripleObject.getFirst()) &&
+                second.equals(tripleObject.getSecond()) &&
+                third.equals(tripleObject.getThird());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 13;
+        hash = 53 * hash + (first != null ? first.hashCode() : 0);
+        hash = 53 * hash + (second != null ? second.hashCode() : 0);
+        hash = 53 * hash + (third != null ? third.hashCode() : 0);
+        return hash;
+    }
+
 }

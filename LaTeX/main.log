@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  19 APR 2017 08:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  21 APR 2017 10:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1770,7 +1770,7 @@ File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 
-No file main.aux.
+(./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
@@ -1788,7 +1788,7 @@ LaTeX Font Info:    ... okay on input line 44.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
 LaTeX Font Info:    ... okay on input line 44.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 44.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/lm/t1lmr.fd
+ (/usr/local/texlive/2016/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -1818,6 +1818,8 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 44.
 LaTeX Info: Redefining \pageref on input line 44.
 LaTeX Info: Redefining \nameref on input line 44.
+
+(./main.out) (./main.out)
 \@outlinefile=\write7
 \openout7 = `main.out'.
 
@@ -1859,14 +1861,14 @@ Package scrhack Info: undefining \float@addtolists on input line 44.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-<./graphics/wwu-logo-neu.pdf, id=7, 426.59375pt x 91.23776pt>
+<./graphics/wwu-logo-neu.pdf, id=75, 426.59375pt x 91.23776pt>
 File: ./graphics/wwu-logo-neu.pdf Graphic file (type pdf)
 
 <use ./graphics/wwu-logo-neu.pdf>
 Package pdftex.def Info: ./graphics/wwu-logo-neu.pdf used on input line 61.
 (pdftex.def)             Requested size: 194.93564pt x 41.69283pt.
 
-<./graphics/fb10logo.pdf, id=8, 426.79451pt x 91.05016pt>
+<./graphics/fb10logo.pdf, id=76, 426.79451pt x 91.05016pt>
 File: ./graphics/fb10logo.pdf Graphic file (type pdf)
 
 <use ./graphics/fb10logo.pdf>
@@ -1931,31 +1933,31 @@ File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 
 ]
+(./main.toc)
 \tf@toc=\write9
 \openout9 = `main.toc'.
 
  [5
 
 
-]
-[6
+] [6
 
 
-]
+] (./main.lof)
 \tf@lof=\write10
 \openout10 = `main.lof'.
 
  [7] [8
 
 
-]
+] (./main.lot)
 \tf@lot=\write11
 \openout11 = `main.lot'.
 
  [9] [10
 
 
-]
+] (./main.lol)
 \tf@lol=\write12
 \openout12 = `main.lol'.
 
@@ -1984,58 +1986,11 @@ File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 23.
+ [1
 
 
-LaTeX Warning: Reference `example:enumeration' on page 1 undefined on input lin
-e 24.
-
-
-LaTeX Warning: Reference `example:description' on page 1 undefined on input lin
-e 25.
-
-
-LaTeX Warning: Reference `tab:table' on page 1 undefined on input line 26.
-
-
-LaTeX Warning: Reference `lst:useless' on page 1 undefined on input line 27.
-
-[1
-
-
-]
-
-LaTeX Warning: Reference `eqn:formula' on page 2 undefined on input line 28.
-
-
-LaTeX Warning: Reference `example:reference' on page 2 undefined on input line 
-29.
-
-
-LaTeX Warning: Reference `fig:bytefield' on page 2 undefined on input line 32.
-
-
-LaTeX Warning: Reference `fig:smiley' on page 2 undefined on input line 34.
-
-
-LaTeX Warning: Reference `example:theorem.multiline' on page 2 undefined on inp
-ut line 35.
-
-
-LaTeX Warning: Reference `example:diagram' on page 2 undefined on input line 36
-.
-
-
-LaTeX Warning: Reference `fig:meth:bgsub:whole' on page 2 undefined on input li
-ne 37.
-
-
-LaTeX Warning: Reference `example:todo' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Reference `fig:meth:bgsub:whole' on page 2 undefined on input li
-ne 39.
-
-[2]) (./text/1-motivation.tex [3] [4
+] [2])
+(./text/1-motivation.tex [3] [4
 
 
 ]
@@ -2044,14 +1999,14 @@ chapter 2.
 LaTeX Warning: Citation `Loepmeier:2015TR' on page 5 undefined on input line 12
 .
 
-<graphics/cs_logo_nl_blue.pdf, id=171, 426.79451pt x 91.05016pt>
+<graphics/cs_logo_nl_blue.pdf, id=281, 426.79451pt x 91.05016pt>
 File: graphics/cs_logo_nl_blue.pdf Graphic file (type pdf)
 
 <use graphics/cs_logo_nl_blue.pdf>
 Package pdftex.def Info: graphics/cs_logo_nl_blue.pdf used on input line 19.
 (pdftex.def)             Requested size: 194.93564pt x 41.58765pt.
 
-<graphics/wwu-logo-neu.pdf, id=172, 426.59375pt x 91.23776pt>
+<graphics/wwu-logo-neu.pdf, id=282, 426.59375pt x 91.23776pt>
 File: graphics/wwu-logo-neu.pdf Graphic file (type pdf)
 
 <use graphics/wwu-logo-neu.pdf>
@@ -2079,22 +2034,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-
-LaTeX Warning: Hyper reference `fig:inner' on page 5 undefined on input line 35
-.
-
-
-LaTeX Warning: Reference `sub@fig:inner' on page 5 undefined on input line 35.
-
-
-LaTeX Warning: Hyper reference `fig:inner' on page 5 undefined on input line 35
-.
-
-
-LaTeX Warning: Reference `sub@fig:inner' on page 5 undefined on input line 35.
-
 ) (./text/2-related-work.tex [5]
-<./graphics/smiley.pdf, id=182, 642.4pt x 642.4pt>
+<./graphics/smiley.pdf, id=292, 642.4pt x 642.4pt>
 File: ./graphics/smiley.pdf Graphic file (type pdf)
  <use ./graphics/smiley.pdf>
 Package pdftex.def Info: ./graphics/smiley.pdf used on input line 9.
@@ -2201,28 +2142,19 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 109.
  (./main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 109.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 109.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: D13C99EC6F1D4D051C80C934CF398222;964.
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  D13C99EC6F1D4D051C80C934CF398222;964.
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 37108 strings out of 493014
- 694969 string characters out of 6133351
+ 37143 strings out of 493014
+ 695384 string characters out of 6133351
  925174 words of memory out of 5000000
- 39856 multiletter control sequences out of 15000+600000
- 82751 words of font info for 73 fonts, out of 8000000 for 9000
+ 39877 multiletter control sequences out of 15000+600000
+ 79756 words of font info for 72 fonts, out of 8000000 for 9000
  1144 hyphenation exceptions out of 8191
  81i,39n,106p,10472b,2160s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{glo:pdflatex} has been referenced but does not ex
@@ -2255,10 +2187,10 @@ lic/lm/lmtk10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmt
 t10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtt8.pfb></u
 sr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (43 pages, 2017608 bytes).
+Output written on main.pdf (43 pages, 2022674 bytes).
 PDF statistics:
- 505 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
+ 597 PDF objects out of 1000 (max. 8388607)
+ 453 compressed objects within 5 object streams
  107 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 174 words of extra memory for PDF output out of 10000 (max. 10000000)
 
