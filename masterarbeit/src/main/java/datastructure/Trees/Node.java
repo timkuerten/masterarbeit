@@ -121,6 +121,7 @@ public class Node<T> {
         if (node == null) {
             throw new NodeNullPointerException();
         }
+
         return children.contains(node);
     }
 
