@@ -257,14 +257,12 @@ public class BBaTree<T extends Comparable<? super T>> {
 
     private void updateWeight(BBaNode<T> node) {
         if (node.isLeaf()) {
-            //System.out.println("Leaf new :" + node);
             node.weight = 1;
             node = node.parent;
         }
 
         while (node != null) {
             node.weight = node.left.weight + node.right.weight;
-            //System.out.println("new :" + node);
             node = node.parent;
         }
     }
@@ -276,7 +274,6 @@ public class BBaTree<T extends Comparable<? super T>> {
 
         while (node != null) {
             node.key = (node.left.key.compareTo(node.right.key) > 0) ? node.left.key : node.right.key;
-            //System.out.println("new :" + node);
             node = node.parent;
         }
     }
